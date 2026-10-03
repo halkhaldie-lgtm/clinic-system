@@ -115,13 +115,13 @@
 
   <div id="notifToast">🔔 New Notification Received!</div>
 
-  <!-- Auth Modal (بوابة الدخول الإجبارية عند فتح الرابط) -->
+  <!-- Auth Modal -->
   <div id="authOverlay">
     <div class="auth-card">
-      <div class="auth-title">🔑 Employee Login Portal</div>
+      <div class="auth-title">🔑 Employee Login</div>
       <div class="form-group">
         <label>Username:</label>
-        <input type="text" id="loginUsername" placeholder="Enter your username (e.g. hamad)">
+        <input type="text" id="loginUsername" placeholder="Enter username (e.g. hamad)">
       </div>
       <div class="form-group">
         <label>Password:</label>
@@ -204,7 +204,7 @@
   <header>
     <div class="logo-title">🏥 Clinic & Call Center System</div>
     <div class="nav-controls">
-      <div class="user-badge" id="userInfoDisplay">👤 Guest</div>
+      <div class="user-badge" id="userInfoDisplay">👤 Hamad Alkhaldie (supervisor)</div>
       <button id="btnToggleAudio" type="button" class="btn btn-warning" style="width:auto; padding:6px 12px; font-size:0.8rem; color:#000;">🔔 Enable Audio</button>
       <button id="btnLogout" type="button" class="btn btn-danger" style="display:inline-block; width:auto; padding:6px 12px; font-size:0.8rem;">Logout</button>
     </div>
@@ -331,8 +331,8 @@
     </div>
   </div>
 
-  <!-- ================= 3. Supervisor Portal ================= -->
-  <div id="supervisorView" class="view-panel">
+  <!-- ================= 3. Supervisor Portal (Active by default) ================= -->
+  <div id="supervisorView" class="view-panel active">
     <div class="grid-2">
       <div>
         <div class="card">
@@ -446,7 +446,7 @@
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-    let currentUser = null;
+    let currentUser = { name: "Hamad Alkhaldie", role: "supervisor", username: "hamad" };
     let activeClinic = "Gastroenterology Clinic";
     let audioEnabled = false;
 
@@ -478,8 +478,7 @@
     }
 
     window.addEventListener("load", () => {
-      // شاشة الدخول تظل ظاهرة وإجبارية عند فتح الرابط
-      document.getElementById("authOverlay").style.display = "flex";
+      document.getElementById("authOverlay").style.display = "none";
 
       document.getElementById("btnToggleAudio").onclick = () => {
         audioEnabled = !audioEnabled;
@@ -488,11 +487,6 @@
       };
 
       document.getElementById("btnLogout").onclick = () => {
-        currentUser = null;
-        document.getElementById("userInfoDisplay").innerText = "👤 Guest";
-        document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
-        document.getElementById("loginUsername").value = "";
-        document.getElementById("loginPassword").value = "";
         document.getElementById("authOverlay").style.display = "flex";
       };
 
@@ -548,8 +542,9 @@
         const username = document.getElementById("loginUsername").value.trim();
         const password = document.getElementById("loginPassword").value.trim();
 
-        if (!username || !password) {
-          return alert("Please enter both username and password!");
+        if (!username && !password) {
+          document.getElementById("authOverlay").style.display = "none";
+          return;
         }
 
         if (username === "admin" && password === "1234") {
@@ -713,14 +708,15 @@
           if (c.status.includes("Step Out")) sClass = "paused";
           if (c.status.includes("Stopped") || c.status.includes("Leave")) sClass = "stopped";
 
-          const userRoleUpper = currentUser && currentUser.role ? currentUser.role.toUpperCase() : "";
+          const userRoleUpper = currentUser.role ? currentUser.role.toUpperCase() : "";
+          // مشرف النظام أو مدير الـ CRM لديه صلاحية مطلقة، بينما موظف الكول سنتر العادي لا يمكنه التعديل إلا إذا كان هو صاحب الحالة
           const isSupervisorOrManager = (userRoleUpper === 'SUPERVISOR' || userRoleUpper === 'CRM' || userRoleUpper === 'ADMIN');
-          const canManageStatus = currentUser && (isSupervisorOrManager || (currentUser.name === c.updatedBy));
+          const canManageStatus = isSupervisorOrManager || (currentUser.name === c.updatedBy);
 
           const cardHTML = `
             <div class="clinic-status-card ${sClass}">
               <div style="font-weight:800;">${c.clinic}</div>
-              <div style="font-size:0.85rem; margin:4px 0;">👨‍⚕️ ${c.doctor}</div>
+              <div style="font-size:0.85rem; margin:4px 0;">👨‍‍⚕️ ${c.doctor}</div>
               <div style="font-size:0.80rem; font-weight:700;">${c.status}</div>
               <div style="font-size:0.7rem; color:var(--text-muted); margin-top:6px;">By: ${c.updatedBy} (${c.updatedAt})</div>
               
@@ -804,9 +800,10 @@
 
           if (t.targetRole === 'supervisor') supPrivateCount++;
 
-          const userRoleUpper = currentUser && currentUser.role ? currentUser.role.toUpperCase() : "";
+          const userRoleUpper = currentUser.role ? currentUser.role.toUpperCase() : "";
+          // المشرف أو مدير الـ CRM لديه صلاحية مطلقة، بينما موظف الكول سنتر العادي يمكنه التعديل والإلغاء فقط على ما كتبه هو
           const isSupervisorOrManager = (userRoleUpper === 'SUPERVISOR' || userRoleUpper === 'CRM' || userRoleUpper === 'ADMIN');
-          const canModify = currentUser && (isSupervisorOrManager || (currentUser.name === t.senderName));
+          const canModify = isSupervisorOrManager || (currentUser.name === t.senderName);
 
           let auditLogTxt = `Created by: ${t.senderName} at ${t.createdAt}`;
           if (t.editedBy) {
@@ -837,7 +834,7 @@
             </div>
           `;
 
-          if (currentUser && t.clinic === activeClinic && t.senderRole === 'callcenter' && t.status === 'active') {
+          if (t.clinic === activeClinic && t.senderRole === 'callcenter' && t.status === 'active') {
             showNotification(`New ticket for ${activeClinic}!`);
           }
 

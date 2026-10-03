@@ -1,0 +1,90 @@
+// 1. استدعاء مكتبات Firebase Realtime Database
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { 
+  getDatabase, ref, push, onValue, update 
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+// 2. إعدادات مشروعك
+const firebaseConfig = {
+  apiKey: "AIzaSyDu_6tZHhiE9Rt5AwvkiEggAtcLtqHhe7A",
+  authDomain: "clinic-callcenter-system.firebaseapp.com",
+  databaseURL: "https://clinic-callcenter-system-default-rtdb.firebaseio.com",
+  projectId: "clinic-callcenter-system",
+  storageBucket: "clinic-callcenter-system.firebasestorage.app",
+  messagingSenderId: "933268960406",
+  appId: "1:933268960406:web:fc1463aa52a2d4b84cbeb7",
+  measurementId: "G-ZXTXWCGS0T"
+};
+
+// 3. تشغيل Firebase والـ Database
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+// ==========================================
+// 📥 1. الاستماع اللحظي للتذاكر الجديدة
+// ==========================================
+const ticketsRef = ref(db, 'tickets');
+
+onValue(ticketsRef, (snapshot) => {
+  const data = snapshot.val();
+  const ticketsContainer = document.getElementById("generalTicketsList");
+  if (!ticketsContainer) return;
+  
+  ticketsContainer.innerHTML = "";
+
+  if (data) {
+    Object.keys(data).forEach((key) => {
+      const ticket = data[key];
+      if (ticket.status === "completed") return; // عدم عرض التذاكر المنجزة
+
+      const cardHTML = `
+        <div class="ticket-card ${ticket.isUrgent ? 'urgent' : ''}" id="${key}">
+          <div class="ticket-header">
+            <span class="source-badge">🏥 ${ticket.clinicName}</span>
+            <span class="priority-badge ${ticket.isUrgent ? 'high' : 'normal'}">
+              ${ticket.isUrgent ? '🔴 عاجل' : '⚪ عادي'}
+            </span>
+          </div>
+          <div class="patient-info-box">
+            <div>📞 الهاتف: <strong>${ticket.phone}</strong></div>
+            <div>📁 الملف: <strong>${ticket.fileNo}</strong></div>
+          </div>
+          <div class="ticket-message">💬 ${ticket.message}</div>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px;">
+            <span style="font-size:0.75rem; color:#64748b;">المرسل: ${ticket.sender}</span>
+            <button class="btn-action-sm btn-close" onclick="completeTicket('${key}')">✅ إنجاز</button>
+          </div>
+        </div>
+      `;
+      ticketsContainer.innerHTML += cardHTML;
+    });
+  }
+});
+
+// ==========================================
+// ➕ 2. دالة إنشاء تيكت جديد
+// ==========================================
+window.createNewTicket = function(clinicName, fileNo, phone, message, isUrgent = false) {
+  push(ref(db, 'tickets'), {
+    clinicName: clinicName,
+    fileNo: fileNo,
+    phone: phone,
+    message: message,
+    isUrgent: isUrgent,
+    status: "active",
+    sender: "استقبال العيادة",
+    createdAt: new Date().toISOString()
+  });
+};
+
+// ==========================================
+// ✅ 3. دالة إنجاز التيكت ونقله للأرشيف/24 ساعة
+// ==========================================
+window.completeTicket = function(ticketId) {
+  const ticketRef = ref(db, `tickets/${ticketId}`);
+  update(ticketRef, {
+    status: "completed",
+    completedAt: new Date().toISOString(),
+    completedBy: "أحمد السالم (المسؤول)"
+  });
+};

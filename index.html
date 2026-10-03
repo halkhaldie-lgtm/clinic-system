@@ -1,78 +1,897 @@
-<!doctype html>
-<html lang="ar" dir="rtl">
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>نظام إدارة العيادات ومركز التواصل</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
-:root{--p:#2563eb;--p2:#1d4ed8;--g:#10b981;--y:#f59e0b;--r:#ef4444;--v:#7c3aed;--bg:#f4f7fb;--card:#fff;--tx:#0f172a;--mut:#64748b;--bd:#e2e8f0;--sh:0 10px 30px #0f172a12}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font-family:Tajawal,Arial,sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer}.hidden{display:none!important}.auth{min-height:100vh;display:grid;place-items:center;padding:18px;background:linear-gradient(135deg,#dbeafe,#f8fafc 55%,#ede9fe)}.authbox{width:min(470px,100%);background:#fff;border:1px solid var(--bd);border-radius:22px;padding:25px;box-shadow:0 25px 70px #0f172a18}.logo{text-align:center}.logo i{display:grid;place-items:center;width:55px;height:55px;margin:auto;border-radius:16px;background:linear-gradient(135deg,var(--p),#06b6d4);color:#fff;font-style:normal;font-size:28px}.logo h2{margin:10px 0 3px}.mut{color:var(--mut);font-size:.82rem}.tabs{display:grid;grid-template-columns:1fr 1fr;background:#f1f5f9;padding:5px;border-radius:12px;margin:18px 0}.tabs button{border:0;background:transparent;padding:10px;border-radius:9px;font-weight:800}.tabs button.on{background:#fff;color:var(--p);box-shadow:0 2px 8px #0000000b}.field{margin:10px 0}.field label{display:block;font-size:.82rem;font-weight:800;margin-bottom:6px;color:#334155}.field input,.field select,.field textarea{width:100%;padding:10px 12px;border:1px solid var(--bd);border-radius:10px;outline:0;background:#fff}.field textarea{min-height:100px;resize:vertical}.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--p);box-shadow:0 0 0 3px #2563eb12}.btn{border:0;border-radius:10px;padding:10px 14px;font-weight:800}.primary{background:var(--p);color:#fff}.success{background:var(--g);color:#fff}.warning{background:var(--y);color:#fff}.danger{background:var(--r);color:#fff}.soft{background:#eef2ff;color:#3730a3}.light{background:#f8fafc;border:1px solid var(--bd);color:#334155}.top{position:sticky;top:0;z-index:20;display:flex;justify-content:space-between;align-items:center;gap:12px;background:#ffffffee;backdrop-filter:blur(12px);border-bottom:1px solid var(--bd);padding:11px 18px}.brand{display:flex;gap:10px;align-items:center}.brand i{width:42px;height:42px;display:grid;place-items:center;background:linear-gradient(135deg,var(--p),#06b6d4);border-radius:13px;color:#fff;font-style:normal}.brand h1{font-size:1rem;margin:0}.brand small{color:var(--mut)}.user{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.pill{padding:7px 10px;background:#eff6ff;color:var(--p2);border-radius:999px;font-size:.78rem;font-weight:800}.layout{display:flex;min-height:calc(100vh - 65px)}aside{width:235px;background:#0f172a;padding:14px 10px;color:#fff;flex:none}.nav{width:100%;text-align:right;border:0;background:transparent;color:#cbd5e1;border-radius:10px;padding:10px 11px;margin:2px 0;font-weight:700}.nav:hover,.nav.on{background:#1e293b;color:#fff}.main{flex:1;padding:20px;min-width:0}.head{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:16px}.head h2{margin:0;font-size:1.3rem}.head p{margin:4px 0;color:var(--mut);font-size:.82rem}.grid{display:grid;gap:14px}.g2{grid-template-columns:repeat(2,minmax(0,1fr))}.g3{grid-template-columns:repeat(3,minmax(0,1fr))}.g4{grid-template-columns:repeat(4,minmax(0,1fr))}.card{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:17px;box-shadow:var(--sh)}.card h3{margin:0 0 12px;font-size:1rem}.stat{position:relative}.stat b{font-size:1.75rem;display:block;margin-top:4px}.stat span{color:var(--mut);font-size:.8rem}.stat em{position:absolute;left:14px;top:13px;font-style:normal;font-size:25px;opacity:.16}.formgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 12px}.full{grid-column:1/-1}.actions{display:flex;gap:7px;flex-wrap:wrap}.badge{display:inline-flex;padding:4px 8px;border-radius:999px;font-size:.7rem;font-weight:800}.green{background:#dcfce7;color:#166534}.yellow{background:#fef3c7;color:#92400e}.red{background:#fee2e2;color:#991b1b}.blue{background:#dbeafe;color:#1e40af}.purple{background:#ede9fe;color:#5b21b6}.gray{background:#f1f5f9;color:#475569}.item{border:1px solid var(--bd);border-radius:12px;padding:12px;margin:8px 0;background:#fff}.itemhead{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}.meta{color:var(--mut);font-size:.74rem;line-height:1.8}.msg{white-space:pre-wrap;line-height:1.8;margin:8px 0}.tablewrap{overflow:auto;border:1px solid var(--bd);border-radius:12px}.table{width:100%;border-collapse:collapse;min-width:800px}.table th,.table td{padding:10px;border-bottom:1px solid var(--bd);font-size:.78rem;text-align:right}.table th{background:#f8fafc;color:#475569}.empty{text-align:center;padding:28px;color:var(--mut)}.modal{position:fixed;inset:0;z-index:100;background:#0f172a88;display:grid;place-items:center;padding:18px}.modalbox{width:min(650px,100%);max-height:90vh;overflow:auto;background:#fff;border-radius:18px;padding:18px}.mhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.mhead h3{margin:0}.close{border:0;background:#f1f5f9;border-radius:8px;padding:7px}.toast{position:fixed;left:16px;bottom:16px;z-index:200;background:#0f172a;color:#fff;padding:12px 15px;border-radius:11px;box-shadow:var(--sh);max-width:360px}.toastbox{position:fixed;left:16px;bottom:16px;z-index:200;display:grid;gap:7px}.timer{font-weight:800;color:var(--p2)}.expired{color:var(--r)}.notice{padding:11px;border-radius:10px;background:#eff6ff;border:1px solid #bfdbfe;color:#1e40af;font-size:.82rem}.notice.warn{background:#fffbeb;border-color:#fde68a;color:#92400e}.clinic{border:1px solid var(--bd);border-radius:14px;padding:13px}.clinic h4{margin:0 0 8px}.check{display:flex;gap:7px;align-items:center;font-size:.82rem}.divider{height:1px;background:var(--bd);margin:14px 0}@media(max-width:850px){aside{width:190px}.g4{grid-template-columns:repeat(2,1fr)}}@media(max-width:650px){aside{display:none}.main{padding:12px}.g2,.g3,.g4,.formgrid{grid-template-columns:1fr}.top{padding:9px 11px}.brand small{display:none}.head{align-items:flex-start;flex-direction:column}}
-</style></head><body>
-<div id="auth" class="auth"><div class="authbox"><div class="logo"><i>🏥</i><h2>نظام إدارة العيادات</h2><div class="mut">العيادات · مركز التواصل · علاقات العملاء</div></div><div class="tabs"><button id="lt" class="on" onclick="authTab('login')">تسجيل الدخول</button><button id="rt" onclick="authTab('register')">إنشاء حساب</button></div><section id="login"><div class="field"><label>اسم المستخدم</label><input id="lu" autocomplete="username"></div><div class="field"><label>كلمة المرور</label><input id="lp" type="password" autocomplete="current-password"></div><button class="btn primary" style="width:100%" onclick="login()">دخول</button><div class="divider"></div><div class="mut">حساب الإدارة الأولي: admin / admin123</div></section><section id="register" class="hidden"><div class="field"><label>نوع الحساب</label><select id="rr" onchange="regRole()"><option value="clinic">موظف عيادة</option><option value="callcenter">موظف مركز التواصل</option><option value="customer">مسؤول علاقات العملاء</option><option value="admin">مدير النظام</option></select></div><div class="field"><label>اسم الموظف</label><input id="rn"></div><div id="regClinicWrap" class="field"><label>العيادة الأولى</label><select id="rc"></select></div><div class="field"><label>اسم المستخدم</label><input id="ru"></div><div class="field"><label>كلمة المرور</label><input id="rp" type="password"></div><button class="btn success" style="width:100%" onclick="register()">إنشاء الحساب</button></section></div></div>
-<div id="app" class="hidden"><header class="top"><div class="brand"><i>🏥</i><div><h1>نظام إدارة العيادات ومركز التواصل</h1><small id="sub"></small></div></div><div class="user"><span id="clinicPill" class="pill hidden"></span><span id="userPill" class="pill"></span><button class="btn light" onclick="logout()">خروج</button></div></header><div class="layout"><aside><div id="nav"></div><button class="nav" onclick="notifications()">🔔 الإشعارات <span id="unread"></span></button></aside><main class="main"><div id="content"></div></main></div></div>
-<div id="modal" class="modal hidden" onclick="if(event.target===this)closeModal()"><div id="modalbox" class="modalbox"></div></div><div id="toastbox" class="toastbox"></div>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
-<script>
-const app=firebase.initializeApp({apiKey:"AIzaSyDu_6tZHhiE9Rt5AwvkiEggAtcLtqHhe7A",authDomain:"clinic-callcenter-system.firebaseapp.com",databaseURL:"https://clinic-callcenter-system-default-rtdb.firebaseio.com",projectId:"clinic-callcenter-system",storageBucket:"clinic-callcenter-system.firebasestorage.app",messagingSenderId:"933268960406",appId:"1:933268960406:web:fc1463aa52a2d4b84cbeb7"});
-const db=firebase.database();
-const ref=(root,path)=>root.ref(path);
-const onValue=(r,cb)=>r.on("value",cb);
-const set=(r,v)=>r.set(v);
-const update=(r,v)=>r.update(v);
-const push=(r,v)=>v===undefined?r.push():r.push(v);
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clinic & Call Center System</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0284c7;
+      --primary-dark: #0369a1;
+      --primary-light: #e0f2fe;
+      --accent: #8b5cf6;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --bg: #1e293b; 
+      --card-bg: #273548; 
+      --input-bg: #334155;
+      --text: #f8fafc;
+      --text-muted: #cbd5e1;
+      --border: #475569;
+    }
 
-window.addEventListener("error",e=>{const b=document.getElementById("toastbox");if(b&&e.message){const d=document.createElement("div");d.className="toast";d.textContent="حدث خطأ في تشغيل النظام: "+e.message;b.appendChild(d)}});
-window.addEventListener("unhandledrejection",e=>{const b=document.getElementById("toastbox");if(b){const d=document.createElement("div");d.className="toast";d.textContent="تعذر تنفيذ العملية. تحقق من اتصال قاعدة البيانات.";b.appendChild(d);setTimeout(()=>d.remove(),5000)}});
-const CLINICS=["عيادة النساء والأطفال (ولاء)","عيادة الجراحة والجهاز الهضمي (طارق)","عيادة العظام","عيادة الأسنان","العيادات الخارجية (OPD)","عيادة الباطنية","عيادة المسالك البولية","عيادة القلب","عيادة الجلدية","عيادة الأنف والأذن والحنجرة"],STATUSES=["يستقبل الانتظار","الدكتور مستأذن","تم إيقاف الانتظار","الطبيب مريض","إجازة طارئة"],DURS=[["15","15 دقيقة"],["30","30 دقيقة"],["60","ساعة"],["120","ساعتان"],["240","4 ساعات"],["480","8 ساعات"],["1440","يوم كامل"],["0","حتى الإيقاف اليدوي"]];
-let U=null,P="home",clinic="",D={users:{},clinics:{},messages:{},tickets:{},notifications:{},audit:{}};const $=id=>document.getElementById(id),T=()=>Date.now(),time=t=>t?new Date(t).toLocaleString("ar-KW",{dateStyle:"short",timeStyle:"medium"}):"-",esc=x=>String(x??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])),key=x=>btoa(unescape(encodeURIComponent(x))).replace(/=/g,"").slice(0,90),toast=x=>{let e=document.createElement("div");e.className="toast";e.textContent=x;$("toastbox").appendChild(e);setTimeout(()=>e.remove(),4000)},opts=(sel="")=>CLINICS.map(x=>`<option value="${esc(x)}" ${x===sel?"selected":""}>${esc(x)}</option>`).join(""),dur=(sel="60")=>DURS.map(x=>`<option value="${x[0]}" ${x[0]===String(sel)?"selected":""}>${x[1]}</option>`).join(""),role=r=>({clinic:"موظف عيادة",callcenter:"موظف مركز التواصل",customer:"مسؤول علاقات العملاء",admin:"مدير النظام"}[r]||r),badge=s=>`<span class="badge ${s==="يستقبل الانتظار"?"green":s==="تم إيقاف الانتظار"?"yellow":s?.includes("مريض")||s?.includes("إجازة")?"red":"gray"}">${esc(s||"غير محدد")}</span>`;
-function authTab(x){$("login").classList.toggle("hidden",x!=="login");$("register").classList.toggle("hidden",x!=="register");$("lt").classList.toggle("on",x==="login");$("rt").classList.toggle("on",x==="register");if(x==="register"){$("rc").innerHTML=opts(CLINICS[0]);regRole()}}function regRole(){$("regClinicWrap").classList.toggle("hidden",$("rr").value!=="clinic")}window.authTab=authTab;window.regRole=regRole;
-function listen(){onValue(ref(db,"users"),s=>{D.users=s.val()||{};rerender(["users"])});onValue(ref(db,"clinics"),s=>{D.clinics=s.val()||{};rerender(["home","clinics","status","dashboard"])});onValue(ref(db,"messages"),s=>{D.messages=s.val()||{};rerender(["home","messages","inbox","clinics","dashboard","reports"]);notif()});onValue(ref(db,"tickets"),s=>{D.tickets=s.val()||{};rerender(["home","tickets","inbox","dashboard","reports"])});onValue(ref(db,"notifications"),s=>{D.notifications=s.val()||{};notif()});onValue(ref(db,"audit"),s=>{D.audit=s.val()||{};rerender(["audit","reports","dashboard","home"])});}
-async function login(){let u=$("lu").value.trim().toLowerCase(),p=$("lp").value;if(u==="admin"&&p==="admin123"){U={id:"admin",name:"مدير النظام",username:"admin",role:"admin",clinics:CLINICS};enter();return}let z=Object.entries(D.users).find(([id,x])=>x.username?.toLowerCase()===u&&x.password===p&&x.active!==false);if(!z)return toast("اسم المستخدم أو كلمة المرور غير صحيحة");U={id:z[0],...z[1]};enter()}
-async function register(){let r=$("rr").value,n=$("rn").value.trim(),u=$("ru").value.trim().toLowerCase(),p=$("rp").value,c=$("rc").value;if(!n||!u||!p)return toast("أكمل جميع البيانات");if(u==="admin"||Object.values(D.users).some(x=>x.username?.toLowerCase()===u))return toast("اسم المستخدم مستخدم مسبقاً");let id=push(ref(db,"users")).key,x={name:n,username:u,password:p,role:r,active:true,createdAt:T(),clinics:r==="clinic"?[c]:[]};await set(ref(db,"users/"+id),x);audit("إنشاء حساب",{target:id});toast("تم إنشاء الحساب");$("lu").value=u;$("lp").value=p;authTab("login")}
-function enter(){clinic=U.role==="clinic"?(U.clinics?.[0]||CLINICS[0]):CLINICS[0];$("auth").classList.add("hidden");$("app").classList.remove("hidden");$("userPill").textContent=`👤 ${U.name} · ${role(U.role)}`;$("sub").textContent=role(U.role);$("clinicPill").classList.toggle("hidden",U.role!=="clinic");$("clinicPill").textContent=U.role==="clinic"?`🏥 ${clinic}`:"";listen();nav();render()}
-function logout(){location.reload()}window.login=login;window.register=register;window.logout=logout;
-const menus={clinic:[["home","🏠 الرئيسية"],["status","🩺 حالة الطبيب"],["messages","💬 رسائل للكول سنتر"],["inbox","📥 الوارد"],["reports","📊 تقارير"]],callcenter:[["home","🏠 الرئيسية"],["clinics","🏥 جميع العيادات"],["tickets","🎫 التيكتات"],["inbox","📥 الوارد"],["sent","📤 المرسل"],["dashboard","📊 الداشبورد"],["reports","📑 التقارير"]],customer:[["home","🏠 الرئيسية"],["clinics","🏥 جميع العيادات"],["inbox","📥 الوارد"],["dashboard","📊 الداشبورد"],["reports","📑 التقارير"],["audit","🕒 سجل العمليات"]],admin:[["home","🏠 الرئيسية"],["clinics","🏥 جميع العيادات"],["dashboard","📊 الداشبورد"],["reports","📑 التقارير"],["users","👥 الحسابات"],["audit","🕒 سجل العمليات"]]};
-function nav(){$("nav").innerHTML=(menus[U.role]||menus.customer).map(x=>`<button class="nav ${P===x[0]?"on":""}" onclick="go('${x[0]}')">${x[1]}</button>`).join("")}function go(x){P=x;nav();render()}window.go=go;function rerender(a){if(a.includes(P))render();notif()}
-function render(){let f={home:home,status:statusPage,messages:messagesPage,inbox:inbox,clinics:clinics,tickets:tickets,sent:sent,dashboard:dashboard,reports:reports,users:users,audit:audit}[P]||home;f()}
-function stat(label,n,ico){return `<div class="card stat"><em>${ico}</em><span>${label}</span><b>${esc(n)}</b></div>`}
-function cstatus(c){let x=D.clinics[key(c)]||{};return `<div class="notice ${x.status==="تم إيقاف الانتظار"?"warn":x.status&&x.status!=="يستقبل الانتظار"?"red":""}"><b>${esc(x.doctorName||"لم يحدد الطبيب")}</b><br>${badge(x.status||"غير محدد")}<div class="meta">آخر تحديث: ${time(x.updatedAt)} · ${esc(x.updatedBy||"")}</div></div>`}
-function activeMsgs(c,kind=null){return Object.entries(D.messages||{}).map(([id,x])=>({id,...x})).filter(x=>(!kind||x.kind===kind)&&(!c||x.clinic===c)&&x.enabled!==false&&(!x.expiresAt||x.expiresAt===0||x.expiresAt>T()))}
-function allTickets(c=null){return Object.entries(D.tickets||{}).map(([id,x])=>({id,...x})).filter(x=>!c||x.clinic===c)}
-function audit(a,e={}){let id=push(ref(db,"audit")).key;set(ref(db,"audit/"+id),{action:a,user:U?.name||"",role:U?.role||"",at:T(),...e})}
-async function notify(r,c,title,message,page="inbox"){let id=push(ref(db,"notifications")).key;return set(ref(db,"notifications/"+id),{targetRole:r,targetClinic:c||"",title,message,at:T(),read:false,page})}
-function home(){let html=`<div class="head"><div><h2>مرحباً ${esc(U.name)} 👋</h2><p>${U.role==="clinic"?`العيادة الحالية: ${esc(clinic)}`:"لوحة المتابعة الرئيسية"}</p></div></div>`;if(U.role==="clinic"){let ts=allTickets(clinic).filter(x=>x.status!=="closed"),ms=activeMsgs(clinic,"callNote");html+=`<div class="grid g4">${stat("تيكتات مفتوحة",ts.length,"🎫")}${stat("رسائل واردة",ms.length,"📥")}${stat("العيادة",D.clinics[key(clinic)]?.status||"-","🩺")}${stat("إشعارات",unread(),"🔔")}</div><div class="grid g2" style="margin-top:14px"><div class="card"><h3>حالة الطبيب</h3>${cstatus(clinic)}<div class="actions" style="margin-top:10px"><button class="btn primary" onclick="go('status')">تعديل الحالة</button><button class="btn soft" onclick="go('messages')">رسالة للكول سنتر</button></div></div><div class="card"><h3>آخر الوارد</h3>${ticketList(ts.slice(0,5))}</div></div>`}else{let t=allTickets().filter(x=>x.status!=="closed"),m=Object.values(D.messages||{});html+=`<div class="grid g4">${stat("التيكتات المفتوحة",t.length,"🎫")}${stat("الرسائل",m.length,"💬")}${stat("العيادات",CLINICS.length,"🏥")}${stat("الإشعارات",unread(),"🔔")}</div><div class="grid g2" style="margin-top:14px"><div class="card"><h3>حالات العيادات</h3>${CLINICS.slice(0,6).map(c=>`<div class="clinic"><h4>${esc(c)}</h4>${cstatus(c)}</div>`).join("")}</div><div class="card"><h3>آخر العمليات</h3>${auditList(8)}</div></div>`}$('content').innerHTML=html}
-function statusPage(){let x=D.clinics[key(clinic)]||{};$('content').innerHTML=`<div class="head"><div><h2>حالة الطبيب والعيادة</h2><p>${esc(clinic)}</p></div></div><div class="grid g2"><div class="card"><h3>تحديث الحالة</h3><div class="field"><label>اسم الطبيب</label><input id="dn" value="${esc(x.doctorName||"")}"></div><div class="formgrid"><div class="field"><label>الحالة</label><select id="ds">${STATUSES.map(s=>`<option ${s===(x.status||STATUSES[0])?"selected":""}>${s}</option>`).join("")}</select></div><div class="field"><label>مدة الظهور للكول سنتر</label><select id="dd">${dur(x.duration||"60")}</select></div></div><label class="check"><input id="de" type="checkbox" ${x.enabled===false?"checked":""}> إيقاف المعلومة يدوياً</label><button class="btn primary" style="margin-top:12px" onclick="saveStatus()">حفظ وإرسال</button></div><div class="card"><h3>العيادة التي أعمل بها اليوم</h3><div class="field"><label>اختيار العيادة</label><select id="myclinic">${opts(clinic)}</select></div><button class="btn soft" onclick="changeClinic()">تغيير العيادة الحالية</button><div class="divider"></div>${cstatus(clinic)}</div></div>`}
-async function saveStatus(){let d=$("dn").value.trim(),s=$("ds").value,du=$("dd").value,en=!$("de").checked;if(!d)return toast("اكتب اسم الطبيب");let exp=du==="0"?0:T()+Number(du)*60000,x={name:clinic,doctorName:d,status:s,enabled:en,duration:du,expiresAt:exp,updatedAt:T(),updatedBy:U.name};await set(ref(db,"clinics/"+key(clinic)),x);let id=push(ref(db,"messages")).key;await set(ref(db,"messages/"+id),{kind:"clinicStatus",clinic,doctorName:d,status:s,enabled:en,duration:du,expiresAt:exp,createdAt:T(),createdBy:U.name,createdById:U.id,target:"callcenter"});await notify("callcenter",clinic,"تحديث حالة عيادة",`${clinic}: ${d} — ${s}`);await notify("customer",clinic,"تحديث حالة عيادة",`${clinic}: ${d} — ${s}`);audit("تحديث حالة عيادة",{clinic,status:s});toast("تم الحفظ والإرسال");render()}
-async function changeClinic(){let c=$("myclinic").value;clinic=c;let arr=Array.isArray(U.clinics)?U.clinics:[];if(!arr.includes(c)){arr.push(c);U.clinics=arr;await update(ref(db,"users/"+U.id),{clinics:arr})}$("clinicPill").textContent=`🏥 ${c}`;audit("تغيير العيادة",{clinic:c});toast("تم تغيير العيادة");render()}
-window.saveStatus=saveStatus;window.changeClinic=changeClinic;
-function messagesPage(){let mine=Object.entries(D.messages||{}).map(([id,x])=>({id,...x})).filter(x=>x.kind==="clinicMessage"&&x.clinic===clinic&&x.createdById===U.id);$('content').innerHTML=`<div class="head"><div><h2>رسائل العيادة للكول سنتر</h2><p>كل رسالة مرتبطة بالعيادة الحالية والموظف والوقت والمدة</p></div></div><div class="grid g2"><div class="card"><h3>رسالة جديدة</h3><div class="formgrid"><div class="field"><label>رقم الهاتف</label><input id="mp"></div><div class="field"><label>رقم الملف</label><input id="mf"></div><div class="field"><label>مدة الظهور</label><select id="md">${dur()}</select></div><div class="field"><label>حالة الرسالة</label><select id="me"><option value="1">فعالة</option><option value="0">موقوفة</option></select></div><div class="field full"><label>التفاصيل / طلب الإجراء</label><textarea id="mt" placeholder="مثال: في حال تلقّي اتصال من المريض يرجى إبلاغنا..."></textarea></div></div><button class="btn primary" onclick="sendClinicMessage()">إرسال للكول سنتر</button></div><div class="card"><h3>رسائلي</h3>${messageList(mine)}</div></div>`}
-async function sendClinicMessage(){let text=$("mt").value.trim();if(!text)return toast("اكتب الرسالة");let du=$("md").value,en=$("me").value==="1",id=push(ref(db,"messages")).key,exp=du==="0"?0:T()+Number(du)*60000,x={kind:"clinicMessage",clinic,text,phone:$("mp").value.trim(),fileNo:$("mf").value.trim(),duration:du,enabled:en,expiresAt:exp,createdAt:T(),createdBy:U.name,createdById:U.id,target:"callcenter"};await set(ref(db,"messages/"+id),{id,...x});await notify("callcenter",clinic,"رسالة جديدة من العيادة",text);audit("إرسال رسالة للكول سنتر",{clinic,messageId:id});toast("تم الإرسال");render()}
-function messageList(a){if(!a.length)return`<div class="empty">لا توجد رسائل</div>`;return a.sort((a,b)=>b.createdAt-a.createdAt).map(x=>`<div class="item"><div class="itemhead"><b>${esc(x.kind==="clinicStatus"?`${x.doctorName} — ${x.status}`:x.text)}</b>${x.enabled===false?'<span class="badge gray">موقوف</span>':'<span class="badge blue">فعال</span>'}</div>${x.kind!=="clinicStatus"?`<div class="msg">${esc(x.text)}</div>`:""}<div class="meta">🏥 ${esc(x.clinic)} · 👤 ${esc(x.createdBy)} · 🕒 ${time(x.createdAt)} · ⏱️ <span class="timer" data-exp="${x.expiresAt||0}">${x.expiresAt?remain(x.expiresAt):"يدوي"}</span></div>${x.kind==="clinicMessage"&&(x.createdById===U.id||U.role==="admin")?`<div class="actions"><button class="btn light" onclick="editMsg('${x.id}')">تعديل / إيقاف</button></div>`:""}</div>`).join("")}
-function remain(e){if(!e)return"حتى الإيقاف";let d=e-T();if(d<=0)return"منتهية";return`${Math.floor(d/60000)}د ${String(Math.floor(d/1000)%60).padStart(2,"0")}ث`}
-function inbox(){let ms=Object.entries(D.messages||{}).map(([id,x])=>({id,...x})).filter(x=>x.kind==="clinicMessage"&&x.target==="clinic"&&(U.role!=="clinic"||x.clinic===clinic)),ts=allTickets(U.role==="clinic"?clinic:null).filter(x=>x.target==="clinic"||U.role!=="clinic");$('content').innerHTML=`<div class="head"><div><h2>الوارد</h2><p>${U.role==="clinic"?`رسائل وتيكتات العيادة ${esc(clinic)}`:"الوارد حسب العيادة"}</p></div></div><div class="grid g2"><div class="card"><h3>الرسائل</h3>${messageList(ms)}</div><div class="card"><h3>التيكتات</h3>${ticketList(ts)}</div></div>`}
-function ticketList(a){if(!a.length)return`<div class="empty">لا توجد تيكتات</div>`;return`<div>${a.sort((a,b)=>b.createdAt-a.createdAt).map(x=>`<div class="item"><div class="itemhead"><b>🎫 ${esc(x.fileNo||"بدون ملف")} ${x.priority==="high"?'<span class="badge red">عاجل</span>':''}</b><span class="badge ${x.status==="closed"?"gray":"blue"}">${x.status==="closed"?"مغلق":"مفتوح"}</span></div><div class="msg">${esc(x.text)}</div><div class="meta">🏥 ${esc(x.clinic)} · 📞 ${esc(x.phone||"-")} · 👤 ${esc(x.createdBy)} · 🕒 ${time(x.createdAt)}</div>${x.status!=="closed"&&U.role!=="customer"?`<button class="btn success" style="margin-top:7px" onclick="closeTicket('${x.id}')">إغلاق</button>`:""}</div>`).join("")}</div>`}
-function tickets(){ $('content').innerHTML=`<div class="head"><div><h2>التيكتات</h2><p>أرسل التيكت لعيادة محددة فقط</p></div><button class="btn primary" onclick="newTicket()">🎫 تيكت جديد</button></div><div class="card">${ticketList(allTickets())}</div>`}
-function newTicket(){modal(`<div class="mhead"><h3>تيكت جديد</h3><button class="close" onclick="closeModal()">✕</button></div><div class="formgrid"><div class="field"><label>العيادة</label><select id="tc">${opts()}</select></div><div class="field"><label>رقم الهاتف</label><input id="tp"></div><div class="field"><label>رقم الملف</label><input id="tf"></div><div class="field"><label>الأولوية</label><select id="txp"><option value="normal">عادي</option><option value="high">عاجل</option></select></div><div class="field full"><label>التفاصيل</label><textarea id="tt"></textarea></div></div><button class="btn primary" onclick="createTicket()">إرسال</button>`)}
-async function createTicket(){let c=$("tc").value,t=$("tt").value.trim();if(!t)return toast("اكتب التفاصيل");let id=push(ref(db,"tickets")).key,x={id,clinic:c,target:"clinic",phone:$("tp").value.trim(),fileNo:$("tf").value.trim(),priority:$("txp").value,text:t,status:"open",createdAt:T(),createdBy:U.name,createdById:U.id};await set(ref(db,"tickets/"+id),x);await notify("clinic",c,"تيكت جديد من الكول سنتر",t);audit("إنشاء تيكت",{clinic:c,ticketId:id});closeModal();toast("تم إرسال التيكت للعيادة المحددة");render()}
-async function closeTicket(id){let x=D.tickets[id];await update(ref(db,"tickets/"+id),{status:"closed",closedAt:T(),closedBy:U.name});if(x)await notify(x.targetRole||"callcenter",x.clinic,"تحديث تيكت","تم إغلاق التيكت");audit("إغلاق تيكت",{clinic:x?.clinic,ticketId:id});toast("تم الإغلاق");render()}
-window.sendClinicMessage=sendClinicMessage;window.newTicket=newTicket;window.createTicket=createTicket;window.closeTicket=closeTicket;
-function clinics(){let h=`<div class="head"><div><h2>جميع العيادات</h2><p>حالة الطبيب والرسائل والتيكتات لكل عيادة</p></div></div><div class="grid g2">`;for(let c of CLINICS){let m=activeMsgs(c,"clinicMessage").length,t=allTickets(c).filter(x=>x.status!=="closed").length;h+=`<div class="card"><div class="itemhead"><h3>${esc(c)}</h3>${badge(D.clinics[key(c)]?.status||"غير محدد")}</div>${cstatus(c)}<div class="grid g2" style="margin-top:9px">${stat("تيكتات",t,"🎫")}${stat("رسائل",m,"💬")}</div><button class="btn soft" style="margin-top:9px" onclick="clinicDetails('${encodeURIComponent(c)}')">التفاصيل</button></div>`}h+=`</div>`;$('content').innerHTML=h}
-function clinicDetails(c){c=decodeURIComponent(c);modal(`<div class="mhead"><h3>${esc(c)}</h3><button class="close" onclick="closeModal()">✕</button></div>${cstatus(c)}<div class="divider"></div><h3>الرسائل</h3>${messageList(activeMsgs(c))}<div class="divider"></div><h3>التيكتات</h3>${ticketList(allTickets(c))}`)}
-function sent(){let m=Object.entries(D.messages||{}).map(([id,x])=>({id,...x})).filter(x=>x.createdById===U.id),t=Object.values(D.tickets||{}).filter(x=>x.createdById===U.id);$('content').innerHTML=`<div class="head"><div><h2>المرسل</h2><p>اسم الموظف ووقت الإرسال محفوظان تلقائياً</p></div></div><div class="grid g2"><div class="card"><h3>الرسائل</h3>${messageList(m)}</div><div class="card"><h3>التيكتات</h3>${ticketList(t)}</div></div>`}
-function dashboard(){$('content').innerHTML=`<div class="head"><div><h2>الداشبورد</h2><p>ملخص شامل حسب العيادة والموظف</p></div></div><div class="grid g4">${stat("كل التيكتات",Object.keys(D.tickets).length,"🎫")}${stat("كل الرسائل",Object.keys(D.messages).length,"💬")}${stat("العيادات",CLINICS.length,"🏥")}${stat("المستخدمون",Object.keys(D.users).length+1,"👥")}</div><div class="card" style="margin-top:14px"><div class="tablewrap"><table class="table"><thead><tr><th>العيادة</th><th>الطبيب</th><th>الحالة</th><th>التيكتات</th><th>رسائل العيادة</th><th>آخر تحديث</th></tr></thead><tbody>${CLINICS.map(c=>`<tr><td>${esc(c)}</td><td>${esc(D.clinics[key(c)]?.doctorName||"-")}</td><td>${badge(D.clinics[key(c)]?.status||"-")}</td><td>${allTickets(c).length}</td><td>${activeMsgs(c,"clinicMessage").length}</td><td>${time(D.clinics[key(c)]?.updatedAt)}</td></tr>`).join("")}</tbody></table></div></div>`}
-function reports(){$('content').innerHTML=`<div class="head"><div><h2>التقارير</h2><p>تنزيل CSV شامل للاستخدام في Excel</p></div><button class="btn success" onclick="downloadCSV()">⬇️ تنزيل التقرير</button></div><div class="card"><div class="formgrid"><div class="field"><label>العيادة</label><select id="rf"><option value="">كل العيادات</option>${opts()}</select></div><div class="field"><label>النوع</label><select id="rt"><option value="all">الكل</option><option value="ticket">تيكتات</option><option value="message">رسائل</option><option value="audit">عمليات</option></select></div></div></div>`}
-function downloadCSV(){let c=$("rf").value,t=$("rt").value,r=[["النوع","العيادة","التفاصيل","الموظف","التاريخ والوقت"]],add=(a,type)=>a.filter(x=>!c||x.clinic===c).forEach(x=>r.push([type,x.clinic||"",x.text||x.action||`${x.doctorName||""} ${x.status||""}`,x.createdBy||x.user||"",time(x.createdAt||x.at)]));if(t==="all"||t==="ticket")add(Object.values(D.tickets),"تيكت");if(t==="all"||t==="message")add(Object.values(D.messages),"رسالة");if(t==="all"||t==="audit")add(Object.values(D.audit),"عملية");let b=new Blob(["\ufeff"+r.map(z=>z.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(",")).join("\n")],{type:"text/csv;charset=utf-8"}),a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=`clinic-report-${new Date().toISOString().slice(0,10)}.csv`;a.click();audit("تنزيل تقرير",{clinic:c||"الكل"})}
-function users(){let a=Object.entries(D.users);$('content').innerHTML=`<div class="head"><div><h2>إدارة الحسابات</h2><p>حسابات موظفي العيادات والكول سنتر وعلاقات العملاء</p></div><button class="btn primary" onclick="userModal()">➕ حساب</button></div><div class="card"><div class="tablewrap"><table class="table"><thead><tr><th>الاسم</th><th>المستخدم</th><th>الدور</th><th>العيادات</th><th>الحالة</th><th>الوقت</th><th></th></tr></thead><tbody>${a.map(([id,x])=>`<tr><td>${esc(x.name)}</td><td>${esc(x.username)}</td><td>${role(x.role)}</td><td>${esc((x.clinics||[]).join("، ")||"-")}</td><td>${x.active===false?'<span class="badge red">موقوف</span>':'<span class="badge green">فعال</span>'}</td><td>${time(x.createdAt)}</td><td><button class="btn light" onclick="userModal('${id}')">تعديل</button></td></tr>`).join("")}</tbody></table></div></div>`}
-function userModal(id=""){let x=id?D.users[id]:{};modal(`<div class="mhead"><h3>${id?"تعديل حساب":"إنشاء حساب"}</h3><button class="close" onclick="closeModal()">✕</button></div><div class="formgrid"><div class="field"><label>الاسم</label><input id="un" value="${esc(x.name||"")}"></div><div class="field"><label>اسم المستخدم</label><input id="uu" value="${esc(x.username||"")}"></div><div class="field"><label>الدور</label><select id="ur"><option value="clinic" ${x.role==="clinic"?"selected":""}>موظف عيادة</option><option value="callcenter" ${x.role==="callcenter"?"selected":""}>مركز التواصل</option><option value="customer" ${x.role==="customer"?"selected":""}>علاقات العملاء</option><option value="admin" ${x.role==="admin"?"selected":""}>مدير النظام</option></select></div><div class="field"><label>كلمة المرور</label><input id="up" type="password" placeholder="${id?"اتركها فارغة إذا لا تريد تغييرها":"مطلوبة"}"></div><div class="field full"><label>العيادات</label><div class="grid g2">${CLINICS.map(c=>`<label class="check"><input type="checkbox" name="uc" value="${esc(c)}" ${(x.clinics||[]).includes(c)?"checked":""}>${esc(c)}</label>`).join("")}</div></div><div class="field full"><label class="check"><input id="ua" type="checkbox" ${x.active!==false?"checked":""}> الحساب فعال</label></div></div><button class="btn primary" onclick="saveUser('${id}')">حفظ</button>`)}
-async function saveUser(id){let n=$("un").value.trim(),u=$("uu").value.trim().toLowerCase(),r=$("ur").value,p=$("up").value,a=$("ua").checked,cs=[...document.querySelectorAll('input[name="uc"]:checked')].map(x=>x.value);if(!n||!u||(!id&&!p))return toast("أكمل البيانات");let dup=Object.entries(D.users).some(([k,x])=>k!==id&&x.username===u);if(dup)return toast("اسم المستخدم مستخدم");if(!id)id=push(ref(db,"users")).key;let x={name:n,username:u,role:r,active:a,clinics:r==="clinic"?cs:[],updatedAt:T()};if(p)x.password=p;if(!D.users[id])x.createdAt=T();await update(ref(db,"users/"+id),x);audit("حفظ حساب",{target:id});closeModal();toast("تم الحفظ");render()}
-function auditList(n){return Object.values(D.audit).sort((a,b)=>b.at-a.at).slice(0,n).map(x=>`<div class="item"><b>${esc(x.action)}</b><div class="meta">👤 ${esc(x.user)} · 🕒 ${time(x.at)} ${x.clinic?`· 🏥 ${esc(x.clinic)}`:""}</div></div>`).join("")||`<div class="empty">لا يوجد نشاط</div>`}function auditLegacy(){let a=Object.values(D.audit).sort((x,y)=>y.at-x.at);$('content').innerHTML=`<div class="head"><div><h2>سجل العمليات</h2><p>من أضاف أو عدل ومتى</p></div></div><div class="card"><div class="tablewrap"><table class="table"><thead><tr><th>العملية</th><th>الموظف</th><th>الدور</th><th>العيادة</th><th>الوقت</th></tr></thead><tbody>${a.map(x=>`<tr><td>${esc(x.action)}</td><td>${esc(x.user)}</td><td>${role(x.role)}</td><td>${esc(x.clinic||"-")}</td><td>${time(x.at)}</td></tr>`).join("")}</tbody></table></div></div>`}
-function modal(x){$("modalbox").innerHTML=x;$("modal").classList.remove("hidden")}function closeModal(){$("modal").classList.add("hidden");$("modalbox").innerHTML=""}function clinicDetailsLegacy(x){x=decodeURIComponent(x);modal(`<div class="mhead"><h3>${esc(x)}</h3><button class="close" onclick="closeModal()">✕</button></div>${cstatus(x)}<div class="divider"></div>${messageList(activeMsgs(x))}<div class="divider"></div>${ticketList(allTickets(x))}`)}
-function notifications(){let a=Object.entries(D.notifications||{}).map(([id,x])=>({id,...x})).filter(x=>x.targetRole===U.role&&(!x.targetClinic||U.role!=="clinic"||x.targetClinic===clinic)).sort((a,b)=>b.at-a.at);let body=a.length?a.map(x=>`<div class="item"><b>${esc(x.title)}</b><div class="msg">${esc(x.message)}</div><div class="meta">${time(x.at)}</div></div>`).join(""):"<div class=\"empty\">لا توجد إشعارات</div>";modal(`<div class="mhead"><h3>الإشعارات</h3><button class="close" onclick="closeModal()">✕</button></div>${body}`);a.filter(x=>!x.read).forEach(x=>update(ref(db,"notifications/"+x.id),{read:true}))}
-function unread(){return Object.values(D.notifications).filter(x=>x.targetRole===U?.role&&(!x.targetClinic||U.role!=="clinic"||x.targetClinic===clinic)&&!x.read).length}function notif(){if(U)$('unread').textContent=unread()?`(${unread()})`:""}
-async function editMsg(id){let x=D.messages[id];modal(`<div class="mhead"><h3>تعديل الرسالة</h3><button class="close" onclick="closeModal()">✕</button></div><div class="field"><label>النص</label><textarea id="et">${esc(x.text||"")}</textarea></div><div class="formgrid"><div class="field"><label>المدة</label><select id="ed">${dur(x.duration||"60")}</select></div><div class="field"><label>الحالة</label><select id="ee"><option value="1" ${x.enabled!==false?"selected":""}>فعالة</option><option value="0" ${x.enabled===false?"selected":""}>موقوفة</option></select></div></div><button class="btn primary" onclick="saveMsg('${id}')">حفظ</button>`)}async function saveMsg(id){let du=$("ed").value,en=$("ee").value==="1",x={text:$("et").value.trim(),duration:du,enabled:en,expiresAt:du==="0"?0:T()+Number(du)*60000,updatedAt:T(),updatedBy:U.name};await update(ref(db,"messages/"+id),x);audit("تعديل رسالة",{messageId:id,clinic:D.messages[id]?.clinic});closeModal();toast("تم التعديل");render()}
-function startTimers(){document.querySelectorAll("[data-exp]").forEach(e=>{if(e.dataset.t){clearInterval(Number(e.dataset.t))}let i=setInterval(()=>{let x=Number(e.dataset.exp);e.textContent=x?remain(x):"يدوي";if(x&&x<=T())e.classList.add("expired")},1000);e.dataset.t=i})}
-window.closeModal=closeModal;window.clinicDetails=clinicDetails;window.notifications=notifications;window.editMsg=editMsg;window.saveMsg=saveMsg;window.userModal=userModal;window.saveUser=saveUser;window.downloadCSV=downloadCSV;
-setInterval(()=>{if(U){notif();startTimers()}},1500);setInterval(()=>{Object.entries(D.messages).forEach(([id,x])=>{if(x.enabled!==false&&x.expiresAt&&x.expiresAt>0&&x.expiresAt<T())update(ref(db,"messages/"+id),{enabled:false,expiredAt:T()})})},30000);
-$("rc").innerHTML=opts(CLINICS[0]);listen();
-</script></body></html>
+    * { box-sizing: border-box; font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
+    body { background-color: var(--bg); color: var(--text); padding: 15px; min-height: 100vh; }
+
+    #authOverlay {
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(30, 41, 59, 0.95); backdrop-filter: blur(8px);
+      display: flex; justify-content: center; align-items: center; z-index: 9999;
+    }
+    .auth-card {
+      background: var(--card-bg); padding: 35px; border-radius: 18px;
+      width: 100%; max-width: 440px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); border: 1px solid var(--border);
+    }
+    .auth-title { font-size: 1.25rem; font-weight: 800; color: var(--text); margin-bottom: 20px; display: flex; align-items: center; gap: 8px; justify-content: center; }
+
+    header {
+      background: var(--card-bg); padding: 15px 25px; border-radius: 14px;
+      border: 1px solid var(--border); display: flex; justify-content: space-between;
+      align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;
+    }
+    .logo-title { font-size: 1.2rem; font-weight: 800; color: var(--text); }
+    .nav-controls { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+
+    .btn {
+      background: var(--success); color: white; border: none; padding: 10px 16px;
+      border-radius: 10px; cursor: pointer; font-weight: 700; width: 100%; font-size: 0.9rem; transition: opacity 0.2s;
+    }
+    .btn:hover { opacity: 0.9; }
+    .btn-primary { background: var(--primary); }
+    .btn-danger { background: var(--danger); }
+    .btn-purple { background: var(--accent); }
+    .btn-dark { background: #475569; border: 1px solid var(--border); color: #fff; }
+    .btn-warning { background: var(--warning); color: #000; }
+
+    .form-group { margin-bottom: 14px; text-align: left; }
+    label { font-size: 0.85rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 6px; }
+    input, select, textarea {
+      width: 100%; padding: 12px 14px; border: 1px solid var(--border);
+      border-radius: 10px; font-size: 0.95rem; outline: none; background: var(--input-bg); color: white;
+    }
+    input:focus, select:focus, textarea:focus { border-color: var(--primary); }
+    textarea { height: 80px; resize: vertical; }
+
+    .view-panel { display: none; }
+    .view-panel.active { display: block; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 2fr; gap: 20px; }
+    @media (max-width: 950px) { .grid-2 { grid-template-columns: 1fr; } }
+
+    .card {
+      background: var(--card-bg); padding: 22px; border-radius: 16px;
+      border: 1px solid var(--border); margin-bottom: 20px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+    }
+    .card-header { font-weight: 800; font-size: 1.1rem; color: var(--text); margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; }
+
+    .modal-overlay {
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.7); backdrop-filter: blur(5px);
+      display: none; justify-content: center; align-items: center; z-index: 10000;
+    }
+    .modal-card {
+      background: var(--card-bg); padding: 30px; border-radius: 18px;
+      width: 100%; max-width: 480px; border: 1px solid var(--border); box-shadow: 0 25px 50px rgba(0,0,0,0.6);
+    }
+
+    .clinic-board-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+    .clinic-status-card { padding: 15px; border-radius: 12px; border: 1px solid var(--border); background: var(--input-bg); position: relative; }
+    .clinic-status-card.receiving { border-top: 5px solid var(--success); }
+    .clinic-status-card.paused { border-top: 5px solid var(--warning); }
+    .clinic-status-card.stopped { border-top: 5px solid var(--danger); }
+
+    .tickets-container { display: flex; flex-direction: column; gap: 12px; max-height: 550px; overflow-y: auto; }
+    .ticket-card {
+      background: var(--input-bg); border: 1px solid var(--border);
+      border-left: 5px solid var(--primary); padding: 15px; border-radius: 12px;
+    }
+    .patient-box { background: var(--card-bg); border: 1px solid var(--border); padding: 8px 12px; border-radius: 8px; margin: 8px 0; font-size: 0.85rem; display: flex; gap: 15px; }
+
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 20px; }
+    .stat-card { background: var(--input-bg); padding: 15px; border-radius: 12px; border: 1px solid var(--border); text-align: center; }
+    .stat-number { font-size: 1.8rem; font-weight: 800; color: var(--primary); }
+    .stat-label { font-size: 0.8rem; color: var(--text-muted); font-weight: 700; margin-top: 4px; }
+
+    #notifToast {
+      position: fixed; bottom: 20px; right: 20px; background: var(--card-bg); color: white;
+      padding: 14px 20px; border-radius: 12px; font-weight: 700; display: none; z-index: 20000;
+      border: 1px solid var(--border); border-left: 5px solid var(--success);
+    }
+  </style>
+</head>
+<body>
+
+  <div id="notifToast">🔔 New Notification Received!</div>
+
+  <!-- Auth Modal -->
+  <div id="authOverlay">
+    <div class="auth-card">
+      <div class="auth-title">🔑 Employee Login</div>
+      <div class="form-group">
+        <label>Username:</label>
+        <input type="text" id="loginUsername" placeholder="Enter username (e.g. hamad)">
+      </div>
+      <div class="form-group">
+        <label>Password:</label>
+        <input type="password" id="loginPassword" placeholder="••••">
+      </div>
+      <button id="btnLogin" type="button" class="btn">Login to System</button>
+      <button id="btnOpenRegister" type="button" class="btn btn-purple" style="margin-top: 10px;">✨ Register New Account</button>
+      <button id="btnOpenAdminModal" type="button" class="btn btn-dark" style="margin-top: 10px; border-color: var(--primary);">🔒 Admin Portal Access</button>
+    </div>
+  </div>
+
+  <!-- Register Modal -->
+  <div id="registerModal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="card-header">Register New Account</div>
+      <div class="form-group">
+        <label>Account Role Type:</label>
+        <select id="regAccountType">
+          <option value="supervisor">Supervisor (Full Privileges)</option>
+          <option value="CRM">CRM Manager (Full Privileges)</option>
+          <option value="clinic">Clinic Staff</option>
+          <option value="callcenter">Call Center Staff</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Display Name:</label>
+        <input type="text" id="regDisplayName" placeholder="Full Name">
+      </div>
+      <div class="form-group">
+        <label>Username:</label>
+        <input type="text" id="regUsername" placeholder="Username">
+      </div>
+      <div class="form-group">
+        <label>Password:</label>
+        <input type="password" id="regPassword" placeholder="Password">
+      </div>
+      <button id="btnSubmitRegister" type="button" class="btn btn-success" style="margin-bottom:10px;">Create Account</button>
+      <button id="btnCloseRegister" type="button" class="btn btn-dark">Cancel</button>
+    </div>
+  </div>
+
+  <!-- Admin Modal -->
+  <div id="adminAccessModal" class="modal-overlay">
+    <div class="modal-card" style="max-width: 520px;">
+      <div class="card-header">
+        <span>Admin Access & Users</span>
+        <span style="font-size:0.8rem; color:var(--warning);">🔒 Protected Access</span>
+      </div>
+      <div id="adminPasswordStep">
+        <div class="form-group">
+          <label>Enter Admin Passcode (1234):</label>
+          <input type="password" id="adminPassInput" placeholder="PIN">
+        </div>
+        <button id="btnVerifyAdmin" type="button" class="btn btn-primary" style="margin-bottom:10px;">Access Admin Portal</button>
+        <button id="btnCloseAdminModal" type="button" class="btn btn-dark">Close Window</button>
+      </div>
+      <div id="adminManageStep" style="display:none;">
+        <div style="font-weight:700; margin-bottom:12px; color:var(--primary);">👥 Manage Accounts</div>
+        <div class="form-group">
+          <label>User Credentials:</label>
+          <input type="text" id="admEmpName" placeholder="Display Name..." style="margin-bottom:8px;">
+          <input type="text" id="admUsername" placeholder="Username..." style="margin-bottom:8px;">
+          <input type="password" id="admPassword" placeholder="Password...">
+        </div>
+        <div class="form-group">
+          <label>Role:</label>
+          <select id="admRoleType">
+            <option value="supervisor">Supervisor (Full Privileges)</option>
+            <option value="CRM">CRM Manager (Full Privileges)</option>
+            <option value="clinic">Clinic Staff</option>
+            <option value="callcenter">Call Center Staff</option>
+          </select>
+        </div>
+        <button id="btnAdminSaveUser" type="button" class="btn btn-success" style="margin-bottom:12px;">Save Account</button>
+        <button id="btnCloseAdminManage" type="button" class="btn btn-dark">Close Window</button>
+      </div>
+    </div>
+  </div>
+
+  <header>
+    <div class="logo-title">🏥 Clinic & Call Center System</div>
+    <div class="nav-controls">
+      <div class="user-badge" id="userInfoDisplay">👤 Hamad Alkhaldie (supervisor)</div>
+      <button id="btnToggleAudio" type="button" class="btn btn-warning" style="width:auto; padding:6px 12px; font-size:0.8rem; color:#000;">🔔 Enable Audio</button>
+      <button id="btnLogout" type="button" class="btn btn-danger" style="display:inline-block; width:auto; padding:6px 12px; font-size:0.8rem;">Logout</button>
+    </div>
+  </header>
+
+  <!-- ================= 1. Clinic Portal ================= -->
+  <div id="clinicView" class="view-panel">
+    <div class="grid-2">
+      <div>
+        <div class="card">
+          <div class="card-header">🏥 Clinic Selection & Live Status</div>
+          <div class="form-group">
+            <label>Select Active Clinic For Today:</label>
+            <select id="clinicActiveSelect">
+              <option value="Gastroenterology Clinic">Gastroenterology Clinic</option>
+              <option value="Urology Clinic">Urology Clinic</option>
+              <option value="Pediatrics & OB-GYN">Pediatrics & OB-GYN</option>
+              <option value="General Surgery Clinic">General Surgery Clinic</option>
+              <option value="Orthopedics Clinic">Orthopedics Clinic</option>
+              <option value="Outpatient Dept (OPD)">Outpatient Dept (OPD)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Assigned Doctor Name:</label>
+            <input type="text" id="doctorNameInput" placeholder="e.g. Dr. Waleed">
+          </div>
+          <div class="form-group">
+            <label>Operational Status:</label>
+            <select id="doctorStatusSelect">
+              <option value="Receiving Waiting Patients 🟢">🟢 Receiving Waiting Patients</option>
+              <option value="Doctor Step Out 🟡">🟡 Doctor Step Out / On Break</option>
+              <option value="Waiting List Stopped 🔴">🔴 Waiting List Stopped</option>
+              <option value="Emergency Leave ⛔">⛔ Emergency Leave</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Display Duration:</label>
+            <select id="statusDurationSelect">
+              <option value="30 mins">30 Minutes</option>
+              <option value="1 hour">1 Hour</option>
+              <option value="2 hours">2 Hours</option>
+              <option value="End of Shift">Until End of Shift</option>
+            </select>
+          </div>
+          <button id="btnSaveClinicStatus" type="button" class="btn btn-success" style="margin-bottom: 10px;">Publish Live Status</button>
+          <button id="btnStopClinicStatus" type="button" class="btn btn-danger">Stop Status</button>
+        </div>
+
+        <div class="card">
+          <div class="card-header">✉️ Send Note To Call Center</div>
+          <div class="form-group">
+            <label>Target:</label>
+            <select id="msgTargetSelect">
+              <option value="all">All Call Center Staff</option>
+              <option value="supervisor">Supervisor Only</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Patient Phone:</label>
+            <input type="text" id="clinicPhoneInput" placeholder="+965 xxxxxxxx">
+          </div>
+          <div class="form-group">
+            <label>Medical File ID:</label>
+            <input type="text" id="clinicFileNoInput" placeholder="File ID">
+          </div>
+          <div class="form-group">
+            <label>Note Details:</label>
+            <textarea id="clinicMsgInput" placeholder="Type instructions..."></textarea>
+          </div>
+          <button id="btnSendClinicMsg" type="button" class="btn btn-primary">Send Ticket</button>
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <div class="card-header">📥 Private Tickets For Selected Clinic</div>
+          <div id="clinicPrivateTicketsList" class="tickets-container"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= 2. Call Center Portal ================= -->
+  <div id="callCenterView" class="view-panel">
+    <div class="grid-2">
+      <div>
+        <div class="card">
+          <div class="card-header">🟢 Live Clinics Status Board</div>
+          <div id="callCenterClinicsBoard" class="clinic-board-grid"></div>
+        </div>
+        <div class="card">
+          <div class="card-header">➕ Create Ticket For Specific Clinic</div>
+          <div class="form-group">
+            <label>Target Clinic:</label>
+            <select id="ccTargetClinicSelect">
+              <option value="Gastroenterology Clinic">Gastroenterology Clinic</option>
+              <option value="Urology Clinic">Urology Clinic</option>
+              <option value="Pediatrics & OB-GYN">Pediatrics & OB-GYN</option>
+              <option value="General Surgery Clinic">General Surgery Clinic</option>
+              <option value="Orthopedics Clinic">Orthopedics Clinic</option>
+              <option value="Outpatient Dept (OPD)">Outpatient Dept (OPD)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Medical File ID:</label>
+            <input type="text" id="ccFileNoInput" placeholder="File ID">
+          </div>
+          <div class="form-group">
+            <label>Patient Phone:</label>
+            <input type="text" id="ccPhoneInput" placeholder="Phone Number">
+          </div>
+          <div class="form-group">
+            <label>Details:</label>
+            <textarea id="ccMsgInput" placeholder="Details..."></textarea>
+          </div>
+          <button id="btnCcSendTicket" type="button" class="btn btn-primary">Dispatch Ticket</button>
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <div class="card-header">📋 Incoming Notes From Clinics</div>
+          <div id="callCenterAllMsgsList" class="tickets-container"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= 3. Supervisor Portal (Active by default) ================= -->
+  <div id="supervisorView" class="view-panel active">
+    <div class="grid-2">
+      <div>
+        <div class="card">
+          <div class="card-header">🟢 Live Clinics Status Board (Supervisor View)</div>
+          <div id="supClinicsBoard" class="clinic-board-grid"></div>
+        </div>
+        <div class="card">
+          <div class="card-header">➕ Create Ticket / Dispatch (Supervisor)</div>
+          <div class="form-group">
+            <label>Target Clinic:</label>
+            <select id="supTargetClinicSelect">
+              <option value="Gastroenterology Clinic">Gastroenterology Clinic</option>
+              <option value="Urology Clinic">Urology Clinic</option>
+              <option value="Pediatrics & OB-GYN">Pediatrics & OB-GYN</option>
+              <option value="General Surgery Clinic">General Surgery Clinic</option>
+              <option value="Orthopedics Clinic">Orthopedics Clinic</option>
+              <option value="Outpatient Dept (OPD)">Outpatient Dept (OPD)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Medical File ID:</label>
+            <input type="text" id="supFileNoInput" placeholder="File ID">
+          </div>
+          <div class="form-group">
+            <label>Patient Phone:</label>
+            <input type="text" id="supPhoneInput" placeholder="Phone Number">
+          </div>
+          <div class="form-group">
+            <label>Details:</label>
+            <textarea id="supMsgInput" placeholder="Details..."></textarea>
+          </div>
+          <button id="btnSupSendTicket" type="button" class="btn btn-primary">Dispatch Ticket</button>
+        </div>
+      </div>
+      <div>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-number" id="supTotalTickets">6</div>
+            <div class="stat-label">Total Team Tickets</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" id="supPrivateNotes">1</div>
+            <div class="stat-label">Private Notes For Supervisor</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <span>👨‍💼 Supervisor Dashboard & History (24h)</span>
+            <button id="btnSupExport" type="button" class="btn btn-success" style="width:auto; padding:6px 14px; font-size:0.8rem;">Export Excel/CSV 📥</button>
+          </div>
+          <div id="supervisorBoardList" class="tickets-container"></div>
+        </div>
+
+        <div class="card" style="border-color: var(--danger);">
+          <div class="card-header" style="color: var(--danger);">
+            <span>📤 Outgoing Call Center Dispatched Tickets to Clinics</span>
+          </div>
+          <div id="supDispatchedTicketsList" class="tickets-container"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= 4. CRM Manager Portal ================= -->
+  <div id="crmView" class="view-panel">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-number" id="crmActiveClinicsCount">4</div>
+        <div class="stat-label">All Active Clinics</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="crmTotalTicketsCount">6</div>
+        <div class="stat-label">Total System Tickets</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <span>📊 All Clinics Live Monitoring & Reports</span>
+        <button id="btnCrmExport" type="button" class="btn btn-success" style="width:auto; padding:6px 14px; font-size:0.8rem;">Export Excel/CSV 📥</button>
+      </div>
+      <div style="overflow-x: auto; margin-bottom: 20px;">
+        <h4 style="margin-bottom:10px; color:var(--primary);">Clinics Status Overview:</h4>
+        <div id="crmClinicsGrid" class="clinic-board-grid"></div>
+      </div>
+      <div style="overflow-x: auto;">
+        <h4 style="margin-bottom:10px; color:var(--primary);">All Clinics Tickets Log:</h4>
+        <div id="crmTicketsList" class="tickets-container"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= Script Logic ================= -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { 
+      getDatabase, ref, push, onValue, update, set, remove 
+    } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDu_6tZHhiE9Rt5AwvkiEggAtcLtqHhe7A",
+      authDomain: "clinic-callcenter-system.firebaseapp.com",
+      databaseURL: "https://clinic-callcenter-system-default-rtdb.firebaseio.com",
+      projectId: "clinic-callcenter-system",
+      storageBucket: "clinic-callcenter-system.firebasestorage.app",
+      messagingSenderId: "933268960406",
+      appId: "1:933268960406:web:fc1463aa52a2d4b84cbeb7"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    let currentUser = { name: "Hamad Alkhaldie", role: "supervisor", username: "hamad" };
+    let activeClinic = "Gastroenterology Clinic";
+    let audioEnabled = false;
+
+    function showNotification(msg) {
+      const toast = document.getElementById("notifToast");
+      toast.innerText = "🔔 " + msg;
+      toast.style.display = "block";
+      if (audioEnabled) {
+        try { new Audio('https://www.myinstants.com/media/sounds/notification.mp3').play(); } catch(e){}
+      }
+      setTimeout(() => { toast.style.display = "none"; }, 5000);
+    }
+
+    function switchView(role) {
+      document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
+      const cleanRole = role ? role.toUpperCase() : "";
+
+      if (cleanRole === 'CLINIC') {
+        document.getElementById("clinicView").classList.add("active");
+      } else if (cleanRole === 'CALLCENTER') {
+        document.getElementById("callCenterView").classList.add("active");
+      } else if (cleanRole === 'SUPERVISOR') {
+        document.getElementById("supervisorView").classList.add("active");
+      } else if (cleanRole === 'CRM' || cleanRole === 'ADMIN') {
+        document.getElementById("crmView").classList.add("active");
+      } else {
+        document.getElementById("supervisorView").classList.add("active");
+      }
+    }
+
+    window.addEventListener("load", () => {
+      document.getElementById("authOverlay").style.display = "none";
+
+      document.getElementById("btnToggleAudio").onclick = () => {
+        audioEnabled = !audioEnabled;
+        document.getElementById("btnToggleAudio").innerText = audioEnabled ? "🔊 Audio Active" : "🔔 Enable Audio";
+        document.getElementById("btnToggleAudio").style.background = audioEnabled ? "#10b981" : "#f59e0b";
+      };
+
+      document.getElementById("btnLogout").onclick = () => {
+        document.getElementById("authOverlay").style.display = "flex";
+      };
+
+      document.getElementById("btnOpenRegister").onclick = () => document.getElementById("registerModal").style.display = "flex";
+      document.getElementById("btnCloseRegister").onclick = () => document.getElementById("registerModal").style.display = "none";
+
+      document.getElementById("btnOpenAdminModal").onclick = () => {
+        document.getElementById("adminAccessModal").style.display = "flex";
+        document.getElementById("adminPasswordStep").style.display = "block";
+        document.getElementById("adminManageStep").style.display = "none";
+        document.getElementById("adminPassInput").value = "";
+      };
+      document.getElementById("btnCloseAdminModal").onclick = () => document.getElementById("adminAccessModal").style.display = "none";
+      document.getElementById("btnCloseAdminManage").onclick = () => document.getElementById("adminAccessModal").style.display = "none";
+
+      document.getElementById("btnVerifyAdmin").onclick = () => {
+        const pin = document.getElementById("adminPassInput").value.trim();
+        if (pin === "1234") {
+          document.getElementById("adminPasswordStep").style.display = "none";
+          document.getElementById("adminManageStep").style.display = "block";
+        } else {
+          alert("Incorrect Admin Passcode! (Hint: 1234)");
+        }
+      };
+
+      document.getElementById("btnAdminSaveUser").onclick = () => {
+        const name = document.getElementById("admEmpName").value.trim();
+        const username = document.getElementById("admUsername").value.trim();
+        const password = document.getElementById("admPassword").value.trim();
+        const role = document.getElementById("admRoleType").value;
+
+        if (!name || !username || !password) return alert("Please fill all user credentials!");
+        set(ref(db, `users/${username}`), { name, username, password, role });
+        alert(`Account for ${name} saved successfully!`);
+        document.getElementById("admEmpName").value = "";
+        document.getElementById("admUsername").value = "";
+        document.getElementById("admPassword").value = "";
+      };
+
+      document.getElementById("btnSubmitRegister").onclick = () => {
+        const role = document.getElementById("regAccountType").value;
+        const name = document.getElementById("regDisplayName").value.trim();
+        const username = document.getElementById("regUsername").value.trim();
+        const password = document.getElementById("regPassword").value.trim();
+
+        if (!name || !username || !password) return alert("Complete all fields!");
+        set(ref(db, `users/${username}`), { name, username, password, role });
+        alert("Employee account registered successfully! You can now login.");
+        document.getElementById("registerModal").style.display = "none";
+      };
+
+      document.getElementById("btnLogin").onclick = () => {
+        const username = document.getElementById("loginUsername").value.trim();
+        const password = document.getElementById("loginPassword").value.trim();
+
+        if (!username && !password) {
+          document.getElementById("authOverlay").style.display = "none";
+          return;
+        }
+
+        if (username === "admin" && password === "1234") {
+          currentUser = { name: "System Admin", role: "CRM", username: "admin" };
+          document.getElementById("userInfoDisplay").innerText = "👤 System Admin (crm)";
+          document.getElementById("authOverlay").style.display = "none";
+          switchView('CRM');
+          return;
+        }
+
+        onValue(ref(db, `users/${username}`), (snapshot) => {
+          const user = snapshot.val();
+          if (user && user.password === password) {
+            currentUser = user;
+            document.getElementById("userInfoDisplay").innerText = `👤 ${user.name} (${user.role})`;
+            document.getElementById("authOverlay").style.display = "none";
+            switchView(user.role);
+          } else {
+            alert("Invalid username or password!");
+          }
+        }, { onlyOnce: true });
+      };
+
+      document.getElementById("clinicActiveSelect").onchange = (e) => { activeClinic = e.target.value; };
+
+      document.getElementById("btnSaveClinicStatus").onclick = () => {
+        const doctor = document.getElementById("doctorNameInput").value.trim();
+        const status = document.getElementById("doctorStatusSelect").value;
+        const duration = document.getElementById("statusDurationSelect").value;
+
+        if (!doctor) return alert("Enter doctor name");
+
+        const now = new Date().toLocaleString();
+        set(ref(db, `clinic_statuses/${activeClinic.replace(/\s+/g, '_')}`), {
+          clinic: activeClinic,
+          doctor,
+          status,
+          duration,
+          updatedBy: currentUser.name,
+          updatedAt: now
+        });
+
+        push(ref(db, 'tickets'), {
+          senderRole: 'clinic_status',
+          senderName: currentUser.name,
+          username: currentUser.username || currentUser.name,
+          clinic: activeClinic,
+          targetRole: 'all',
+          phone: `Duration: ${duration}`,
+          fileNo: `Dr. ${doctor}`,
+          message: `Operational Status Update: ${status}`,
+          status: "active",
+          createdAt: now,
+          timestamp: Date.now()
+        });
+
+        alert("Live status published successfully!");
+      };
+
+      document.getElementById("btnStopClinicStatus").onclick = () => {
+        remove(ref(db, `clinic_statuses/${activeClinic.replace(/\s+/g, '_')}`));
+        alert("Status stopped.");
+      };
+
+      document.getElementById("btnSendClinicMsg").onclick = () => {
+        const target = document.getElementById("msgTargetSelect").value;
+        const phone = document.getElementById("clinicPhoneInput").value.trim();
+        const fileNo = document.getElementById("clinicFileNoInput").value.trim();
+        const msg = document.getElementById("clinicMsgInput").value.trim();
+
+        if (!msg) return alert("Type note details");
+
+        const now = new Date().toLocaleString();
+        push(ref(db, 'tickets'), {
+          senderRole: 'clinic',
+          senderName: currentUser.name,
+          username: currentUser.username || currentUser.name,
+          clinic: activeClinic,
+          targetRole: target,
+          phone: phone || "N/A",
+          fileNo: fileNo || "N/A",
+          message: msg,
+          status: "active",
+          createdAt: now,
+          timestamp: Date.now()
+        });
+        document.getElementById("clinicMsgInput").value = "";
+        alert("Ticket sent successfully!");
+      };
+
+      document.getElementById("btnCcSendTicket").onclick = () => dispatchCallCenterTicket('ccTargetClinicSelect', 'ccFileNoInput', 'ccPhoneInput', 'ccMsgInput');
+      document.getElementById("btnSupSendTicket").onclick = () => dispatchCallCenterTicket('supTargetClinicSelect', 'supFileNoInput', 'supPhoneInput', 'supMsgInput');
+
+      function dispatchCallCenterTicket(targetId, fileId, phoneId, msgId) {
+        const targetClinic = document.getElementById(targetId).value;
+        const fileNo = document.getElementById(fileId).value.trim();
+        const phone = document.getElementById(phoneId).value.trim();
+        const msg = document.getElementById(msgId).value.trim();
+
+        if (!fileNo || !msg) return alert("Enter file ID and details");
+
+        const now = new Date().toLocaleString();
+        push(ref(db, 'tickets'), {
+          senderRole: 'callcenter',
+          senderName: currentUser.name,
+          username: currentUser.username || currentUser.name,
+          clinic: targetClinic,
+          targetRole: 'clinic',
+          phone: phone || "N/A",
+          fileNo,
+          message: msg,
+          status: "active",
+          createdAt: now,
+          timestamp: Date.now()
+        });
+        document.getElementById(fileId).value = "";
+        document.getElementById(phoneId).value = "";
+        document.getElementById(msgId).value = "";
+        alert("Ticket dispatched to clinic!");
+      }
+
+      document.getElementById("btnSupExport").onclick = () => exportCSV("supervisorBoardList", "Supervisor_Report.csv");
+      document.getElementById("btnCrmExport").onclick = () => exportCSV("crmTicketsList", "CRM_Clinics_Report.csv");
+    });
+
+    function exportCSV(containerId, filename) {
+      let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
+      csvContent += "Clinic,Info,Message,Creator/Editor Log,Date\n";
+      document.querySelectorAll(`#${containerId} .ticket-card`).forEach(card => {
+        const clinic = card.querySelector(".clinic-badge")?.innerText || "";
+        const info = card.querySelector(".patient-box")?.innerText.replace(/\n/g, " | ") || "";
+        const msg = card.querySelector("[id^='msg-text']")?.innerText || "";
+        const sender = card.querySelector(".ticket-footer span")?.innerText || "";
+        const time = card.querySelector("span[style*='color:var(--text-muted)']")?.innerText || "";
+        csvContent += `"${clinic}","${info}","${msg}","${sender}","${time}"\n`;
+      });
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", filename);
+      document.body.appendChild(link);
+      link.click();
+    }
+
+    onValue(ref(db, 'clinic_statuses'), (snapshot) => {
+      const data = snapshot.val();
+      const ccBoard = document.getElementById("callCenterClinicsBoard");
+      const supBoard = document.getElementById("supClinicsBoard");
+      const crmGrid = document.getElementById("crmClinicsGrid");
+      if (!ccBoard) return;
+      ccBoard.innerHTML = "";
+      if (supBoard) supBoard.innerHTML = "";
+      if (crmGrid) crmGrid.innerHTML = "";
+
+      let activeCount = 0;
+      if (data) {
+        Object.keys(data).forEach((key) => {
+          const c = data[key];
+          activeCount++;
+          let sClass = "receiving";
+          if (c.status.includes("Step Out")) sClass = "paused";
+          if (c.status.includes("Stopped") || c.status.includes("Leave")) sClass = "stopped";
+
+          const userRoleUpper = currentUser.role ? currentUser.role.toUpperCase() : "";
+          // مشرف النظام أو مدير الـ CRM لديه صلاحية مطلقة، بينما موظف الكول سنتر العادي لا يمكنه التعديل إلا إذا كان هو صاحب الحالة
+          const isSupervisorOrManager = (userRoleUpper === 'SUPERVISOR' || userRoleUpper === 'CRM' || userRoleUpper === 'ADMIN');
+          const canManageStatus = isSupervisorOrManager || (currentUser.name === c.updatedBy);
+
+          const cardHTML = `
+            <div class="clinic-status-card ${sClass}">
+              <div style="font-weight:800;">${c.clinic}</div>
+              <div style="font-size:0.85rem; margin:4px 0;">👨‍‍⚕️ ${c.doctor}</div>
+              <div style="font-size:0.80rem; font-weight:700;">${c.status}</div>
+              <div style="font-size:0.7rem; color:var(--text-muted); margin-top:6px;">By: ${c.updatedBy} (${c.updatedAt})</div>
+              
+              <div style="margin-top: 10px; padding-top: 8px; border-top: 1px dashed var(--border); display: flex; gap: 6px; align-items: center;">
+                ${canManageStatus ? `
+                  <button class="btn btn-warning" style="padding:4px 8px; font-size:0.75rem; width:auto; flex:1;" onclick="window.editClinicStatus('${key}', '${c.doctor}', '${c.status}')">Edit</button>
+                  <button class="btn btn-danger" style="padding:4px 8px; font-size:0.75rem; width:auto; flex:1;" onclick="window.stopClinicStatusCard('${key}', '${c.updatedBy}')">Cancel</button>
+                ` : `<span style="font-size:0.75rem; color:var(--text-muted);">🔒 Read Only</span>`}
+              </div>
+            </div>
+          `;
+          ccBoard.innerHTML += cardHTML;
+          if (supBoard) supBoard.innerHTML += cardHTML;
+          if (crmGrid) crmGrid.innerHTML += cardHTML;
+        });
+      }
+      if(document.getElementById("crmActiveClinicsCount")) document.getElementById("crmActiveClinicsCount").innerText = activeCount;
+    });
+
+    window.editClinicStatus = (key, currentDoc, currentStatus) => {
+      const newDoc = prompt("Edit Doctor Name:", currentDoc);
+      if (newDoc !== null) {
+        const now = new Date().toLocaleString();
+        update(ref(db, `clinic_statuses/${key}`), {
+          doctor: newDoc,
+          updatedBy: currentUser.name,
+          updatedAt: now
+        });
+        alert("Clinic status updated successfully!");
+      }
+    };
+
+    window.stopClinicStatusCard = (key, originalAuthor) => {
+      const reason = confirm(`Are you sure you want to cancel this clinic status created by [${originalAuthor}]?`);
+      if (reason) {
+        remove(ref(db, `clinic_statuses/${key}`));
+        const now = new Date().toLocaleString();
+        push(ref(db, 'tickets'), {
+          senderRole: 'system_notification',
+          senderName: currentUser.name,
+          username: currentUser.username || currentUser.name,
+          clinic: "System Notification",
+          targetRole: 'all',
+          phone: "Status Cancelled",
+          fileNo: "Alert",
+          message: `Notice: Clinic status by [${originalAuthor}] was cancelled by ${currentUser.name} at ${now}.`,
+          status: "active",
+          createdAt: now,
+          timestamp: Date.now()
+        });
+      }
+    };
+
+    onValue(ref(db, 'tickets'), (snapshot) => {
+      const data = snapshot.val();
+      const clinicPrivateList = document.getElementById("clinicPrivateTicketsList");
+      const ccAllList = document.getElementById("callCenterAllMsgsList");
+      const supervisorList = document.getElementById("supervisorBoardList");
+      const supDispatchedList = document.getElementById("supDispatchedTicketsList");
+      const crmList = document.getElementById("crmTicketsList");
+
+      if (!clinicPrivateList) return;
+      clinicPrivateList.innerHTML = "";
+      ccAllList.innerHTML = "";
+      supervisorList.innerHTML = "";
+      if(supDispatchedList) supDispatchedList.innerHTML = "";
+      crmList.innerHTML = "";
+
+      let totalTickets = 0;
+      let supPrivateCount = 0;
+      const twentyFourHoursAgo = Date.now() - (24 * 60 * 60 * 1000);
+
+      if (data) {
+        Object.keys(data).reverse().forEach((key) => {
+          const t = data[key];
+          totalTickets++;
+
+          if (t.timestamp && t.timestamp < twentyFourHoursAgo && t.status === 'cancelled') {
+            return;
+          }
+
+          if (t.targetRole === 'supervisor') supPrivateCount++;
+
+          const userRoleUpper = currentUser.role ? currentUser.role.toUpperCase() : "";
+          // المشرف أو مدير الـ CRM لديه صلاحية مطلقة، بينما موظف الكول سنتر العادي يمكنه التعديل والإلغاء فقط على ما كتبه هو
+          const isSupervisorOrManager = (userRoleUpper === 'SUPERVISOR' || userRoleUpper === 'CRM' || userRoleUpper === 'ADMIN');
+          const canModify = isSupervisorOrManager || (currentUser.name === t.senderName);
+
+          let auditLogTxt = `Created by: ${t.senderName} at ${t.createdAt}`;
+          if (t.editedBy) {
+            auditLogTxt += ` | Modified by: ${t.editedBy} at ${t.editedAt}`;
+          }
+
+          const cardHTML = `
+            <div class="ticket-card" id="ticket-${key}">
+              <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                <span class="clinic-badge" style="background:var(--primary-light); color:var(--primary-dark); padding:3px 8px; border-radius:4px; font-size:0.8rem; font-weight:700;">🏥 ${t.clinic}</span>
+                <span style="font-size:0.75rem; color:var(--text-muted);">⏰ ${t.createdAt}</span>
+              </div>
+              <div class="patient-box">
+                <div>Info: <strong>${t.fileNo}</strong></div>
+                <div>Extra: <strong>${t.phone}</strong></div>
+              </div>
+              <div style="font-size:0.9rem; margin-bottom:8px;" id="msg-text-${key}">💬 ${t.message}</div>
+              <div style="font-size:0.7rem; color:var(--accent); margin-bottom:6px;">📌 [Audit Log]: ${auditLogTxt}</div>
+              <div class="ticket-footer" style="display:flex; justify-content:space-between; align-items:center; font-size:0.75rem; color:var(--text-muted);">
+                <span>👤 ${t.senderName}</span>
+                ${canModify ? `
+                  <div style="display:flex; gap:5px;">
+                    <button class="btn btn-warning" style="padding:4px 10px; font-size:0.75rem; width:auto; color:#000;" onclick="window.editTicket('${key}', '${t.message}')">Edit</button>
+                    <button class="btn btn-danger" style="padding:4px 10px; font-size:0.75rem; width:auto;" onclick="window.deleteTicket('${key}', '${t.senderName}')">Cancel / Delete</button>
+                  </div>
+                ` : `<span style="font-size:0.7rem; color:var(--text-muted);">🔒 Read Only</span>`}
+              </div>
+            </div>
+          `;
+
+          if (t.clinic === activeClinic && t.senderRole === 'callcenter' && t.status === 'active') {
+            showNotification(`New ticket for ${activeClinic}!`);
+          }
+
+          if (t.clinic === activeClinic) clinicPrivateList.innerHTML += cardHTML;
+          ccAllList.innerHTML += cardHTML;
+
+          if (userRoleUpper === 'SUPERVISOR' || isSupervisorOrManager) {
+            supervisorList.innerHTML += cardHTML;
+          } else if (t.targetRole === 'supervisor' || t.senderRole === 'callcenter') {
+            supervisorList.innerHTML += cardHTML;
+          }
+
+          if (t.senderRole === 'callcenter' && supDispatchedList) {
+            supDispatchedList.innerHTML += cardHTML;
+          }
+
+          crmList.innerHTML += cardHTML;
+        });
+      }
+
+      if(document.getElementById("supTotalTickets")) document.getElementById("supTotalTickets").innerText = totalTickets;
+      if(document.getElementById("supPrivateNotes")) document.getElementById("supPrivateNotes").innerText = supPrivateCount;
+      if(document.getElementById("crmTotalTicketsCount")) document.getElementById("crmTotalTicketsCount").innerText = totalTickets;
+    });
+
+    window.editTicket = (id, oldMsg) => {
+      const newMsg = prompt("Edit note details:", oldMsg);
+      if (newMsg !== null && newMsg.trim() !== "") {
+        const now = new Date().toLocaleString();
+        update(ref(db, `tickets/${id}`), { 
+          message: newMsg,
+          editedBy: currentUser.name,
+          editedAt: now
+        });
+      }
+    };
+
+    window.deleteTicket = (id, author) => {
+      const reason = confirm(`Are you sure you want to cancel/delete this note created by [${author}]?`);
+      if (reason) {
+        const now = new Date().toLocaleString();
+        update(ref(db, `tickets/${id}`), { status: "cancelled", timestamp: Date.now() });
+        push(ref(db, 'tickets'), {
+          senderRole: 'system_notification',
+          senderName: currentUser.name,
+          username: currentUser.username || currentUser.name,
+          clinic: "System Notification",
+          targetRole: 'all',
+          phone: "Cancelled Ticket",
+          fileNo: "Alert",
+          message: `Notice: Note by [${author}] was cancelled/deleted by ${currentUser.name} at ${now}.`,
+          status: "active",
+          createdAt: now,
+          timestamp: Date.now()
+        });
+      }
+    };
+  </script>
+</body>
+</html>

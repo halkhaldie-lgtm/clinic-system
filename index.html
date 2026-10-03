@@ -22,7 +22,7 @@
     * { box-sizing: border-box; font-family: 'Tajawal', sans-serif; margin: 0; padding: 0; }
     body { background-color: var(--bg); color: var(--text); padding: 15px; }
 
-    /* Modal / Auth Overlay */
+    /* Auth Modal Overlay */
     #authOverlay {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
@@ -38,11 +38,10 @@
       padding: 30px;
       border-radius: 16px;
       width: 100%;
-      max-width: 480px;
+      max-width: 420px;
       box-shadow: 0 20px 25px -5px rgba(0,0,0,0.3);
     }
 
-    /* Auth Navigation Tabs */
     .auth-tabs { display: flex; gap: 8px; margin-bottom: 20px; border-bottom: 2px solid var(--border); padding-bottom: 10px; }
     .auth-tab-btn {
       flex: 1;
@@ -55,17 +54,6 @@
       cursor: pointer;
     }
     .auth-tab-btn.active { background: var(--primary); color: white; }
-
-    /* Admin Quick Box */
-    .admin-box {
-      background: #eff6ff;
-      border: 1px solid #bfdbfe;
-      padding: 12px;
-      border-radius: 10px;
-      margin-bottom: 20px;
-      text-align: right;
-    }
-    .admin-box-title { font-size: 0.85rem; font-weight: bold; color: var(--primary-dark); margin-bottom: 8px; }
 
     /* Header */
     header {
@@ -81,7 +69,7 @@
     .logo-title { font-size: 1.2rem; font-weight: bold; color: var(--primary-dark); }
     .user-badge { font-size: 0.85rem; background: #e0f2fe; color: #0369a1; padding: 6px 14px; border-radius: 20px; font-weight: bold; }
 
-    /* Role Selector Tabs */
+    /* Role Tabs */
     .role-tabs { display: flex; gap: 10px; margin-bottom: 20px; }
     .tab-btn {
       flex: 1;
@@ -142,7 +130,7 @@
     .btn-danger { background: var(--danger); }
     .btn-success { background: var(--success); }
 
-    /* Clinic Status Selector Grid */
+    /* Clinic Status Grid */
     .status-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 15px; }
     .status-opt {
       padding: 10px;
@@ -202,57 +190,49 @@
 </head>
 <body>
 
-  <!-- 🔒 بوابة الدخول وإنشاء الحساب -->
+  <!-- 🔒 بوابة الدخول الحصرية -->
   <div id="authOverlay">
     <div class="auth-card">
       
-      <!-- 👔 1. قسم دخول المسؤولين المنفصل -->
-      <div class="admin-box">
-        <div class="admin-box-title">👑 دخول المسؤولين والقياديين</div>
-        <div style="display: flex; gap: 10px;">
-          <button class="btn btn-danger" style="font-size: 0.8rem; padding: 8px;" onclick="selectAdminRole('supervisor_cc')">مركز التواصل (المشرف)</button>
-          <button class="btn btn-danger" style="font-size: 0.8rem; padding: 8px;" onclick="selectAdminRole('supervisor_crm')">مسؤول علاقات العملاء</button>
-        </div>
-      </div>
-
-      <!-- 🔄 تبويبات التنقل بين الدخول وإنشاء الحساب -->
+      <!-- 🔄 تبويبات التنقل -->
       <div class="auth-tabs">
-        <button id="tabLogin" class="auth-tab-btn active" onclick="toggleAuthMode('login')">تسجيل الدخول</button>
-        <button id="tabRegister" class="auth-tab-btn" onclick="toggleAuthMode('register')">إنشاء حساب جديد</button>
+        <button id="tabLogin" class="auth-tab-btn active" type="button">تسجيل الدخول</button>
+        <button id="tabRegister" class="auth-tab-btn" type="button">إنشاء حساب جديد</button>
       </div>
 
       <!-- 🔑 نموذج تسجيل الدخول -->
-      <form id="loginForm" onsubmit="handleAuthLogin(event)">
+      <div id="loginFormSection">
         <div class="form-group">
-          <label>اسم الموظف / العيادة:</label>
-          <input type="text" id="loginUsername" required placeholder="أدخل اسم المستخدم">
+          <label>اسم المستخدم:</label>
+          <input type="text" id="loginUsername" placeholder="أدخل اسم المستخدم (مثال: admin)">
         </div>
         <div class="form-group">
           <label>كلمة المرور:</label>
-          <input type="password" id="loginPassword" required placeholder="••••••••">
+          <input type="password" id="loginPassword" placeholder="••••••••">
         </div>
-        <button type="submit" class="btn">دخول للنظام 🚀</button>
-      </form>
+        <button id="btnLogin" type="button" class="btn">دخول للنظام 🚀</button>
+      </div>
 
       <!-- 📝 نموذج إنشاء حساب جديد -->
-      <form id="registerForm" style="display: none;" onsubmit="handleAuthRegister(event)">
+      <div id="registerFormSection" style="display: none;">
         <div class="form-group">
-          <label>نوع الحساب المطلوب:</label>
-          <select id="regAccountType" required>
+          <label>نوع الحساب / الدور:</label>
+          <select id="regAccountType">
             <option value="callcenter">مركز التواصل (الكول سنتر)</option>
             <option value="clinic">عيادات (استقبال/طبيب)</option>
+            <option value="supervisor">مشرف / علاقات عملاء</option>
           </select>
         </div>
         <div class="form-group">
-          <label>اسم المستخدم / الموظف:</label>
-          <input type="text" id="regUsername" required placeholder="مثال: ولاء / طارق / أحمد">
+          <label>اسم الموظف / العيادة:</label>
+          <input type="text" id="regUsername" placeholder="مثال: ولاء / طارق / أحمد">
         </div>
         <div class="form-group">
           <label>كلمة المرور:</label>
-          <input type="password" id="regPassword" required placeholder="أنشئ كلمة مرور">
+          <input type="password" id="regPassword" placeholder="أنشئ كلمة مرور">
         </div>
-        <button type="submit" class="btn btn-success">إنشاء الحساب وتأكيده ✨</button>
-      </form>
+        <button id="btnRegister" type="button" class="btn btn-success">إنشاء الحساب وتأكيده ✨</button>
+      </div>
 
     </div>
   </div>
@@ -268,16 +248,16 @@
 
   <!-- Role Tabs -->
   <div class="role-tabs">
-    <button id="tabClinic" class="tab-btn active" onclick="switchRole('clinicView', this)">🏥 شاشة العيادات</button>
-    <button id="tabCallCenter" class="tab-btn" onclick="switchRole('callCenterView', this)">🎧 الكول سنتر</button>
-    <button id="tabSupervisor" class="tab-btn" onclick="switchRole('supervisorView', this)">👨‍💼 المشرف والخدمات</button>
+    <button id="tabClinic" class="tab-btn active" type="button">🏥 شاشة العيادات</button>
+    <button id="tabCallCenter" class="tab-btn" type="button">🎧 الكول سنتر</button>
+    <button id="tabSupervisor" class="tab-btn" type="button">👨‍💼 المشرف والخدمات</button>
+    <button id="tabAdmin" class="tab-btn" type="button" style="display:none; background:#7c3aed; color:white;">⚙️ لوحة الأدمن (إدارة الحسابات)</button>
   </div>
 
   <!-- ========================================== -->
   <!-- 1️⃣ Clinic View (شاشة العيادات) -->
   <!-- ========================================== -->
   <div id="clinicView" class="view-panel active">
-    
     <div>
       <div class="card">
         <div class="card-header">🔴 حالة العيادة اللحظية</div>
@@ -294,9 +274,9 @@
 
         <label>تحديث الحالة المباشرة للعيادة:</label>
         <div class="status-grid">
-          <div id="st-receiving" class="status-opt active-receiving" onclick="updateClinicStatus('متاحة واستقبال')">🟢 يستقبل حالات</div>
-          <div id="st-paused" class="status-opt" onclick="updateClinicStatus('إيقاف مؤقت للانتظار')">🟡 إيقاف الانتظار</div>
-          <div id="st-stopped" class="status-opt" onclick="updateClinicStatus('مغلقة / استأذن')">🔴 استأذن - غير متاح</div>
+          <div id="st-receiving" class="status-opt active-receiving">🟢 يستقبل حالات</div>
+          <div id="st-paused" class="status-opt">🟡 إيقاف الانتظار</div>
+          <div id="st-stopped" class="status-opt">🔴 استأذن - غير متاح</div>
         </div>
       </div>
 
@@ -317,7 +297,7 @@
         <div class="form-group">
           <label><input type="checkbox" id="urgentCheck"> 🚨 حالة عاجلة جداً</label>
         </div>
-        <button type="button" class="btn" onclick="submitTicket()">إرسال التيكت فوراً 🚀</button>
+        <button id="btnSubmitTicket" type="button" class="btn">إرسال التيكت فوراً 🚀</button>
       </div>
     </div>
 
@@ -329,7 +309,6 @@
         </div>
       </div>
     </div>
-
   </div>
 
   <!-- ========================================== -->
@@ -361,7 +340,7 @@
         <div class="form-group">
           <textarea id="broadcastInput" placeholder="اكتب التوجيه أو التعميم ليظهر أعلى أجهزة الموظفين..."></textarea>
         </div>
-        <button type="button" class="btn btn-danger" onclick="sendBroadcast()">نشر التعميم فوراً 📣</button>
+        <button id="btnSendBroadcast" type="button" class="btn btn-danger">نشر التعميم فوراً 📣</button>
       </div>
 
       <div class="card">
@@ -379,7 +358,20 @@
   </div>
 
   <!-- ========================================== -->
-  <!-- 🔗 FIREBASE ENGINE & APPLICATION LOGIC -->
+  <!-- ⚙️ Admin View (لوحة الأدمن لإدارة الحسابات) -->
+  <!-- ========================================== -->
+  <div id="adminView" class="view-panel">
+    <div style="grid-column: 1 / -1;">
+      <div class="card">
+        <div class="card-header">⚙️ إدارة الحسابات والمسؤولين والموظفين</div>
+        <p style="margin-bottom:15px; color:var(--text-light);">أنت في حساب مدير النظام الرئيسي (Admin). من هنا يمكنك مشاهدة وإدارة كافة المستخدمين المسجلين بـ Firebase.</p>
+        <div id="usersListContainer" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap:15px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 🔗 FIREBASE ENGINE & SCRIPT LOGIC -->
   <!-- ========================================== -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
@@ -403,70 +395,93 @@
 
     let currentUser = { name: "", role: "" };
 
-    // Toggle Auth Forms (Login / Register)
-    window.toggleAuthMode = function(mode) {
-      if (mode === 'login') {
-        document.getElementById("loginForm").style.display = "block";
-        document.getElementById("registerForm").style.display = "none";
+    // DOM Ready Elements Event Listeners
+    document.addEventListener("DOMContentLoaded", () => {
+      
+      // Auth Tabs Toggle
+      document.getElementById("tabLogin").addEventListener("click", () => {
+        document.getElementById("loginFormSection").style.display = "block";
+        document.getElementById("registerFormSection").style.display = "none";
         document.getElementById("tabLogin").classList.add("active");
         document.getElementById("tabRegister").classList.remove("active");
-      } else {
-        document.getElementById("loginForm").style.display = "none";
-        document.getElementById("registerForm").style.display = "block";
+      });
+
+      document.getElementById("tabRegister").addEventListener("click", () => {
+        document.getElementById("loginFormSection").style.display = "none";
+        document.getElementById("registerFormSection").style.display = "block";
         document.getElementById("tabLogin").classList.remove("active");
         document.getElementById("tabRegister").classList.add("active");
-      }
-    };
+      });
 
-    // Quick Admin Login
-    window.selectAdminRole = function(type) {
-      const roleName = type === 'supervisor_cc' ? 'مشرف مركز التواصل' : 'مسؤول علاقات العملاء';
-      currentUser = { name: roleName, role: 'supervisor' };
-      loginSuccess('supervisorView', document.getElementById('tabSupervisor'));
-    };
+      // Login Button Click
+      document.getElementById("btnLogin").addEventListener("click", () => {
+        const u = document.getElementById("loginUsername").value.trim();
+        const p = document.getElementById("loginPassword").value.trim();
 
-    // Login Handler
-    window.handleAuthLogin = function(e) {
-      e.preventDefault();
-      const user = document.getElementById("loginUsername").value.trim();
-      currentUser = { name: user, role: 'all' };
-      loginSuccess('clinicView', document.getElementById('tabClinic'));
-    };
+        if (!u) return alert("يرجى كتابة اسم المستخدم");
 
-    // Register Handler
-    window.handleAuthRegister = function(e) {
-      e.preventDefault();
-      const user = document.getElementById("regUsername").value.trim();
-      const type = document.getElementById("regAccountType").value;
-      
-      currentUser = { name: user, role: type };
-      
-      // Save User to Firebase
-      push(ref(db, 'users'), { name: user, role: type, createdAt: new Date().toISOString() });
-      
-      const targetTab = type === 'clinic' ? 'clinicView' : 'callCenterView';
-      const targetBtn = type === 'clinic' ? document.getElementById('tabClinic') : document.getElementById('tabCallCenter');
-      
-      loginSuccess(targetTab, targetBtn);
-    };
+        // Admin Account Special Check
+        if (u.toLowerCase() === "admin" && p === "admin123") {
+          currentUser = { name: "مدير النظام (Admin)", role: "admin" };
+          document.getElementById("tabAdmin").style.display = "block";
+          loginSuccess('adminView', document.getElementById('tabAdmin'));
+          return;
+        }
 
-    function loginSuccess(targetView, targetBtn) {
+        currentUser = { name: u, role: "user" };
+        loginSuccess('clinicView', document.getElementById('tabClinic'));
+      });
+
+      // Register Button Click
+      document.getElementById("btnRegister").addEventListener("click", () => {
+        const u = document.getElementById("regUsername").value.trim();
+        const p = document.getElementById("regPassword").value.trim();
+        const t = document.getElementById("regAccountType").value;
+
+        if (!u || !p) return alert("يرجى ملء جميع الحقول المطلوبة");
+
+        push(ref(db, 'users'), { name: u, password: p, role: t, createdAt: new Date().toISOString() });
+
+        currentUser = { name: u, role: t };
+        const viewTarget = t === 'clinic' ? 'clinicView' : (t === 'callcenter' ? 'callCenterView' : 'supervisorView');
+        const btnTarget = t === 'clinic' ? document.getElementById('tabClinic') : (t === 'callcenter' ? document.getElementById('tabCallCenter') : document.getElementById('tabSupervisor'));
+        
+        loginSuccess(viewTarget, btnTarget);
+      });
+
+      // Status Update Actions
+      document.getElementById("st-receiving").addEventListener("click", () => updateClinicStatus('متاحة واستقبال'));
+      document.getElementById("st-paused").addEventListener("click", () => updateClinicStatus('إيقاف مؤقت للانتظار'));
+      document.getElementById("st-stopped").addEventListener("click", () => updateClinicStatus('مغلقة / استأذن'));
+
+      // Submit Ticket Click
+      document.getElementById("btnSubmitTicket").addEventListener("click", submitTicket);
+
+      // Broadcast Click
+      document.getElementById("btnSendBroadcast").addEventListener("click", sendBroadcast);
+
+      // View Role Tabs
+      document.getElementById("tabClinic").addEventListener("click", (e) => switchRole('clinicView', e.target));
+      document.getElementById("tabCallCenter").addEventListener("click", (e) => switchRole('callCenterView', e.target));
+      document.getElementById("tabSupervisor").addEventListener("click", (e) => switchRole('supervisorView', e.target));
+      document.getElementById("tabAdmin").addEventListener("click", (e) => switchRole('adminView', e.target));
+    });
+
+    function loginSuccess(viewId, btnElement) {
       document.getElementById("userInfoDisplay").innerText = `👤 ${currentUser.name}`;
       document.getElementById("authOverlay").style.display = "none";
-      switchRole(targetView, targetBtn);
+      switchRole(viewId, btnElement);
     }
 
-    // Role Switcher
-    window.switchRole = function(roleId, btnElement) {
+    function switchRole(roleId, btnElement) {
       document.querySelectorAll('.view-panel').forEach(panel => panel.classList.remove('active'));
       document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
       
       document.getElementById(roleId).classList.add('active');
       if (btnElement) btnElement.classList.add('active');
-    };
+    }
 
-    // Submit Ticket
-    window.submitTicket = function() {
+    function submitTicket() {
       const clinic = document.getElementById("clinicSelect").value;
       const fileNo = document.getElementById("fileNoInput").value.trim();
       const phone = document.getElementById("phoneInput").value.trim();
@@ -493,10 +508,9 @@
       document.getElementById("phoneInput").value = "";
       document.getElementById("msgInput").value = "";
       document.getElementById("urgentCheck").checked = false;
-    };
+    }
 
-    // Update Clinic Status
-    window.updateClinicStatus = function(statusText) {
+    function updateClinicStatus(statusText) {
       const clinic = document.getElementById("clinicSelect").value;
       
       document.getElementById("st-receiving").className = "status-opt " + (statusText.includes("متاحة") ? "active-receiving" : "");
@@ -509,9 +523,8 @@
         updatedBy: currentUser.name || "العيادة",
         updatedAt: new Date().toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' })
       });
-    };
+    }
 
-    // Complete Ticket Action
     window.completeTicket = function(ticketId) {
       update(ref(db, `tickets/${ticketId}`), {
         status: "completed",
@@ -520,7 +533,20 @@
       });
     };
 
-    // Real-time Tickets Listener
+    function sendBroadcast() {
+      const txt = document.getElementById("broadcastInput").value.trim();
+      if (!txt) return alert("ادخل نص التعميم أولاً.");
+      
+      set(ref(db, 'broadcast'), {
+        message: txt,
+        sender: currentUser.name || "المشرف",
+        time: new Date().toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' })
+      });
+
+      document.getElementById("broadcastInput").value = "";
+    }
+
+    // Real-time Firebase Listeners
     onValue(ref(db, 'tickets'), (snapshot) => {
       const data = snapshot.val();
       const generalContainer = document.getElementById("generalTicketsList");
@@ -579,7 +605,6 @@
       }
     });
 
-    // Real-time Clinics Listener
     onValue(ref(db, 'clinics'), (snapshot) => {
       const data = snapshot.val();
       const board = document.getElementById("liveClinicsBoard");
@@ -605,19 +630,23 @@
       }
     });
 
-    // Broadcast System
-    window.sendBroadcast = function() {
-      const txt = document.getElementById("broadcastInput").value.trim();
-      if (!txt) return alert("ادخل نص التعميم أولاً.");
-      
-      set(ref(db, 'broadcast'), {
-        message: txt,
-        sender: currentUser.name || "المشرف",
-        time: new Date().toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' })
-      });
-
-      document.getElementById("broadcastInput").value = "";
-    };
+    onValue(ref(db, 'users'), (snapshot) => {
+      const data = snapshot.val();
+      const container = document.getElementById("usersListContainer");
+      if (!container) return;
+      container.innerHTML = "";
+      if (data) {
+        Object.keys(data).forEach((k) => {
+          const u = data[k];
+          container.innerHTML += `
+            <div style="background:#f8fafc; border:1px solid var(--border); padding:12px; border-radius:8px;">
+              <div style="font-weight:bold; color:var(--primary-dark);">${u.name}</div>
+              <div style="font-size:0.8rem; color:var(--text-light);">الدور: ${u.role}</div>
+            </div>
+          `;
+        });
+      }
+    });
 
     onValue(ref(db, 'broadcast'), (snapshot) => {
       const b = snapshot.val();

@@ -1,90 +1,165 @@
-// 1. استدعاء مكتبات Firebase Realtime Database
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { 
-  getDatabase, ref, push, onValue, update 
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>نظام إدارة العيادات والتذاكر</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      background-color: #f4f6f9;
+      color: #333;
+      padding: 20px;
+    }
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    }
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 20px;
+    }
+    .status-banner {
+      background-color: #e8f5e9;
+      color: #2e7d32;
+      padding: 12px;
+      border-radius: 8px;
+      text-align: center;
+      font-weight: bold;
+      margin-bottom: 20px;
+      border: 1px solid #a5d6a7;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color: #555;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      width: 100%;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 25px;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 12px;
+      text-align: center;
+    }
+    th {
+      background-color: #f8f9fa;
+      color: #333;
+    }
+    .badge {
+      padding: 5px 10px;
+      border-radius: 4px;
+      color: #fff;
+      font-size: 12px;
+    }
+    .badge-waiting { background-color: #ffc107; color: #000; }
+    .badge-done { background-color: #28a745; }
+  </style>
+</head>
+<body>
 
-// 2. إعدادات مشروعك
-const firebaseConfig = {
-  apiKey: "AIzaSyDu_6tZHhiE9Rt5AwvkiEggAtcLtqHhe7A",
-  authDomain: "clinic-callcenter-system.firebaseapp.com",
-  databaseURL: "https://clinic-callcenter-system-default-rtdb.firebaseio.com",
-  projectId: "clinic-callcenter-system",
-  storageBucket: "clinic-callcenter-system.firebasestorage.app",
-  messagingSenderId: "933268960406",
-  appId: "1:933268960406:web:fc1463aa52a2d4b84cbeb7",
-  measurementId: "G-ZXTXWCGS0T"
-};
+  <div class="container">
+    <h1>🏥 نظام طلبات واستدعاء العيادات المباشر</h1>
+    <div class="status-banner">🟢 النظام متصل وجاهز للاستخدام من جميع الموظفين</div>
 
-// 3. تشغيل Firebase والـ Database
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
+    <div class="form-group">
+      <label for="patientName">اسم المريض:</label>
+      <input type="text" id="patientName" placeholder="أدخل اسم المريض">
+    </div>
 
-// ==========================================
-// 📥 1. الاستماع اللحظي للتذاكر الجديدة
-// ==========================================
-const ticketsRef = ref(db, 'tickets');
+    <div class="form-group">
+      <label for="clinicType">اختر العيادة:</label>
+      <select id="clinicType">
+        <option value="عيادة النساء والأطفال">عيادة النساء والأطفال</option>
+        <option value="عيادة الجراحة والجهاز الهضمي">عيادة الجراحة والجهاز الهضمي</option>
+        <option value="العيادات الخارجية (OPD)">العيادات الخارجية (OPD)</option>
+      </select>
+    </div>
 
-onValue(ticketsRef, (snapshot) => {
-  const data = snapshot.val();
-  const ticketsContainer = document.getElementById("generalTicketsList");
-  if (!ticketsContainer) return;
-  
-  ticketsContainer.innerHTML = "";
+    <button onclick="addTicket()">إضافة تذكرة جديدة</button>
 
-  if (data) {
-    Object.keys(data).forEach((key) => {
-      const ticket = data[key];
-      if (ticket.status === "completed") return; // عدم عرض التذاكر المنجزة
+    <table>
+      <thead>
+        <tr>
+          <th>رقم التذكرة</th>
+          <th>اسم المريض</th>
+          <th>العيادة</th>
+          <th>الحالة</th>
+        </tr>
+      </thead>
+      <tbody id="ticketsList">
+        <tr>
+          <td>101</td>
+          <td>مريض تجريبي</td>
+          <td>عيادة النساء والأطفال</td>
+          <td><span class="badge badge-waiting">في الانتظار</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
-      const cardHTML = `
-        <div class="ticket-card ${ticket.isUrgent ? 'urgent' : ''}" id="${key}">
-          <div class="ticket-header">
-            <span class="source-badge">🏥 ${ticket.clinicName}</span>
-            <span class="priority-badge ${ticket.isUrgent ? 'high' : 'normal'}">
-              ${ticket.isUrgent ? '🔴 عاجل' : '⚪ عادي'}
-            </span>
-          </div>
-          <div class="patient-info-box">
-            <div>📞 الهاتف: <strong>${ticket.phone}</strong></div>
-            <div>📁 الملف: <strong>${ticket.fileNo}</strong></div>
-          </div>
-          <div class="ticket-message">💬 ${ticket.message}</div>
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px;">
-            <span style="font-size:0.75rem; color:#64748b;">المرسل: ${ticket.sender}</span>
-            <button class="btn-action-sm btn-close" onclick="completeTicket('${key}')">✅ إنجاز</button>
-          </div>
-        </div>
+  <script>
+    let ticketCounter = 102;
+
+    function addTicket() {
+      const nameInput = document.getElementById('patientName');
+      const clinicInput = document.getElementById('clinicType');
+
+      if (!nameInput.value.trim()) {
+        alert('يرجى إدخال اسم المريض');
+        return;
+      }
+
+      const tbody = document.getElementById('ticketsList');
+      const newRow = document.createElement('tr');
+
+      newRow.innerHTML = `
+        <td>${ticketCounter++}</td>
+        <td>${nameInput.value}</td>
+        <td>${clinicInput.value}</td>
+        <td><span class="badge badge-waiting">في الانتظار</span></td>
       `;
-      ticketsContainer.innerHTML += cardHTML;
-    });
-  }
-});
 
-// ==========================================
-// ➕ 2. دالة إنشاء تيكت جديد
-// ==========================================
-window.createNewTicket = function(clinicName, fileNo, phone, message, isUrgent = false) {
-  push(ref(db, 'tickets'), {
-    clinicName: clinicName,
-    fileNo: fileNo,
-    phone: phone,
-    message: message,
-    isUrgent: isUrgent,
-    status: "active",
-    sender: "استقبال العيادة",
-    createdAt: new Date().toISOString()
-  });
-};
-
-// ==========================================
-// ✅ 3. دالة إنجاز التيكت ونقله للأرشيف/24 ساعة
-// ==========================================
-window.completeTicket = function(ticketId) {
-  const ticketRef = ref(db, `tickets/${ticketId}`);
-  update(ticketRef, {
-    status: "completed",
-    completedAt: new Date().toISOString(),
-    completedBy: "أحمد السالم (المسؤول)"
-  });
-};
+      tbody.appendChild(newRow);
+      nameInput.value = '';
+    }
+  </script>
+</body>
+</html>

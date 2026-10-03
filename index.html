@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>نظام التواصل التشغيلي والتذاكر اللحظي | المركز الطبي</title>
+  <title>نظام إدارة العيادات والتواصل المباشر</title>
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -22,26 +22,50 @@
     * { box-sizing: border-box; font-family: 'Tajawal', sans-serif; margin: 0; padding: 0; }
     body { background-color: var(--bg); color: var(--text); padding: 15px; }
 
-    /* Login Screen Overlay */
-    #loginOverlay {
+    /* Modal / Auth Overlay */
+    #authOverlay {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(15, 23, 42, 0.9);
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(4px);
       display: flex;
       justify-content: center;
       align-items: center;
       z-index: 9999;
     }
-    .login-card {
+    .auth-card {
       background: white;
-      padding: 35px;
+      padding: 30px;
       border-radius: 16px;
       width: 100%;
-      max-width: 420px;
+      max-width: 480px;
       box-shadow: 0 20px 25px -5px rgba(0,0,0,0.3);
-      text-align: center;
     }
-    .login-card h2 { color: var(--primary-dark); margin-bottom: 20px; font-size: 1.4rem; }
+
+    /* Auth Navigation Tabs */
+    .auth-tabs { display: flex; gap: 8px; margin-bottom: 20px; border-bottom: 2px solid var(--border); padding-bottom: 10px; }
+    .auth-tab-btn {
+      flex: 1;
+      padding: 10px;
+      background: #f1f5f9;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      color: var(--text-light);
+      cursor: pointer;
+    }
+    .auth-tab-btn.active { background: var(--primary); color: white; }
+
+    /* Admin Quick Box */
+    .admin-box {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      padding: 12px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      text-align: right;
+    }
+    .admin-box-title { font-size: 0.85rem; font-weight: bold; color: var(--primary-dark); margin-bottom: 8px; }
 
     /* Header */
     header {
@@ -53,10 +77,9 @@
       justify-content: space-between;
       align-items: center;
       margin-bottom: 20px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
     }
-    .logo-title { font-size: 1.2rem; font-weight: bold; color: var(--primary-dark); display: flex; align-items: center; gap: 8px; }
-    .user-info { font-size: 0.85rem; background: #f1f5f9; padding: 6px 12px; border-radius: 20px; font-weight: bold; }
+    .logo-title { font-size: 1.2rem; font-weight: bold; color: var(--primary-dark); }
+    .user-badge { font-size: 0.85rem; background: #e0f2fe; color: #0369a1; padding: 6px 14px; border-radius: 20px; font-weight: bold; }
 
     /* Role Selector Tabs */
     .role-tabs { display: flex; gap: 10px; margin-bottom: 20px; }
@@ -69,11 +92,10 @@
       cursor: pointer;
       font-weight: bold;
       color: var(--text-light);
-      transition: all 0.2s;
     }
     .tab-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
 
-    /* Layout Grids */
+    /* Panels Grid */
     .view-panel { display: none; }
     .view-panel.active { display: grid; grid-template-columns: 1fr 2fr; gap: 20px; }
 
@@ -81,7 +103,7 @@
       .view-panel.active { grid-template-columns: 1fr; }
     }
 
-    /* Cards & Containers */
+    /* Cards & Forms */
     .card {
       background: var(--card-bg);
       padding: 20px;
@@ -90,39 +112,35 @@
       box-shadow: 0 4px 6px rgba(0,0,0,0.03);
       margin-bottom: 20px;
     }
-    .card-header { font-weight: bold; font-size: 1.1rem; color: var(--primary-dark); margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
+    .card-header { font-weight: bold; font-size: 1.1rem; color: var(--primary-dark); margin-bottom: 15px; }
 
-    /* Form Controls */
-    .form-group { margin-bottom: 12px; text-align: right; }
-    label { font-size: 0.85rem; font-weight: bold; color: var(--text-light); display: block; margin-bottom: 5px; }
+    .form-group { margin-bottom: 14px; text-align: right; }
+    label { font-size: 0.85rem; font-weight: bold; color: var(--text-light); display: block; margin-bottom: 6px; }
     input, select, textarea {
       width: 100%;
-      padding: 10px;
+      padding: 10px 12px;
       border: 1px solid var(--border);
-      border-radius: 6px;
+      border-radius: 8px;
       font-size: 0.95rem;
       outline: none;
     }
     input:focus, select:focus, textarea:focus { border-color: var(--primary); }
     textarea { height: 80px; resize: vertical; }
 
-    /* Buttons */
     .btn {
       background: var(--primary);
       color: white;
       border: none;
-      padding: 10px 18px;
-      border-radius: 6px;
+      padding: 12px;
+      border-radius: 8px;
       cursor: pointer;
       font-weight: bold;
       width: 100%;
-      transition: background 0.2s;
+      font-size: 1rem;
     }
     .btn:hover { background: var(--primary-dark); }
     .btn-danger { background: var(--danger); }
-    .btn-danger:hover { background: #dc2626; }
     .btn-success { background: var(--success); }
-    .btn-success:hover { background: #059669; }
 
     /* Clinic Status Selector Grid */
     .status-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 15px; }
@@ -139,15 +157,14 @@
     .status-opt.active-paused { border-color: var(--warning); background: #fffbeb; color: #92400e; }
     .status-opt.active-stopped { border-color: var(--danger); background: #fef2f2; color: #991b1b; }
 
-    /* Tickets List & Cards */
-    .tickets-container { display: flex; flex-direction: column; gap: 12px; max-height: 600px; overflow-y: auto; padding-left: 5px; }
+    /* Tickets Cards */
+    .tickets-container { display: flex; flex-direction: column; gap: 12px; max-height: 600px; overflow-y: auto; }
     .ticket-card {
       background: var(--card-bg);
       border: 1px solid var(--border);
       border-right: 5px solid var(--primary);
       padding: 15px;
       border-radius: 8px;
-      position: relative;
     }
     .ticket-card.urgent { border-right-color: var(--danger); background: #fff5f5; }
     .ticket-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
@@ -159,7 +176,6 @@
     .patient-box { background: #f8fafc; border: 1px solid #f1f5f9; padding: 8px; border-radius: 6px; margin: 8px 0; font-size: 0.85rem; display: flex; gap: 15px; }
     .ticket-msg { font-size: 0.95rem; margin-bottom: 10px; color: var(--text); }
     .ticket-footer { display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; color: var(--text-light); }
-    
     .btn-action-sm { padding: 6px 12px; border-radius: 4px; border: none; font-size: 0.8rem; font-weight: bold; cursor: pointer; color: white; }
 
     /* Live Clinic Board */
@@ -169,9 +185,7 @@
     .clinic-status-card.paused { border-top: 4px solid var(--warning); }
     .clinic-status-card.stopped { border-top: 4px solid var(--danger); }
 
-    /* History & Log Items */
     .history-item { padding: 10px; border-bottom: 1px solid var(--border); font-size: 0.85rem; display: flex; justify-content: space-between; }
-    .history-item:last-child { border-bottom: none; }
     
     #broadcastBanner {
       display: none;
@@ -188,35 +202,65 @@
 </head>
 <body>
 
-  <!-- 🔒 1. بوابة تسجيل الدخول -->
-  <div id="loginOverlay">
-    <div class="login-card">
-      <h2>🔐 تسجيل الدخول للنظام</h2>
-      <div class="form-group">
-        <label>اختر الدور / القسم:</label>
-        <select id="loginRole">
-          <option value="clinic">استقبال العيادات</option>
-          <option value="callcenter">موظف الكول سنتر</option>
-          <option value="supervisor">المشرف / علاقات العملاء</option>
-        </select>
+  <!-- 🔒 بوابة الدخول وإنشاء الحساب -->
+  <div id="authOverlay">
+    <div class="auth-card">
+      
+      <!-- 👔 1. قسم دخول المسؤولين المنفصل -->
+      <div class="admin-box">
+        <div class="admin-box-title">👑 دخول المسؤولين والقياديين</div>
+        <div style="display: flex; gap: 10px;">
+          <button class="btn btn-danger" style="font-size: 0.8rem; padding: 8px;" onclick="selectAdminRole('supervisor_cc')">مركز التواصل (المشرف)</button>
+          <button class="btn btn-danger" style="font-size: 0.8rem; padding: 8px;" onclick="selectAdminRole('supervisor_crm')">مسؤول علاقات العملاء</button>
+        </div>
       </div>
-      <div class="form-group">
-        <label>اسم الموظف / العيادة:</label>
-        <input type="text" id="loginName" placeholder="مثال: ولاء / طارق / أحمد">
+
+      <!-- 🔄 تبويبات التنقل بين الدخول وإنشاء الحساب -->
+      <div class="auth-tabs">
+        <button id="tabLogin" class="auth-tab-btn active" onclick="toggleAuthMode('login')">تسجيل الدخول</button>
+        <button id="tabRegister" class="auth-tab-btn" onclick="toggleAuthMode('register')">إنشاء حساب جديد</button>
       </div>
-      <div class="form-group">
-        <label>كلمة المرور:</label>
-        <input type="password" id="loginPassword" placeholder="••••••••">
-      </div>
-      <button class="btn" onclick="handleLogin()">دخول للنظام 🚀</button>
-      <p id="loginError" style="color:var(--danger); font-size:0.8rem; margin-top:10px; display:none;">بيانات الدخول غير صحيحة</p>
+
+      <!-- 🔑 نموذج تسجيل الدخول -->
+      <form id="loginForm" onsubmit="handleAuthLogin(event)">
+        <div class="form-group">
+          <label>اسم الموظف / العيادة:</label>
+          <input type="text" id="loginUsername" required placeholder="أدخل اسم المستخدم">
+        </div>
+        <div class="form-group">
+          <label>كلمة المرور:</label>
+          <input type="password" id="loginPassword" required placeholder="••••••••">
+        </div>
+        <button type="submit" class="btn">دخول للنظام 🚀</button>
+      </form>
+
+      <!-- 📝 نموذج إنشاء حساب جديد -->
+      <form id="registerForm" style="display: none;" onsubmit="handleAuthRegister(event)">
+        <div class="form-group">
+          <label>نوع الحساب المطلوب:</label>
+          <select id="regAccountType" required>
+            <option value="callcenter">مركز التواصل (الكول سنتر)</option>
+            <option value="clinic">عيادات (استقبال/طبيب)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>اسم المستخدم / الموظف:</label>
+          <input type="text" id="regUsername" required placeholder="مثال: ولاء / طارق / أحمد">
+        </div>
+        <div class="form-group">
+          <label>كلمة المرور:</label>
+          <input type="password" id="regPassword" required placeholder="أنشئ كلمة مرور">
+        </div>
+        <button type="submit" class="btn btn-success">إنشاء الحساب وتأكيده ✨</button>
+      </form>
+
     </div>
   </div>
 
   <!-- Header -->
   <header>
-    <div class="logo-title">🏥 نظام إدارة العيادات والكول سنتر المباشر</div>
-    <div class="user-info" id="userInfoDisplay">👤 غير مسجل</div>
+    <div class="logo-title">🏥 نظام إدارة العيادات والتواصل المباشر</div>
+    <div class="user-badge" id="userInfoDisplay">👤 غير مسجل</div>
   </header>
 
   <!-- Broadcast Notification Banner -->
@@ -239,7 +283,7 @@
         <div class="card-header">🔴 حالة العيادة اللحظية</div>
         <div class="form-group">
           <label>اختر العيادة النشطة:</label>
-          <select id="clinicSelect" onchange="loadClinicStatus()">
+          <select id="clinicSelect">
             <option value="عيادة النساء والأطفال (ولاء)">عيادة النساء والأطفال (ولاء)</option>
             <option value="عيادة الجراحة والجهاز الهضمي (طارق)">عيادة الجراحة والجهاز الهضمي (طارق)</option>
             <option value="عيادة العظام">عيادة العظام</option>
@@ -273,7 +317,7 @@
         <div class="form-group">
           <label><input type="checkbox" id="urgentCheck"> 🚨 حالة عاجلة جداً</label>
         </div>
-        <button class="btn" onclick="submitTicket()">إرسال التيكت فوراً 🚀</button>
+        <button type="button" class="btn" onclick="submitTicket()">إرسال التيكت فوراً 🚀</button>
       </div>
     </div>
 
@@ -292,58 +336,46 @@
   <!-- 2️⃣ Call Center View (شاشة الكول سنتر) -->
   <!-- ========================================== -->
   <div id="callCenterView" class="view-panel">
-    
     <div>
       <div class="card">
         <div class="card-header">🟢 متابعة حالة العيادات الحالية</div>
-        <div id="liveClinicsBoard" class="clinic-board-grid">
-          <!-- Live clinic cards rendered here -->
-        </div>
+        <div id="liveClinicsBoard" class="clinic-board-grid"></div>
       </div>
     </div>
 
     <div>
       <div class="card">
         <div class="card-header">📥 التذاكر والطلبات القادمة من العيادات</div>
-        <div id="generalTicketsList" class="tickets-container">
-          <p style="color: var(--text-light);">جاري التوصيل والمتابعة المباشرة...</p>
-        </div>
+        <div id="generalTicketsList" class="tickets-container"></div>
       </div>
     </div>
-
   </div>
 
   <!-- ========================================== -->
-  <!-- 3️⃣ Supervisor & Archive View (المشرف والأرشيف) -->
+  <!-- 3️⃣ Supervisor View (المشرف والأرشيف) -->
   <!-- ========================================== -->
   <div id="supervisorView" class="view-panel">
-    
     <div>
       <div class="card">
         <div class="card-header">📢 إرسال تعميم عاجل لجميع الشاشات</div>
         <div class="form-group">
           <textarea id="broadcastInput" placeholder="اكتب التوجيه أو التعميم ليظهر أعلى أجهزة الموظفين..."></textarea>
         </div>
-        <button class="btn btn-danger" onclick="sendBroadcast()">نشر التعميم فوراً 📣</button>
+        <button type="button" class="btn btn-danger" onclick="sendBroadcast()">نشر التعميم فوراً 📣</button>
       </div>
 
       <div class="card">
-        <div class="card-header">📜 سجل أحداث الـ 24 ساعة (24h History)</div>
-        <div id="historyLog" style="max-height: 350px; overflow-y: auto;">
-          <!-- 24h history items -->
-        </div>
+        <div class="card-header">📜 سجل أحداث الـ 24 ساعة</div>
+        <div id="historyLog" style="max-height: 350px; overflow-y: auto;"></div>
       </div>
     </div>
 
     <div>
       <div class="card">
         <div class="card-header">📂 الأرشيف والتذاكر المنجزة</div>
-        <div id="archivedTicketsList" class="tickets-container">
-          <!-- Archived completed tickets -->
-        </div>
+        <div id="archivedTicketsList" class="tickets-container"></div>
       </div>
     </div>
-
   </div>
 
   <!-- ========================================== -->
@@ -355,7 +387,6 @@
       getDatabase, ref, push, onValue, update, set 
     } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-    // Firebase Configuration
     const firebaseConfig = {
       apiKey: "AIzaSyDu_6tZHhiE9Rt5AwvkiEggAtcLtqHhe7A",
       authDomain: "clinic-callcenter-system.firebaseapp.com",
@@ -372,34 +403,60 @@
 
     let currentUser = { name: "", role: "" };
 
-    // 1. Handle Login
-    window.handleLogin = function() {
-      const role = document.getElementById("loginRole").value;
-      const name = document.getElementById("loginName").value.trim();
-      const pass = document.getElementById("loginPassword").value;
-
-      if (!name) {
-        alert("يرجى كتابة اسم الموظف");
-        return;
+    // Toggle Auth Forms (Login / Register)
+    window.toggleAuthMode = function(mode) {
+      if (mode === 'login') {
+        document.getElementById("loginForm").style.display = "block";
+        document.getElementById("registerForm").style.display = "none";
+        document.getElementById("tabLogin").classList.add("active");
+        document.getElementById("tabRegister").classList.remove("active");
+      } else {
+        document.getElementById("loginForm").style.display = "none";
+        document.getElementById("registerForm").style.display = "block";
+        document.getElementById("tabLogin").classList.remove("active");
+        document.getElementById("tabRegister").classList.add("active");
       }
-
-      currentUser = { name: name, role: role };
-      document.getElementById("userInfoDisplay").innerText = `👤 ${name} (${getRoleTitle(role)})`;
-      document.getElementById("loginOverlay").style.display = "none";
-
-      // Configure Tab permissions
-      if (role === "clinic") switchRole('clinicView', document.getElementById('tabClinic'));
-      else if (role === "callcenter") switchRole('callCenterView', document.getElementById('tabCallCenter'));
-      else if (role === "supervisor") switchRole('supervisorView', document.getElementById('tabSupervisor'));
     };
 
-    function getRoleTitle(role) {
-      if (role === "clinic") return "استقبال عيادة";
-      if (role === "callcenter") return "كول سنتر";
-      return "مشرف / علاقات عملاء";
+    // Quick Admin Login
+    window.selectAdminRole = function(type) {
+      const roleName = type === 'supervisor_cc' ? 'مشرف مركز التواصل' : 'مسؤول علاقات العملاء';
+      currentUser = { name: roleName, role: 'supervisor' };
+      loginSuccess('supervisorView', document.getElementById('tabSupervisor'));
+    };
+
+    // Login Handler
+    window.handleAuthLogin = function(e) {
+      e.preventDefault();
+      const user = document.getElementById("loginUsername").value.trim();
+      currentUser = { name: user, role: 'all' };
+      loginSuccess('clinicView', document.getElementById('tabClinic'));
+    };
+
+    // Register Handler
+    window.handleAuthRegister = function(e) {
+      e.preventDefault();
+      const user = document.getElementById("regUsername").value.trim();
+      const type = document.getElementById("regAccountType").value;
+      
+      currentUser = { name: user, role: type };
+      
+      // Save User to Firebase
+      push(ref(db, 'users'), { name: user, role: type, createdAt: new Date().toISOString() });
+      
+      const targetTab = type === 'clinic' ? 'clinicView' : 'callCenterView';
+      const targetBtn = type === 'clinic' ? document.getElementById('tabClinic') : document.getElementById('tabCallCenter');
+      
+      loginSuccess(targetTab, targetBtn);
+    };
+
+    function loginSuccess(targetView, targetBtn) {
+      document.getElementById("userInfoDisplay").innerText = `👤 ${currentUser.name}`;
+      document.getElementById("authOverlay").style.display = "none";
+      switchRole(targetView, targetBtn);
     }
 
-    // 2. Tab Switcher
+    // Role Switcher
     window.switchRole = function(roleId, btnElement) {
       document.querySelectorAll('.view-panel').forEach(panel => panel.classList.remove('active'));
       document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
@@ -408,7 +465,7 @@
       if (btnElement) btnElement.classList.add('active');
     };
 
-    // 3. Submit Ticket
+    // Submit Ticket
     window.submitTicket = function() {
       const clinic = document.getElementById("clinicSelect").value;
       const fileNo = document.getElementById("fileNoInput").value.trim();
@@ -417,7 +474,7 @@
       const isUrgent = document.getElementById("urgentCheck").checked;
 
       if (!fileNo || !msg) {
-        alert("يرجى إدخال رقم الملف ونص الملاحظة.");
+        alert("يرجى إدخال رقم الملف ونَص الطلب.");
         return;
       }
 
@@ -427,7 +484,7 @@
         phone: phone || "غير محدد",
         message: msg,
         isUrgent: isUrgent,
-        sender: currentUser.name || "استقبال العيادة",
+        sender: currentUser.name || "العيادة",
         status: "active",
         createdAt: new Date().toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' })
       });
@@ -438,7 +495,7 @@
       document.getElementById("urgentCheck").checked = false;
     };
 
-    // 4. Update Clinic Status
+    // Update Clinic Status
     window.updateClinicStatus = function(statusText) {
       const clinic = document.getElementById("clinicSelect").value;
       
@@ -454,7 +511,7 @@
       });
     };
 
-    // 5. Complete Ticket Action
+    // Complete Ticket Action
     window.completeTicket = function(ticketId) {
       update(ref(db, `tickets/${ticketId}`), {
         status: "completed",
@@ -463,7 +520,7 @@
       });
     };
 
-    // 6. Real-time Listening for Tickets
+    // Real-time Tickets Listener
     onValue(ref(db, 'tickets'), (snapshot) => {
       const data = snapshot.val();
       const generalContainer = document.getElementById("generalTicketsList");
@@ -519,13 +576,10 @@
             </div>
           `;
         });
-      } else {
-        generalContainer.innerHTML = '<p style="color: var(--text-light);">لا توجد تذاكر نشطة حالياً.</p>';
-        clinicContainer.innerHTML = '<p style="color: var(--text-light);">لا توجد تذاكر نشطة حالياً.</p>';
       }
     });
 
-    // 7. Real-time Listening for Clinics Board
+    // Real-time Clinics Listener
     onValue(ref(db, 'clinics'), (snapshot) => {
       const data = snapshot.val();
       const board = document.getElementById("liveClinicsBoard");
@@ -551,7 +605,7 @@
       }
     });
 
-    // 8. Broadcast System
+    // Broadcast System
     window.sendBroadcast = function() {
       const txt = document.getElementById("broadcastInput").value.trim();
       if (!txt) return alert("ادخل نص التعميم أولاً.");

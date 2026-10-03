@@ -22,3037 +22,876 @@
       --border: #475569;
     }
 
-    * {
-      box-sizing: border-box;
-      font-family: 'Inter', sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      background-color: var(--bg);
-      color: var(--text);
-      padding: 15px;
-      min-height: 100vh;
-    }
+    * { box-sizing: border-box; font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
+    body { background-color: var(--bg); color: var(--text); padding: 15px; min-height: 100vh; }
 
     #authOverlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(30, 41, 59, 0.95);
-      backdrop-filter: blur(8px);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 9999;
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(30, 41, 59, 0.95); backdrop-filter: blur(8px);
+      display: flex; justify-content: center; align-items: center; z-index: 9999;
     }
-
     .auth-card {
-      background: var(--card-bg);
-      padding: 35px;
-      border-radius: 18px;
-      width: 100%;
-      max-width: 440px;
-      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
-      border: 1px solid var(--border);
+      background: var(--card-bg); padding: 35px; border-radius: 18px;
+      width: 100%; max-width: 440px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); border: 1px solid var(--border);
     }
-
-    .auth-title {
-      font-size: 1.25rem;
-      font-weight: 800;
-      color: var(--text);
-      margin-bottom: 20px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      justify-content: center;
-    }
+    .auth-title { font-size: 1.25rem; font-weight: 800; color: var(--text); margin-bottom: 20px; display: flex; align-items: center; gap: 8px; justify-content: center; }
 
     header {
-      background: var(--card-bg);
-      padding: 15px 25px;
-      border-radius: 14px;
-      margin-bottom: 15px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border: 1px solid var(--border);
-      gap: 15px;
-      flex-wrap: wrap;
+      background: var(--card-bg); padding: 15px 25px; border-radius: 14px;
+      border: 1px solid var(--border); display: flex; justify-content: space-between;
+      align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;
     }
+    .logo-title { font-size: 1.2rem; font-weight: 800; color: var(--text); }
+    .nav-controls { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
 
-    .brand {
-      font-size: 1.2rem;
-      font-weight: 800;
-      display: flex;
-      align-items: center;
-      gap: 10px;
+    .btn {
+      background: var(--success); color: white; border: none; padding: 10px 16px;
+      border-radius: 10px; cursor: pointer; font-weight: 700; width: 100%; font-size: 0.9rem; transition: opacity 0.2s;
     }
+    .btn:hover { opacity: 0.9; }
+    .btn-primary { background: var(--primary); }
+    .btn-danger { background: var(--danger); }
+    .btn-purple { background: var(--accent); }
+    .btn-dark { background: #475569; border: 1px solid var(--border); color: #fff; }
+    .btn-warning { background: var(--warning); color: #000; }
 
-    .user-badge {
-      background: var(--input-bg);
-      border: 1px solid var(--border);
-      padding: 8px 14px;
-      border-radius: 10px;
-      font-size: 0.85rem;
+    .form-group { margin-bottom: 14px; text-align: left; }
+    label { font-size: 0.85rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 6px; }
+    input, select, textarea {
+      width: 100%; padding: 12px 14px; border: 1px solid var(--border);
+      border-radius: 10px; font-size: 0.95rem; outline: none; background: var(--input-bg); color: white;
     }
+    input:focus, select:focus, textarea:focus { border-color: var(--primary); }
+    textarea { height: 80px; resize: vertical; }
 
-    .header-actions {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      flex-wrap: wrap;
+    .view-panel { display: none; }
+    .view-panel.active { display: block; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 2fr; gap: 20px; }
+    @media (max-width: 950px) { .grid-2 { grid-template-columns: 1fr; } }
+
+    .card {
+      background: var(--card-bg); padding: 22px; border-radius: 16px;
+      border: 1px solid var(--border); margin-bottom: 20px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
     }
+    .card-header { font-weight: 800; font-size: 1.1rem; color: var(--text); margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; }
 
-    button {
-      border: none;
-      cursor: pointer;
-      border-radius: 9px;
-      padding: 10px 15px;
-      font-weight: 700;
-      transition: 0.2s;
+    .modal-overlay {
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.7); backdrop-filter: blur(5px);
+      display: none; justify-content: center; align-items: center; z-index: 10000;
     }
-
-    button:hover {
-      transform: translateY(-1px);
-      opacity: 0.92;
-    }
-
-    .btn-primary {
-      background: var(--primary);
-      color: white;
-    }
-
-    .btn-success {
-      background: var(--success);
-      color: white;
-    }
-
-    .btn-warning {
-      background: var(--warning);
-      color: white;
-    }
-
-    .btn-danger {
-      background: var(--danger);
-      color: white;
-    }
-
-    .btn-secondary {
-      background: var(--input-bg);
-      color: white;
-      border: 1px solid var(--border);
-    }
-
-    input,
-    select,
-    textarea {
-      width: 100%;
-      padding: 11px 13px;
-      background: var(--input-bg);
-      color: var(--text);
-      border: 1px solid var(--border);
-      border-radius: 9px;
-      outline: none;
-    }
-
-    input:focus,
-    select:focus,
-    textarea:focus {
-      border-color: var(--primary);
-    }
-
-    textarea {
-      min-height: 100px;
-      resize: vertical;
-    }
-
-    label {
-      display: block;
-      font-size: 0.85rem;
-      margin-bottom: 6px;
-      color: var(--text-muted);
-      font-weight: 600;
-    }
-
-    .form-group {
-      margin-bottom: 15px;
-    }
-
-    .view-panel {
-      display: none;
-    }
-
-    .view-panel.active {
-      display: block;
-    }
-
-    .dashboard-grid {
-      display: grid;
-      grid-template-columns: 280px 1fr;
-      gap: 15px;
-    }
-
-    .sidebar {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 15px;
-      height: fit-content;
-    }
-
-    .main-content {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 18px;
-      min-height: 600px;
-    }
-
-    .section-title {
-      font-size: 1.1rem;
-      font-weight: 800;
-      margin-bottom: 15px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .clinic-card {
-      background: var(--input-bg);
-      border: 1px solid var(--border);
-      padding: 13px;
-      border-radius: 11px;
-      margin-bottom: 10px;
-    }
-
-    .clinic-card-title {
-      font-weight: 800;
-      margin-bottom: 6px;
-    }
-
-    .status {
-      display: inline-block;
-      padding: 5px 8px;
-      border-radius: 7px;
-      font-size: 0.75rem;
-      font-weight: 700;
-    }
-
-    .status-success {
-      background: rgba(16,185,129,.18);
-      color: #6ee7b7;
-    }
-
-    .status-warning {
-      background: rgba(245,158,11,.18);
-      color: #fcd34d;
-    }
-
-    .status-danger {
-      background: rgba(239,68,68,.18);
-      color: #fca5a5;
-    }
-
-    .status-info {
-      background: rgba(2,132,199,.18);
-      color: #7dd3fc;
-    }
-
-    .ticket-card {
-      background: var(--input-bg);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 15px;
-      margin-bottom: 12px;
-    }
-
-    .ticket-header {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      align-items: center;
-      margin-bottom: 10px;
-      flex-wrap: wrap;
-    }
-
-    .ticket-title {
-      font-weight: 800;
-    }
-
-    .ticket-meta {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      color: var(--text-muted);
-      font-size: 0.8rem;
-      margin-top: 8px;
-    }
-
-    .ticket-actions {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-top: 12px;
-    }
-
-    .ticket-actions button {
-      padding: 8px 11px;
-      font-size: 0.8rem;
-    }
-
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
-      margin-bottom: 15px;
-    }
-
-    .stat-card {
-      background: var(--input-bg);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 16px;
-    }
-
-    .stat-label {
-      color: var(--text-muted);
-      font-size: 0.8rem;
-      margin-bottom: 6px;
-    }
-
-    .stat-number {
-      font-size: 1.6rem;
-      font-weight: 800;
-    }
-
-    .toolbar {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 15px;
-      flex-wrap: wrap;
-    }
-
-    .toolbar > * {
-      flex: 1;
-      min-width: 160px;
-    }
-
-    .modal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,.7);
-      z-index: 10000;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
-
     .modal-card {
-      width: 100%;
-      max-width: 650px;
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 22px;
-      max-height: 90vh;
-      overflow-y: auto;
+      background: var(--card-bg); padding: 30px; border-radius: 18px;
+      width: 100%; max-width: 480px; border: 1px solid var(--border); box-shadow: 0 25px 50px rgba(0,0,0,0.6);
     }
 
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 18px;
+    .clinic-board-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+    .clinic-status-card { padding: 15px; border-radius: 12px; border: 1px solid var(--border); background: var(--input-bg); position: relative; }
+    .clinic-status-card.receiving { border-top: 5px solid var(--success); }
+    .clinic-status-card.paused { border-top: 5px solid var(--warning); }
+    .clinic-status-card.stopped { border-top: 5px solid var(--danger); }
+
+    .tickets-container { display: flex; flex-direction: column; gap: 12px; max-height: 550px; overflow-y: auto; }
+    .ticket-card {
+      background: var(--input-bg); border: 1px solid var(--border);
+      border-left: 5px solid var(--primary); padding: 15px; border-radius: 12px;
     }
+    .patient-box { background: var(--card-bg); border: 1px solid var(--border); padding: 8px 12px; border-radius: 8px; margin: 8px 0; font-size: 0.85rem; display: flex; gap: 15px; }
 
-    .modal-title {
-      font-weight: 800;
-      font-size: 1.1rem;
-    }
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 20px; }
+    .stat-card { background: var(--input-bg); padding: 15px; border-radius: 12px; border: 1px solid var(--border); text-align: center; }
+    .stat-number { font-size: 1.8rem; font-weight: 800; color: var(--primary); }
+    .stat-label { font-size: 0.8rem; color: var(--text-muted); font-weight: 700; margin-top: 4px; }
 
-    .close-btn {
-      background: transparent;
-      color: white;
-      font-size: 1.2rem;
-      padding: 4px 8px;
-    }
-
-    .empty {
-      text-align: center;
-      color: var(--text-muted);
-      padding: 35px 15px;
-    }
-
-    .toast {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: #0f172a;
-      border: 1px solid var(--border);
-      padding: 14px 18px;
-      border-radius: 10px;
-      z-index: 11000;
-      display: none;
-      box-shadow: 0 10px 30px rgba(0,0,0,.35);
-    }
-
-    .login-help {
-      text-align: center;
-      margin-top: 15px;
-      color: var(--text-muted);
-      font-size: .8rem;
-    }
-
-    .grid-2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    .grid-3 {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 12px;
-    }
-
-    .divider {
-      height: 1px;
-      background: var(--border);
-      margin: 18px 0;
-    }
-
-    .small {
-      font-size: .78rem;
-      color: var(--text-muted);
-    }
-
-    @media (max-width: 1000px) {
-      .dashboard-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .stats-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    @media (max-width: 650px) {
-      body {
-        padding: 8px;
-      }
-
-      .auth-card {
-        padding: 22px;
-      }
-
-      .grid-2,
-      .grid-3 {
-        grid-template-columns: 1fr;
-      }
-
-      .stats-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      header {
-        padding: 12px;
-      }
+    #notifToast {
+      position: fixed; bottom: 20px; right: 20px; background: var(--card-bg); color: white;
+      padding: 14px 20px; border-radius: 12px; font-weight: 700; display: none; z-index: 20000;
+      border: 1px solid var(--border); border-left: 5px solid var(--success);
     }
   </style>
 </head>
-
 <body>
 
-  <!-- LOGIN -->
+  <div id="notifToast">🔔 New Notification Received!</div>
+
+  <!-- Auth Modal -->
   <div id="authOverlay">
     <div class="auth-card">
-      <div class="auth-title">
-        🏥 Clinic & Call Center System
-      </div>
-
+      <div class="auth-title">🔑 Employee Login</div>
       <div class="form-group">
-        <label for="loginUsername">Username</label>
-        <input
-          id="loginUsername"
-          type="text"
-          autocomplete="username"
-          placeholder="Enter username"
-        >
+        <label>Username:</label>
+        <input type="text" id="loginUsername" placeholder="Enter username (e.g. hamad)">
       </div>
-
       <div class="form-group">
-        <label for="loginPassword">Password</label>
-        <input
-          id="loginPassword"
-          type="password"
-          autocomplete="current-password"
-          placeholder="Enter password"
-        >
+        <label>Password:</label>
+        <input type="password" id="loginPassword" placeholder="••••">
       </div>
+      <button id="btnLogin" type="button" class="btn">Login to System</button>
+      <button id="btnOpenRegister" type="button" class="btn btn-purple" style="margin-top: 10px;">✨ Register New Account</button>
+      <button id="btnOpenAdminModal" type="button" class="btn btn-dark" style="margin-top: 10px; border-color: var(--primary);">🔒 Admin Portal Access</button>
+    </div>
+  </div>
 
-      <button
-        id="btnLogin"
-        class="btn-primary"
-        style="width:100%;"
-      >
-        🔐 Login
-      </button>
-
-      <div class="login-help">
-        Please enter your registered username and password.
+  <!-- Register Modal -->
+  <div id="registerModal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="card-header">Register New Account</div>
+      <div class="form-group">
+        <label>Account Role Type:</label>
+        <select id="regAccountType">
+          <option value="supervisor">Supervisor (Full Privileges)</option>
+          <option value="CRM">CRM Manager (Full Privileges)</option>
+          <option value="clinic">Clinic Staff</option>
+          <option value="callcenter">Call Center Staff</option>
+        </select>
       </div>
+      <div class="form-group">
+        <label>Display Name:</label>
+        <input type="text" id="regDisplayName" placeholder="Full Name">
+      </div>
+      <div class="form-group">
+        <label>Username:</label>
+        <input type="text" id="regUsername" placeholder="Username">
+      </div>
+      <div class="form-group">
+        <label>Password:</label>
+        <input type="password" id="regPassword" placeholder="Password">
+      </div>
+      <button id="btnSubmitRegister" type="button" class="btn btn-success" style="margin-bottom:10px;">Create Account</button>
+      <button id="btnCloseRegister" type="button" class="btn btn-dark">Cancel</button>
+    </div>
+  </div>
 
-      <div style="margin-top:15px;display:flex;gap:8px;">
-        <button
-          id="btnOpenRegister"
-          class="btn-secondary"
-          style="flex:1;"
-        >
-          Create Account
-        </button>
-
-        <button
-          id="btnOpenAdminModal"
-          class="btn-secondary"
-          style="flex:1;"
-        >
-          Admin
-        </button>
+  <!-- Admin Modal -->
+  <div id="adminAccessModal" class="modal-overlay">
+    <div class="modal-card" style="max-width: 520px;">
+      <div class="card-header">
+        <span>Admin Access & Users</span>
+        <span style="font-size:0.8rem; color:var(--warning);">🔒 Protected Access</span>
+      </div>
+      <div id="adminPasswordStep">
+        <div class="form-group">
+          <label>Enter Admin Passcode (1234):</label>
+          <input type="password" id="adminPassInput" placeholder="PIN">
+        </div>
+        <button id="btnVerifyAdmin" type="button" class="btn btn-primary" style="margin-bottom:10px;">Access Admin Portal</button>
+        <button id="btnCloseAdminModal" type="button" class="btn btn-dark">Close Window</button>
+      </div>
+      <div id="adminManageStep" style="display:none;">
+        <div style="font-weight:700; margin-bottom:12px; color:var(--primary);">👥 Manage Accounts</div>
+        <div class="form-group">
+          <label>User Credentials:</label>
+          <input type="text" id="admEmpName" placeholder="Display Name..." style="margin-bottom:8px;">
+          <input type="text" id="admUsername" placeholder="Username..." style="margin-bottom:8px;">
+          <input type="password" id="admPassword" placeholder="Password...">
+        </div>
+        <div class="form-group">
+          <label>Role:</label>
+          <select id="admRoleType">
+            <option value="supervisor">Supervisor (Full Privileges)</option>
+            <option value="CRM">CRM Manager (Full Privileges)</option>
+            <option value="clinic">Clinic Staff</option>
+            <option value="callcenter">Call Center Staff</option>
+          </select>
+        </div>
+        <button id="btnAdminSaveUser" type="button" class="btn btn-success" style="margin-bottom:12px;">Save Account</button>
+        <button id="btnCloseAdminManage" type="button" class="btn btn-dark">Close Window</button>
       </div>
     </div>
   </div>
 
-  <!-- HEADER -->
   <header>
-    <div class="brand">
-      🏥 Clinic & Call Center System
-    </div>
-
-    <div class="header-actions">
-      <div
-        class="user-badge"
-        id="userInfoDisplay"
-      >
-        👤 يرجى تسجيل الدخول
-      </div>
-
-      <button
-        id="btnToggleAudio"
-        class="btn-warning"
-      >
-        🔔 Enable Audio
-      </button>
-
-      <button
-        id="btnLogout"
-        class="btn-danger"
-      >
-        Logout
-      </button>
+    <div class="logo-title">🏥 Clinic & Call Center System</div>
+    <div class="nav-controls">
+      <div class="user-badge" id="userInfoDisplay">👤 Hamad Alkhaldie (supervisor)</div>
+      <button id="btnToggleAudio" type="button" class="btn btn-warning" style="width:auto; padding:6px 12px; font-size:0.8rem; color:#000;">🔔 Enable Audio</button>
+      <button id="btnLogout" type="button" class="btn btn-danger" style="display:inline-block; width:auto; padding:6px 12px; font-size:0.8rem;">Logout</button>
     </div>
   </header>
 
-  <!-- CLINIC VIEW -->
+  <!-- ================= 1. Clinic Portal ================= -->
   <div id="clinicView" class="view-panel">
-
-    <div class="dashboard-grid">
-
-      <aside class="sidebar">
-
-        <div class="section-title">
-          Clinic
-        </div>
-
-        <div class="form-group">
-          <label>Today's Clinic</label>
-
-          <select id="clinicActiveSelect">
-            <option>Gastroenterology Clinic</option>
-            <option>Cardiology Clinic</option>
-            <option>Internal Medicine Clinic</option>
-            <option>Neurology Clinic</option>
-            <option>Orthopedic Clinic</option>
-            <option>General Surgery Clinic</option>
-            <option>Dermatology Clinic</option>
-            <option>ENT Clinic</option>
-            <option>Ophthalmology Clinic</option>
-            <option>Dental Clinic</option>
-          </select>
-        </div>
-
-        <div class="divider"></div>
-
-        <div class="section-title">
-          Doctor Status
-        </div>
-
-        <div class="form-group">
-          <label>Doctor Name</label>
-          <input
-            id="doctorNameInput"
-            type="text"
-            placeholder="Doctor name"
-          >
-        </div>
-
-        <div class="form-group">
-          <label>Status</label>
-
-          <select id="doctorStatusSelect">
-            <option value="accepting">Accepting Waiting</option>
-            <option value="stopped">Waiting Stopped</option>
-            <option value="absent">Doctor Absent</option>
-            <option value="sick">Doctor Sick</option>
-            <option value="emergency">Emergency Leave</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label>Duration</label>
-
-          <select id="statusDurationSelect">
-            <option value="15 minutes">15 minutes</option>
-            <option value="30 minutes">30 minutes</option>
-            <option value="1 hour">1 hour</option>
-            <option value="2 hours">2 hours</option>
-            <option value="manual">Manual Stop</option>
-          </select>
-        </div>
-
-        <button
-          id="btnSaveClinicStatus"
-          class="btn-primary"
-          style="width:100%;"
-        >
-          Save Status
-        </button>
-
-      </aside>
-
-      <main class="main-content">
-
-        <div class="section-title">
-          <span>Clinic Tickets & Messages</span>
-
-          <button
-            id="btnClinicNewTicket"
-            class="btn-success"
-          >
-            + New Ticket
-          </button>
-        </div>
-
-        <div class="toolbar">
-          <select id="clinicTicketFilter">
-            <option value="all">All</option>
-            <option value="ticket">Tickets</option>
-            <option value="message">Messages</option>
-          </select>
-
-          <input
-            id="clinicSearch"
-            type="text"
-            placeholder="Search phone / file / details"
-          >
-        </div>
-
-        <div id="clinicTicketsList">
-          <div class="empty">
-            No tickets or messages yet.
-          </div>
-        </div>
-
-      </main>
-    </div>
-  </div>
-
-  <!-- CALL CENTER VIEW -->
-  <div id="callCenterView" class="view-panel">
-
-    <div class="stats-grid">
-
-      <div class="stat-card">
-        <div class="stat-label">
-          Sent Tickets
-        </div>
-
-        <div
-          id="ccSentCount"
-          class="stat-number"
-        >
-          0
-        </div>
-      </div>
-
-      <div class="stat-card">
-        <div class="stat-label">
-          Received Tickets
-        </div>
-
-        <div
-          id="ccReceivedCount"
-          class="stat-number"
-        >
-          0
-        </div>
-      </div>
-
-      <div class="stat-card">
-        <div class="stat-label">
-          Messages
-        </div>
-
-        <div
-          id="ccMessagesCount"
-          class="stat-number"
-        >
-          0
-        </div>
-      </div>
-
-      <div class="stat-card">
-        <div class="stat-label">
-          Clinics
-        </div>
-
-        <div
-          id="ccClinicsCount"
-          class="stat-number"
-        >
-          0
-        </div>
-      </div>
-
-    </div>
-
-    <div class="dashboard-grid">
-
-      <aside class="sidebar">
-
-        <div class="section-title">
-          Clinic Status
-        </div>
-
-        <div id="callCenterClinicStatuses">
-          <div class="empty">
-            No clinic status data.
-          </div>
-        </div>
-
-      </aside>
-
-      <main class="main-content">
-
-        <div class="section-title">
-          <span>Call Center</span>
-
-          <button
-            id="btnCallCenterNewTicket"
-            class="btn-success"
-          >
-            + Send Ticket
-          </button>
-        </div>
-
-        <div class="toolbar">
-
-          <select id="ccClinicFilter">
-            <option value="all">All Clinics</option>
-            <option>Gastroenterology Clinic</option>
-            <option>Cardiology Clinic</option>
-            <option>Internal Medicine Clinic</option>
-            <option>Neurology Clinic</option>
-            <option>Orthopedic Clinic</option>
-            <option>General Surgery Clinic</option>
-            <option>Dermatology Clinic</option>
-            <option>ENT Clinic</option>
-            <option>Ophthalmology Clinic</option>
-            <option>Dental Clinic</option>
-          </select>
-
-          <input
-            id="ccSearch"
-            type="text"
-            placeholder="Search"
-          >
-
-          <select id="ccTypeFilter">
-            <option value="all">All Types</option>
-            <option value="ticket">Tickets</option>
-            <option value="message">Messages</option>
-          </select>
-
-        </div>
-
-        <div id="callCenterTicketsList">
-          <div class="empty">
-            No tickets or messages yet.
-          </div>
-        </div>
-
-      </main>
-    </div>
-  </div>
-
-  <!-- SUPERVISOR VIEW -->
-  <div id="supervisorView" class="view-panel">
-
-    <div class="stats-grid">
-
-      <div class="stat-card">
-        <div class="stat-label">
-          Total Tickets
-        </div>
-
-        <div
-          id="supTicketsCount"
-          class="stat-number"
-        >
-          0
-        </div>
-      </div>
-
-      <div class="stat-card">
-        <div class="stat-label">
-          Total Clinics
-        </div>
-
-        <div
-          id="supClinicsCount"
-          class="stat-number"
-        >
-          0
-        </div>
-      </div>
-
-      <div class="stat-card">
-        <div class="stat-label">
-          Messages
-        </div>
-
-        <div
-          id="supMessagesCount"
-          class="stat-number"
-        >
-          0
-        </div>
-      </div>
-
-      <div class="stat-card">
-        <div class="stat-label">
-          Employees
-        </div>
-
-        <div
-          id="supEmployeesCount"
-          class="stat-number"
-        >
-          0
-        </div>
-      </div>
-
-    </div>
-
-    <div class="main-content">
-
-      <div class="section-title">
-        Supervisor Dashboard
-      </div>
-
-      <div id="supervisorContent">
-        <div class="empty">
-          Supervisor information will appear here.
-        </div>
-      </div>
-
-    </div>
-
-  </div>
-
-  <!-- CRM VIEW -->
-  <div id="crmView" class="view-panel">
-
-    <div class="stats-grid">
-
-      <div class="stat-card">
-        <div class="stat-label">
-          Tickets
-        </div>
-
-        <div
-          id="crmTicketsCount"
-          class="stat-number"
-        >
-          0
-        </div>
-      </div>
-
-      <div class="stat-card">
-        <div class="stat-label">
-          Messages
-        </div>
-
-        <div
-          id="crmMessagesCount"
-          class="stat-number"
-        >
-          0
-        </div>
-      </div>
-
-      <div class="stat-card">
-        <div class="stat-label">
-          Clinics
-        </div>
-
-        <div
-          id="crmClinicsCount"
-          class="stat-number"
-        >
-          0
-        </div>
-      </div>
-
-      <div class="stat-card">
-        <div class="stat-label">
-          Employees
-        </div>
-
-        <div
-          id="crmEmployeesCount"
-          class="stat-number"
-        >
-          0
-        </div>
-      </div>
-
-    </div>
-
-    <div class="main-content">
-
-      <div class="section-title">
-        Customer Relations / Admin
-      </div>
-
-      <div class="toolbar">
-
-        <select id="crmClinicFilter">
-          <option value="all">All Clinics</option>
-          <option>Gastroenterology Clinic</option>
-          <option>Cardiology Clinic</option>
-          <option>Internal Medicine Clinic</option>
-          <option>Neurology Clinic</option>
-          <option>Orthopedic Clinic</option>
-          <option>General Surgery Clinic</option>
-          <option>Dermatology Clinic</option>
-          <option>ENT Clinic</option>
-          <option>Ophthalmology Clinic</option>
-          <option>Dental Clinic</option>
-        </select>
-
-        <input
-          id="crmSearch"
-          type="text"
-          placeholder="Search"
-        >
-
-      </div>
-
-      <div id="crmContent">
-        <div class="empty">
-          No information available.
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- REGISTER MODAL -->
-  <div
-    id="registerModal"
-    class="modal"
-  >
-    <div class="modal-card">
-
-      <div class="modal-header">
-
-        <div class="modal-title">
-          Create Employee Account
-        </div>
-
-        <button
-          id="btnCloseRegister"
-          class="close-btn"
-        >
-          ✕
-        </button>
-
-      </div>
-
-      <div class="grid-2">
-
-        <div class="form-group">
-          <label>Display Name</label>
-
-          <input
-            id="regDisplayName"
-            type="text"
-            placeholder="Employee name"
-          >
-        </div>
-
-        <div class="form-group">
-          <label>Username</label>
-
-          <input
-            id="regUsername"
-            type="text"
-            placeholder="Username"
-          >
-        </div>
-
-      </div>
-
-      <div class="grid-2">
-
-        <div class="form-group">
-          <label>Password</label>
-
-          <input
-            id="regPassword"
-            type="password"
-            placeholder="Password"
-          >
-        </div>
-
-        <div class="form-group">
-          <label>Account Type</label>
-
-          <select id="regAccountType">
-            <option value="CLINIC">
-              Clinic Employee
-            </option>
-
-            <option value="CALLCENTER">
-              Call Center
-            </option>
-
-            <option value="CRM">
-              Customer Relations
-            </option>
-
-            <option value="SUPERVISOR">
-              Supervisor
-            </option>
-          </select>
-        </div>
-
-      </div>
-
-      <button
-        id="btnSubmitRegister"
-        class="btn-primary"
-        style="width:100%;"
-      >
-        Create Account
-      </button>
-
-    </div>
-  </div>
-
-  <!-- ADMIN MODAL -->
-  <div
-    id="adminAccessModal"
-    class="modal"
-  >
-
-    <div class="modal-card">
-
-      <div class="modal-header">
-
-        <div class="modal-title">
-          Admin Management
-        </div>
-
-        <button
-          id="btnCloseAdminModal"
-          class="close-btn"
-        >
-          ✕
-        </button>
-
-      </div>
-
-      <div id="adminPasswordStep">
-
-        <div class="form-group">
-
-          <label>
-            Admin Passcode
-          </label>
-
-          <input
-            id="adminPassInput"
-            type="password"
-            placeholder="Admin passcode"
-          >
-
-        </div>
-
-        <button
-          id="btnVerifyAdmin"
-          class="btn-primary"
-          style="width:100%;"
-        >
-          Verify
-        </button>
-
-      </div>
-
-      <div
-        id="adminManageStep"
-        style="display:none;"
-      >
-
-        <div class="section-title">
-          Create / Update User
-        </div>
-
-        <div class="grid-2">
-
+    <div class="grid-2">
+      <div>
+        <div class="card">
+          <div class="card-header">🏥 Clinic Selection & Live Status</div>
           <div class="form-group">
-
-            <label>
-              Employee Name
-            </label>
-
-            <input
-              id="admEmpName"
-              type="text"
-            >
-
-          </div>
-
-          <div class="form-group">
-
-            <label>
-              Username
-            </label>
-
-            <input
-              id="admUsername"
-              type="text"
-            >
-
-          </div>
-
-        </div>
-
-        <div class="grid-2">
-
-          <div class="form-group">
-
-            <label>
-              Password
-            </label>
-
-            <input
-              id="admPassword"
-              type="password"
-            >
-
-          </div>
-
-          <div class="form-group">
-
-            <label>
-              Role
-            </label>
-
-            <select id="admRoleType">
-
-              <option value="CLINIC">
-                Clinic
-              </option>
-
-              <option value="CALLCENTER">
-                Call Center
-              </option>
-
-              <option value="CRM">
-                Customer Relations
-              </option>
-
-              <option value="SUPERVISOR">
-                Supervisor
-              </option>
-
-              <option value="ADMIN">
-                Admin
-              </option>
-
+            <label>Select Active Clinic For Today:</label>
+            <select id="clinicActiveSelect">
+              <option value="Gastroenterology Clinic">Gastroenterology Clinic</option>
+              <option value="Urology Clinic">Urology Clinic</option>
+              <option value="Pediatrics & OB-GYN">Pediatrics & OB-GYN</option>
+              <option value="General Surgery Clinic">General Surgery Clinic</option>
+              <option value="Orthopedics Clinic">Orthopedics Clinic</option>
+              <option value="Outpatient Dept (OPD)">Outpatient Dept (OPD)</option>
             </select>
-
           </div>
-
+          <div class="form-group">
+            <label>Assigned Doctor Name:</label>
+            <input type="text" id="doctorNameInput" placeholder="e.g. Dr. Waleed">
+          </div>
+          <div class="form-group">
+            <label>Operational Status:</label>
+            <select id="doctorStatusSelect">
+              <option value="Receiving Waiting Patients 🟢">🟢 Receiving Waiting Patients</option>
+              <option value="Doctor Step Out 🟡">🟡 Doctor Step Out / On Break</option>
+              <option value="Waiting List Stopped 🔴">🔴 Waiting List Stopped</option>
+              <option value="Emergency Leave ⛔">⛔ Emergency Leave</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Display Duration:</label>
+            <select id="statusDurationSelect">
+              <option value="30 mins">30 Minutes</option>
+              <option value="1 hour">1 Hour</option>
+              <option value="2 hours">2 Hours</option>
+              <option value="End of Shift">Until End of Shift</option>
+            </select>
+          </div>
+          <button id="btnSaveClinicStatus" type="button" class="btn btn-success" style="margin-bottom: 10px;">Publish Live Status</button>
+          <button id="btnStopClinicStatus" type="button" class="btn btn-danger">Stop Status</button>
         </div>
 
-        <button
-          id="btnAdminSaveUser"
-          class="btn-success"
-          style="width:100%;"
-        >
-          Save User
-        </button>
-
-        <button
-          id="btnCloseAdminManage"
-          class="btn-secondary"
-          style="width:100%;margin-top:8px;"
-        >
-          Close
-        </button>
-
+        <div class="card">
+          <div class="card-header">✉️ Send Note To Call Center</div>
+          <div class="form-group">
+            <label>Target:</label>
+            <select id="msgTargetSelect">
+              <option value="all">All Call Center Staff</option>
+              <option value="supervisor">Supervisor Only</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Patient Phone:</label>
+            <input type="text" id="clinicPhoneInput" placeholder="+965 xxxxxxxx">
+          </div>
+          <div class="form-group">
+            <label>Medical File ID:</label>
+            <input type="text" id="clinicFileNoInput" placeholder="File ID">
+          </div>
+          <div class="form-group">
+            <label>Note Details:</label>
+            <textarea id="clinicMsgInput" placeholder="Type instructions..."></textarea>
+          </div>
+          <button id="btnSendClinicMsg" type="button" class="btn btn-primary">Send Ticket</button>
+        </div>
       </div>
-
+      <div>
+        <div class="card">
+          <div class="card-header">📥 Private Tickets For Selected Clinic</div>
+          <div id="clinicPrivateTicketsList" class="tickets-container"></div>
+        </div>
+      </div>
     </div>
-
   </div>
 
-  <!-- NEW TICKET MODAL -->
-  <div
-    id="ticketModal"
-    class="modal"
-  >
-
-    <div class="modal-card">
-
-      <div class="modal-header">
-
-        <div class="modal-title">
-          New Ticket / Message
+  <!-- ================= 2. Call Center Portal ================= -->
+  <div id="callCenterView" class="view-panel">
+    <div class="grid-2">
+      <div>
+        <div class="card">
+          <div class="card-header">🟢 Live Clinics Status Board</div>
+          <div id="callCenterClinicsBoard" class="clinic-board-grid"></div>
         </div>
-
-        <button
-          id="btnCloseTicketModal"
-          class="close-btn"
-        >
-          ✕
-        </button>
-
-      </div>
-
-      <div class="grid-2">
-
-        <div class="form-group">
-
-          <label>
-            Clinic
-          </label>
-
-          <select id="ticketClinicSelect">
-
-            <option>
-              Gastroenterology Clinic
-            </option>
-
-            <option>
-              Cardiology Clinic
-            </option>
-
-            <option>
-              Internal Medicine Clinic
-            </option>
-
-            <option>
-              Neurology Clinic
-            </option>
-
-            <option>
-              Orthopedic Clinic
-            </option>
-
-            <option>
-              General Surgery Clinic
-            </option>
-
-            <option>
-              Dermatology Clinic
-            </option>
-
-            <option>
-              ENT Clinic
-            </option>
-
-            <option>
-              Ophthalmology Clinic
-            </option>
-
-            <option>
-              Dental Clinic
-            </option>
-
-          </select>
-
+        <div class="card">
+          <div class="card-header">➕ Create Ticket For Specific Clinic</div>
+          <div class="form-group">
+            <label>Target Clinic:</label>
+            <select id="ccTargetClinicSelect">
+              <option value="Gastroenterology Clinic">Gastroenterology Clinic</option>
+              <option value="Urology Clinic">Urology Clinic</option>
+              <option value="Pediatrics & OB-GYN">Pediatrics & OB-GYN</option>
+              <option value="General Surgery Clinic">General Surgery Clinic</option>
+              <option value="Orthopedics Clinic">Orthopedics Clinic</option>
+              <option value="Outpatient Dept (OPD)">Outpatient Dept (OPD)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Medical File ID:</label>
+            <input type="text" id="ccFileNoInput" placeholder="File ID">
+          </div>
+          <div class="form-group">
+            <label>Patient Phone:</label>
+            <input type="text" id="ccPhoneInput" placeholder="Phone Number">
+          </div>
+          <div class="form-group">
+            <label>Details:</label>
+            <textarea id="ccMsgInput" placeholder="Details..."></textarea>
+          </div>
+          <button id="btnCcSendTicket" type="button" class="btn btn-primary">Dispatch Ticket</button>
         </div>
-
-        <div class="form-group">
-
-          <label>
-            Type
-          </label>
-
-          <select id="ticketTypeSelect">
-
-            <option value="ticket">
-              Ticket
-            </option>
-
-            <option value="message">
-              Message
-            </option>
-
-          </select>
-
+      </div>
+      <div>
+        <div class="card">
+          <div class="card-header">📋 Incoming Notes From Clinics</div>
+          <div id="callCenterAllMsgsList" class="tickets-container"></div>
         </div>
-
       </div>
-
-      <div class="grid-2">
-
-        <div class="form-group">
-
-          <label>
-            Patient Phone
-          </label>
-
-          <input
-            id="ticketPhone"
-            type="text"
-          >
-
-        </div>
-
-        <div class="form-group">
-
-          <label>
-            File Number
-          </label>
-
-          <input
-            id="ticketFileNo"
-            type="text"
-          >
-
-        </div>
-
-      </div>
-
-      <div class="form-group">
-
-        <label>
-          Duration
-        </label>
-
-        <select id="ticketDuration">
-
-          <option value="15 minutes">
-            15 minutes
-          </option>
-
-          <option value="30 minutes">
-            30 minutes
-          </option>
-
-          <option value="1 hour">
-            1 hour
-          </option>
-
-          <option value="2 hours">
-            2 hours
-          </option>
-
-          <option value="manual">
-            Manual Stop
-          </option>
-
-        </select>
-
-      </div>
-
-      <div class="form-group">
-
-        <label>
-          Details
-        </label>
-
-        <textarea
-          id="ticketDetails"
-          placeholder="Write details..."
-        ></textarea>
-
-      </div>
-
-      <button
-        id="btnSaveTicket"
-        class="btn-primary"
-        style="width:100%;"
-      >
-        Send
-      </button>
-
     </div>
-
   </div>
 
-  <!-- NOTIFICATION -->
-  <div
-    id="notifToast"
-    class="toast"
-  ></div>
+  <!-- ================= 3. Supervisor Portal (Active by default) ================= -->
+  <div id="supervisorView" class="view-panel active">
+    <div class="grid-2">
+      <div>
+        <div class="card">
+          <div class="card-header">🟢 Live Clinics Status Board (Supervisor View)</div>
+          <div id="supClinicsBoard" class="clinic-board-grid"></div>
+        </div>
+        <div class="card">
+          <div class="card-header">➕ Create Ticket / Dispatch (Supervisor)</div>
+          <div class="form-group">
+            <label>Target Clinic:</label>
+            <select id="supTargetClinicSelect">
+              <option value="Gastroenterology Clinic">Gastroenterology Clinic</option>
+              <option value="Urology Clinic">Urology Clinic</option>
+              <option value="Pediatrics & OB-GYN">Pediatrics & OB-GYN</option>
+              <option value="General Surgery Clinic">General Surgery Clinic</option>
+              <option value="Orthopedics Clinic">Orthopedics Clinic</option>
+              <option value="Outpatient Dept (OPD)">Outpatient Dept (OPD)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Medical File ID:</label>
+            <input type="text" id="supFileNoInput" placeholder="File ID">
+          </div>
+          <div class="form-group">
+            <label>Patient Phone:</label>
+            <input type="text" id="supPhoneInput" placeholder="Phone Number">
+          </div>
+          <div class="form-group">
+            <label>Details:</label>
+            <textarea id="supMsgInput" placeholder="Details..."></textarea>
+          </div>
+          <button id="btnSupSendTicket" type="button" class="btn btn-primary">Dispatch Ticket</button>
+        </div>
+      </div>
+      <div>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-number" id="supTotalTickets">6</div>
+            <div class="stat-label">Total Team Tickets</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" id="supPrivateNotes">1</div>
+            <div class="stat-label">Private Notes For Supervisor</div>
+          </div>
+        </div>
 
+        <div class="card">
+          <div class="card-header">
+            <span>👨‍💼 Supervisor Dashboard & History (24h)</span>
+            <button id="btnSupExport" type="button" class="btn btn-success" style="width:auto; padding:6px 14px; font-size:0.8rem;">Export Excel/CSV 📥</button>
+          </div>
+          <div id="supervisorBoardList" class="tickets-container"></div>
+        </div>
+
+        <div class="card" style="border-color: var(--danger);">
+          <div class="card-header" style="color: var(--danger);">
+            <span>📤 Outgoing Call Center Dispatched Tickets to Clinics</span>
+          </div>
+          <div id="supDispatchedTicketsList" class="tickets-container"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= 4. CRM Manager Portal ================= -->
+  <div id="crmView" class="view-panel">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-number" id="crmActiveClinicsCount">4</div>
+        <div class="stat-label">All Active Clinics</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="crmTotalTicketsCount">6</div>
+        <div class="stat-label">Total System Tickets</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <span>📊 All Clinics Live Monitoring & Reports</span>
+        <button id="btnCrmExport" type="button" class="btn btn-success" style="width:auto; padding:6px 14px; font-size:0.8rem;">Export Excel/CSV 📥</button>
+      </div>
+      <div style="overflow-x: auto; margin-bottom: 20px;">
+        <h4 style="margin-bottom:10px; color:var(--primary);">Clinics Status Overview:</h4>
+        <div id="crmClinicsGrid" class="clinic-board-grid"></div>
+      </div>
+      <div style="overflow-x: auto;">
+        <h4 style="margin-bottom:10px; color:var(--primary);">All Clinics Tickets Log:</h4>
+        <div id="crmTicketsList" class="tickets-container"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= Script Logic ================= -->
   <script type="module">
-
-    import {
-      initializeApp
-    } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-
-    import {
-      getDatabase,
-      ref,
-      push,
-      onValue,
-      update,
-      set,
-      remove
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { 
+      getDatabase, ref, push, onValue, update, set, remove 
     } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-
     const firebaseConfig = {
-
-      apiKey:
-        "AIzaSyDu6tZHhiE9Rt5AwvkiEggAtcLtqHhe7A",
-
-      authDomain:
-        "clinic-callcenter-system.firebaseapp.com",
-
-      databaseURL:
-        "https://clinic-callcenter-system-default-rtdb.firebaseio.com",
-
-      projectId:
-        "clinic-callcenter-system",
-
-      storageBucket:
-        "clinic-callcenter-system.firebasestorage.app",
-
-      messagingSenderId:
-        "933268960406",
-
-      appId:
-        "1:933268960406:web:fc1463aa52a2d4b84cbeb7"
-
+      apiKey: "AIzaSyDu_6tZHhiE9Rt5AwvkiEggAtcLtqHhe7A",
+      authDomain: "clinic-callcenter-system.firebaseapp.com",
+      databaseURL: "https://clinic-callcenter-system-default-rtdb.firebaseio.com",
+      projectId: "clinic-callcenter-system",
+      storageBucket: "clinic-callcenter-system.firebasestorage.app",
+      messagingSenderId: "933268960406",
+      appId: "1:933268960406:web:fc1463aa52a2d4b84cbeb7"
     };
 
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
 
-    const app =
-      initializeApp(firebaseConfig);
-
-    const db =
-      getDatabase(app);
-
-
-    /*
-      IMPORTANT:
-      User starts logged out.
-      No username is automatically loaded.
-    */
-
-    let currentUser = {
-      name: "",
-      role: "",
-      username: ""
-    };
-
-    let activeClinic =
-      "Gastroenterology Clinic";
-
-    let audioEnabled =
-      false;
-
+    let currentUser = { name: "Hamad Alkhaldie", role: "supervisor", username: "hamad" };
+    let activeClinic = "Gastroenterology Clinic";
+    let audioEnabled = false;
 
     function showNotification(msg) {
-
-      const toast =
-        document.getElementById("notifToast");
-
-      toast.innerText =
-        "🔔 " + msg;
-
-      toast.style.display =
-        "block";
-
+      const toast = document.getElementById("notifToast");
+      toast.innerText = "🔔 " + msg;
+      toast.style.display = "block";
       if (audioEnabled) {
-
-        try {
-
-          new Audio(
-            "https://www.myinstants.com/media/sounds/notification.mp3"
-          ).play();
-
-        } catch (e) {}
-
+        try { new Audio('https://www.myinstants.com/media/sounds/notification.mp3').play(); } catch(e){}
       }
-
-      setTimeout(() => {
-
-        toast.style.display =
-          "none";
-
-      }, 5000);
-
+      setTimeout(() => { toast.style.display = "none"; }, 5000);
     }
-
 
     function switchView(role) {
+      document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
+      const cleanRole = role ? role.toUpperCase() : "";
 
-      document
-        .querySelectorAll(".view-panel")
-        .forEach(p =>
-          p.classList.remove("active")
-        );
-
-      const cleanRole =
-        role ? role.toUpperCase() : "";
-
-
-      if (cleanRole === "CLINIC") {
-
-        document
-          .getElementById("clinicView")
-          .classList.add("active");
-
+      if (cleanRole === 'CLINIC') {
+        document.getElementById("clinicView").classList.add("active");
+      } else if (cleanRole === 'CALLCENTER') {
+        document.getElementById("callCenterView").classList.add("active");
+      } else if (cleanRole === 'SUPERVISOR') {
+        document.getElementById("supervisorView").classList.add("active");
+      } else if (cleanRole === 'CRM' || cleanRole === 'ADMIN') {
+        document.getElementById("crmView").classList.add("active");
+      } else {
+        document.getElementById("supervisorView").classList.add("active");
       }
-
-      else if (cleanRole === "CALLCENTER") {
-
-        document
-          .getElementById("callCenterView")
-          .classList.add("active");
-
-      }
-
-      else if (cleanRole === "SUPERVISOR") {
-
-        document
-          .getElementById("supervisorView")
-          .classList.add("active");
-
-      }
-
-      else if (
-        cleanRole === "CRM" ||
-        cleanRole === "ADMIN"
-      ) {
-
-        document
-          .getElementById("crmView")
-          .classList.add("active");
-
-      }
-
     }
 
-
-    window.addEventListener(
-      "load",
-      () => {
-
-        /*
-          IMPORTANT:
-          Always show login screen
-          when website is opened.
-        */
-
-        document
-          .getElementById("authOverlay")
-          .style.display = "flex";
-
-
-        /*
-          Hide all system pages
-          before successful login.
-        */
-
-        document
-          .querySelectorAll(".view-panel")
-          .forEach(p =>
-            p.classList.remove("active")
-          );
-
-
-        document
-          .getElementById("btnToggleAudio")
-          .onclick = () => {
-
-            audioEnabled =
-              !audioEnabled;
-
-            document
-              .getElementById("btnToggleAudio")
-              .innerText =
-              audioEnabled
-                ? "🔊 Audio Active"
-                : "🔔 Enable Audio";
-
-            document
-              .getElementById("btnToggleAudio")
-              .style.background =
-              audioEnabled
-                ? "#10b981"
-                : "#f59e0b";
-
-          };
-
-
-        /*
-          LOGOUT
-        */
-
-        document
-          .getElementById("btnLogout")
-          .onclick = () => {
-
-            currentUser = {
-              name: "",
-              role: "",
-              username: ""
-            };
-
-
-            document
-              .getElementById("userInfoDisplay")
-              .innerText =
-              "👤 يرجى تسجيل الدخول";
-
-
-            document
-              .querySelectorAll(".view-panel")
-              .forEach(p =>
-                p.classList.remove("active")
-              );
-
-
-            document
-              .getElementById("authOverlay")
-              .style.display = "flex";
-
-
-            document
-              .getElementById("loginUsername")
-              .value = "";
-
-
-            document
-              .getElementById("loginPassword")
-              .value = "";
-
-          };
-
-
-        /*
-          REGISTER
-        */
-
-        document
-          .getElementById("btnOpenRegister")
-          .onclick = () => {
-
-            document
-              .getElementById("registerModal")
-              .style.display = "flex";
-
-          };
-
-
-        document
-          .getElementById("btnCloseRegister")
-          .onclick = () => {
-
-            document
-              .getElementById("registerModal")
-              .style.display = "none";
-
-          };
-
-
-        /*
-          ADMIN MODAL
-        */
-
-        document
-          .getElementById("btnOpenAdminModal")
-          .onclick = () => {
-
-            document
-              .getElementById("adminAccessModal")
-              .style.display = "flex";
-
-            document
-              .getElementById("adminPasswordStep")
-              .style.display = "block";
-
-            document
-              .getElementById("adminManageStep")
-              .style.display = "none";
-
-            document
-              .getElementById("adminPassInput")
-              .value = "";
-
-          };
-
-
-        document
-          .getElementById("btnCloseAdminModal")
-          .onclick = () => {
-
-            document
-              .getElementById("adminAccessModal")
-              .style.display = "none";
-
-          };
-
-
-        document
-          .getElementById("btnCloseAdminManage")
-          .onclick = () => {
-
-            document
-              .getElementById("adminAccessModal")
-              .style.display = "none";
-
-          };
-
-
-        /*
-          ADMIN VERIFY
-        */
-
-        document
-          .getElementById("btnVerifyAdmin")
-          .onclick = () => {
-
-            const pin =
-              document
-                .getElementById("adminPassInput")
-                .value
-                .trim();
-
-
-            if (pin === "1234") {
-
-              document
-                .getElementById("adminPasswordStep")
-                .style.display = "none";
-
-              document
-                .getElementById("adminManageStep")
-                .style.display = "block";
-
-            }
-
-            else {
-
-              alert(
-                "Incorrect Admin Passcode! (Hint: 1234)"
-              );
-
-            }
-
-          };
-
-
-        /*
-          ADMIN SAVE USER
-        */
-
-        document
-          .getElementById("btnAdminSaveUser")
-          .onclick = () => {
-
-            const name =
-              document
-                .getElementById("admEmpName")
-                .value
-                .trim();
-
-            const username =
-              document
-                .getElementById("admUsername")
-                .value
-                .trim();
-
-            const password =
-              document
-                .getElementById("admPassword")
-                .value
-                .trim();
-
-            const role =
-              document
-                .getElementById("admRoleType")
-                .value;
-
-
-            if (
-              !name ||
-              !username ||
-              !password
-            ) {
-
-              return alert(
-                "Please fill all user credentials!"
-              );
-
-            }
-
-
-            set(
-              ref(db, `users/${username}`),
-              {
-                name,
-                username,
-                password,
-                role
-              }
-            );
-
-
-            alert(
-              `Account for ${name} saved successfully!`
-            );
-
-
-            document
-              .getElementById("admEmpName")
-              .value = "";
-
-            document
-              .getElementById("admUsername")
-              .value = "";
-
-            document
-              .getElementById("admPassword")
-              .value = "";
-
-          };
-
-
-        /*
-          REGISTER ACCOUNT
-        */
-
-        document
-          .getElementById("btnSubmitRegister")
-          .onclick = () => {
-
-            const role =
-              document
-                .getElementById("regAccountType")
-                .value;
-
-            const name =
-              document
-                .getElementById("regDisplayName")
-                .value
-                .trim();
-
-            const username =
-              document
-                .getElementById("regUsername")
-                .value
-                .trim();
-
-            const password =
-              document
-                .getElementById("regPassword")
-                .value
-                .trim();
-
-
-            if (
-              !name ||
-              !username ||
-              !password
-            ) {
-
-              return alert(
-                "Complete all fields!"
-              );
-
-            }
-
-
-            set(
-              ref(db, `users/${username}`),
-              {
-                name,
-                username,
-                password,
-                role
-              }
-            );
-
-
-            alert(
-              "Employee account registered successfully! You can now login."
-            );
-
-
-            document
-              .getElementById("registerModal")
-              .style.display = "none";
-
-          };
-
-
-        /*
-          LOGIN
-        */
-
-        document
-          .getElementById("btnLogin")
-          .onclick = () => {
-
-            const username =
-              document
-                .getElementById("loginUsername")
-                .value
-                .trim();
-
-            const password =
-              document
-                .getElementById("loginPassword")
-                .value
-                .trim();
-
-
-            /*
-              DO NOT ALLOW EMPTY LOGIN
-            */
-
-            if (!username || !password) {
-
-              alert(
-                "Please enter username and password!"
-              );
-
-              return;
-
-            }
-
-
-            /*
-              DEFAULT ADMIN
-            */
-
-            if (
-              username === "admin" &&
-              password === "1234"
-            ) {
-
-              currentUser = {
-                name: "System Admin",
-                role: "CRM",
-                username: "admin"
-              };
-
-
-              document
-                .getElementById("userInfoDisplay")
-                .innerText =
-                "👤 System Admin (crm)";
-
-
-              document
-                .getElementById("authOverlay")
-                .style.display = "none";
-
-
-              switchView("CRM");
-
-              return;
-
-            }
-
-
-            /*
-              FIREBASE USER LOGIN
-            */
-
-            onValue(
-              ref(db, `users/${username}`),
-              (snapshot) => {
-
-                const user =
-                  snapshot.val();
-
-
-                if (
-                  user &&
-                  user.password === password
-                ) {
-
-                  currentUser =
-                    user;
-
-
-                  document
-                    .getElementById("userInfoDisplay")
-                    .innerText =
-                    `👤 ${user.name} (${user.role})`;
-
-
-                  document
-                    .getElementById("authOverlay")
-                    .style.display = "none";
-
-
-                  switchView(
-                    user.role
-                  );
-
-                }
-
-                else {
-
-                  alert(
-                    "Invalid username or password!"
-                  );
-
-                }
-
-              },
-              {
-                onlyOnce: true
-              }
-            );
-
-          };
-
-
-        /*
-          CLINIC SELECT
-        */
-
-        document
-          .getElementById("clinicActiveSelect")
-          .onchange = (e) => {
-
-            activeClinic =
-              e.target.value;
-
-          };
-
-
-        /*
-          SAVE CLINIC STATUS
-        */
-
-        document
-          .getElementById("btnSaveClinicStatus")
-          .onclick = () => {
-
-            const doctor =
-              document
-                .getElementById("doctorNameInput")
-                .value
-                .trim();
-
-            const status =
-              document
-                .getElementById("doctorStatusSelect")
-                .value;
-
-            const duration =
-              document
-                .getElementById("statusDurationSelect")
-                .value;
-
-
-            if (!doctor) {
-
-              return alert(
-                "Enter doctor name"
-              );
-
-            }
-
-
-            const now =
-              new Date().toLocaleString();
-
-
-            set(
-              ref(
-                db,
-                `clinic_statuses/${activeClinic.replace(/\s+/g, "_")}`
-              ),
-              {
-                clinic: activeClinic,
-                doctor,
-                status,
-                duration,
-                updatedBy: currentUser.name,
-                updatedAt: now
-              }
-            );
-
-
-            push(
-              ref(db, "tickets"),
-              {
-                clinic: activeClinic,
-                type: "message",
-                details:
-                  `Clinic status updated: ${status}`,
-                senderName:
-                  currentUser.name,
-                username:
-                  currentUser.username ||
-                  currentUser.name,
-                createdAt: now,
-                duration
-              }
-            );
-
-
-            showNotification(
-              "Clinic status saved successfully."
-            );
-
-          };
-
-
-        /*
-          CLINIC NEW TICKET
-        */
-
-        document
-          .getElementById("btnClinicNewTicket")
-          .onclick = () => {
-
-            document
-              .getElementById("ticketClinicSelect")
-              .value =
-              activeClinic;
-
-            document
-              .getElementById("ticketModal")
-              .style.display = "flex";
-
-          };
-
-
-        /*
-          CALL CENTER NEW TICKET
-        */
-
-        document
-          .getElementById("btnCallCenterNewTicket")
-          .onclick = () => {
-
-            document
-              .getElementById("ticketModal")
-              .style.display = "flex";
-
-          };
-
-
-        /*
-          CLOSE TICKET
-        */
-
-        document
-          .getElementById("btnCloseTicketModal")
-          .onclick = () => {
-
-            document
-              .getElementById("ticketModal")
-              .style.display = "none";
-
-          };
-
-
-        /*
-          SAVE TICKET
-        */
-
-        document
-          .getElementById("btnSaveTicket")
-          .onclick = () => {
-
-            const clinic =
-              document
-                .getElementById("ticketClinicSelect")
-                .value;
-
-            const type =
-              document
-                .getElementById("ticketTypeSelect")
-                .value;
-
-            const phone =
-              document
-                .getElementById("ticketPhone")
-                .value
-                .trim();
-
-            const fileNo =
-              document
-                .getElementById("ticketFileNo")
-                .value
-                .trim();
-
-            const duration =
-              document
-                .getElementById("ticketDuration")
-                .value;
-
-            const details =
-              document
-                .getElementById("ticketDetails")
-                .value
-                .trim();
-
-
-            if (!details) {
-
-              return alert(
-                "Please enter details."
-              );
-
-            }
-
-
-            const now =
-              new Date().toLocaleString();
-
-
-            push(
-              ref(db, "tickets"),
-              {
-                clinic,
-                type,
-                phone,
-                fileNo,
-                duration,
-                details,
-                senderName:
-                  currentUser.name,
-                username:
-                  currentUser.username ||
-                  currentUser.name,
-                createdAt: now,
-                status: "new"
-              }
-            );
-
-
-            document
-              .getElementById("ticketPhone")
-              .value = "";
-
-            document
-              .getElementById("ticketFileNo")
-              .value = "";
-
-            document
-              .getElementById("ticketDetails")
-              .value = "";
-
-
-            document
-              .getElementById("ticketModal")
-              .style.display = "none";
-
-
-            showNotification(
-              "Ticket sent successfully."
-            );
-
-          };
-
-
-        /*
-          TICKETS LISTENER
-        */
-
-        onValue(
-          ref(db, "tickets"),
-          (snapshot) => {
-
-            const data =
-              snapshot.val() || {};
-
-            const tickets =
-              Object.entries(data)
-                .map(([id, value]) => ({
-                  id,
-                  ...value
-                }))
-                .sort(
-                  (a,b) =>
-                    String(b.createdAt || "")
-                      .localeCompare(
-                        String(a.createdAt || "")
-                      )
-                );
-
-
-            renderClinicTickets(
-              tickets
-            );
-
-            renderCallCenterTickets(
-              tickets
-            );
-
-            renderCRM(
-              tickets
-            );
-
-          }
-        );
-
-
-        /*
-          CLINIC STATUS LISTENER
-        */
-
-        onValue(
-          ref(db, "clinic_statuses"),
-          (snapshot) => {
-
-            const data =
-              snapshot.val() || {};
-
-            renderClinicStatuses(
-              data
-            );
-
-            renderCallCenterStatuses(
-              data
-            );
-
-          }
-        );
-
-
-        /*
-          USERS LISTENER
-        */
-
-        onValue(
-          ref(db, "users"),
-          (snapshot) => {
-
-            const data =
-              snapshot.val() || {};
-
-            const count =
-              Object.keys(data).length;
-
-
-            const sup =
-              document.getElementById(
-                "supEmployeesCount"
-              );
-
-            const crm =
-              document.getElementById(
-                "crmEmployeesCount"
-              );
-
-
-            if (sup)
-              sup.innerText =
-                count;
-
-            if (crm)
-              crm.innerText =
-                count;
-
-          }
-        );
-
-
-        /*
-          FILTER EVENTS
-        */
-
-        document
-          .getElementById("clinicTicketFilter")
-          .onchange =
-          () => refreshTicketViews();
-
-
-        document
-          .getElementById("clinicSearch")
-          .oninput =
-          () => refreshTicketViews();
-
-
-        document
-          .getElementById("ccClinicFilter")
-          .onchange =
-          () => refreshTicketViews();
-
-
-        document
-          .getElementById("ccSearch")
-          .oninput =
-          () => refreshTicketViews();
-
-
-        document
-          .getElementById("ccTypeFilter")
-          .onchange =
-          () => refreshTicketViews();
-
-
-        document
-          .getElementById("crmClinicFilter")
-          .onchange =
-          () => refreshTicketViews();
-
-
-        document
-          .getElementById("crmSearch")
-          .oninput =
-          () => refreshTicketViews();
-
-      }
-    );
-
-
-    let allTickets = [];
-
-
-    function refreshTicketViews() {
-
-      renderClinicTickets(
-        allTickets
-      );
-
-      renderCallCenterTickets(
-        allTickets
-      );
-
-      renderCRM(
-        allTickets
-      );
-
-    }
-
-
-    function renderClinicTickets(
-      tickets
-    ) {
-
-      allTickets =
-        tickets || [];
-
-
-      const container =
-        document.getElementById(
-          "clinicTicketsList"
-        );
-
-
-      if (!container)
-        return;
-
-
-      const filter =
-        document.getElementById(
-          "clinicTicketFilter"
-        )?.value || "all";
-
-
-      const search =
-        (
-          document.getElementById(
-            "clinicSearch"
-          )?.value || ""
-        )
-          .toLowerCase();
-
-
-      const filtered =
-        tickets.filter(t => {
-
-          const belongs =
-            t.clinic === activeClinic;
-
-          const typeOk =
-            filter === "all" ||
-            t.type === filter;
-
-          const text =
-            `${t.phone || ""} ${t.fileNo || ""} ${t.details || ""}`
-              .toLowerCase();
-
-          return (
-            belongs &&
-            typeOk &&
-            text.includes(search)
-          );
-
-        });
-
-
-      if (!filtered.length) {
-
-        container.innerHTML =
-          `<div class="empty">
-            No tickets or messages for this clinic.
-          </div>`;
-
-        return;
-
-      }
-
-
-      container.innerHTML =
-        filtered.map(t =>
-          ticketHTML(t)
-        ).join("");
-
-    }
-
-
-    function renderCallCenterTickets(
-      tickets
-    ) {
-
-      allTickets =
-        tickets || [];
-
-
-      const container =
-        document.getElementById(
-          "callCenterTicketsList"
-        );
-
-
-      if (!container)
-        return;
-
-
-      const clinicFilter =
-        document.getElementById(
-          "ccClinicFilter"
-        )?.value || "all";
-
-
-      const typeFilter =
-        document.getElementById(
-          "ccTypeFilter"
-        )?.value || "all";
-
-
-      const search =
-        (
-          document.getElementById(
-            "ccSearch"
-          )?.value || ""
-        )
-          .toLowerCase();
-
-
-      const filtered =
-        tickets.filter(t => {
-
-          const clinicOk =
-            clinicFilter === "all" ||
-            t.clinic === clinicFilter;
-
-          const typeOk =
-            typeFilter === "all" ||
-            t.type === typeFilter;
-
-          const text =
-            `${t.phone || ""} ${t.fileNo || ""} ${t.details || ""} ${t.clinic || ""}`
-              .toLowerCase();
-
-          return (
-            clinicOk &&
-            typeOk &&
-            text.includes(search)
-          );
-
-        });
-
-
-      if (!filtered.length) {
-
-        container.innerHTML =
-          `<div class="empty">
-            No tickets or messages.
-          </div>`;
-
-        return;
-
-      }
-
-
-      container.innerHTML =
-        filtered.map(t =>
-          ticketHTML(t)
-        ).join("");
-
-    }
-
-
-    function ticketHTML(t) {
-
-      const typeLabel =
-        t.type === "ticket"
-          ? "Ticket"
-          : "Message";
-
-
-      const status =
-        t.status || "new";
-
-
-      return `
-        <div class="ticket-card">
-
-          <div class="ticket-header">
-
-            <div class="ticket-title">
-              ${escapeHtml(typeLabel)}
-              -
-              ${escapeHtml(t.clinic || "")}
-            </div>
-
-            <span class="status status-info">
-              ${escapeHtml(status)}
-            </span>
-
-          </div>
-
-          <div>
-            ${escapeHtml(t.details || "")}
-          </div>
-
-          <div class="ticket-meta">
-
-            <span>
-              📞 ${escapeHtml(t.phone || "-")}
-            </span>
-
-            <span>
-              📁 ${escapeHtml(t.fileNo || "-")}
-            </span>
-
-            <span>
-              ⏱ ${escapeHtml(t.duration || "-")}
-            </span>
-
-            <span>
-              👤 ${escapeHtml(t.senderName || "-")}
-            </span>
-
-            <span>
-              🕒 ${escapeHtml(t.createdAt || "-")}
-            </span>
-
-          </div>
-
-          <div class="ticket-actions">
-
-            <button
-              class="btn-success"
-              onclick="updateTicketStatus('${t.id}','completed')"
-            >
-              Complete
-            </button>
-
-            <button
-              class="btn-warning"
-              onclick="updateTicketStatus('${t.id}','in-progress')"
-            >
-              In Progress
-            </button>
-
-            <button
-              class="btn-danger"
-              onclick="deleteTicket('${t.id}')"
-            >
-              Delete
-            </button>
-
-          </div>
-
-        </div>
-      `;
-
-    }
-
-
-    function escapeHtml(
-      value
-    ) {
-
-      return String(value ?? "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-
-    }
-
-
-    window.updateTicketStatus =
-      function(id, status) {
-
-        update(
-          ref(db, `tickets/${id}`),
-          {
-            status,
-            updatedBy:
-              currentUser.name,
-            updatedAt:
-              new Date().toLocaleString()
-          }
-        );
-
+    window.addEventListener("load", () => {
+      document.getElementById("authOverlay").style.display = "none";
+
+      document.getElementById("btnToggleAudio").onclick = () => {
+        audioEnabled = !audioEnabled;
+        document.getElementById("btnToggleAudio").innerText = audioEnabled ? "🔊 Audio Active" : "🔔 Enable Audio";
+        document.getElementById("btnToggleAudio").style.background = audioEnabled ? "#10b981" : "#f59e0b";
       };
 
+      document.getElementById("btnLogout").onclick = () => {
+        document.getElementById("authOverlay").style.display = "flex";
+      };
 
-    window.deleteTicket =
-      function(id) {
+      document.getElementById("btnOpenRegister").onclick = () => document.getElementById("registerModal").style.display = "flex";
+      document.getElementById("btnCloseRegister").onclick = () => document.getElementById("registerModal").style.display = "none";
 
-        if (
-          !confirm(
-            "Delete this ticket?"
-          )
-        )
+      document.getElementById("btnOpenAdminModal").onclick = () => {
+        document.getElementById("adminAccessModal").style.display = "flex";
+        document.getElementById("adminPasswordStep").style.display = "block";
+        document.getElementById("adminManageStep").style.display = "none";
+        document.getElementById("adminPassInput").value = "";
+      };
+      document.getElementById("btnCloseAdminModal").onclick = () => document.getElementById("adminAccessModal").style.display = "none";
+      document.getElementById("btnCloseAdminManage").onclick = () => document.getElementById("adminAccessModal").style.display = "none";
+
+      document.getElementById("btnVerifyAdmin").onclick = () => {
+        const pin = document.getElementById("adminPassInput").value.trim();
+        if (pin === "1234") {
+          document.getElementById("adminPasswordStep").style.display = "none";
+          document.getElementById("adminManageStep").style.display = "block";
+        } else {
+          alert("Incorrect Admin Passcode! (Hint: 1234)");
+        }
+      };
+
+      document.getElementById("btnAdminSaveUser").onclick = () => {
+        const name = document.getElementById("admEmpName").value.trim();
+        const username = document.getElementById("admUsername").value.trim();
+        const password = document.getElementById("admPassword").value.trim();
+        const role = document.getElementById("admRoleType").value;
+
+        if (!name || !username || !password) return alert("Please fill all user credentials!");
+        set(ref(db, `users/${username}`), { name, username, password, role });
+        alert(`Account for ${name} saved successfully!`);
+        document.getElementById("admEmpName").value = "";
+        document.getElementById("admUsername").value = "";
+        document.getElementById("admPassword").value = "";
+      };
+
+      document.getElementById("btnSubmitRegister").onclick = () => {
+        const role = document.getElementById("regAccountType").value;
+        const name = document.getElementById("regDisplayName").value.trim();
+        const username = document.getElementById("regUsername").value.trim();
+        const password = document.getElementById("regPassword").value.trim();
+
+        if (!name || !username || !password) return alert("Complete all fields!");
+        set(ref(db, `users/${username}`), { name, username, password, role });
+        alert("Employee account registered successfully! You can now login.");
+        document.getElementById("registerModal").style.display = "none";
+      };
+
+      document.getElementById("btnLogin").onclick = () => {
+        const username = document.getElementById("loginUsername").value.trim();
+        const password = document.getElementById("loginPassword").value.trim();
+
+        if (!username && !password) {
+          document.getElementById("authOverlay").style.display = "none";
           return;
+        }
 
+        if (username === "admin" && password === "1234") {
+          currentUser = { name: "System Admin", role: "CRM", username: "admin" };
+          document.getElementById("userInfoDisplay").innerText = "👤 System Admin (crm)";
+          document.getElementById("authOverlay").style.display = "none";
+          switchView('CRM');
+          return;
+        }
 
-        remove(
-          ref(db, `tickets/${id}`)
-        );
-
+        onValue(ref(db, `users/${username}`), (snapshot) => {
+          const user = snapshot.val();
+          if (user && user.password === password) {
+            currentUser = user;
+            document.getElementById("userInfoDisplay").innerText = `👤 ${user.name} (${user.role})`;
+            document.getElementById("authOverlay").style.display = "none";
+            switchView(user.role);
+          } else {
+            alert("Invalid username or password!");
+          }
+        }, { onlyOnce: true });
       };
 
+      document.getElementById("clinicActiveSelect").onchange = (e) => { activeClinic = e.target.value; };
 
-    function renderClinicStatuses(
-      data
-    ) {
+      document.getElementById("btnSaveClinicStatus").onclick = () => {
+        const doctor = document.getElementById("doctorNameInput").value.trim();
+        const status = document.getElementById("doctorStatusSelect").value;
+        const duration = document.getElementById("statusDurationSelect").value;
 
-      const clinicCards = [
-        "Gastroenterology Clinic",
-        "Cardiology Clinic",
-        "Internal Medicine Clinic",
-        "Neurology Clinic",
-        "Orthopedic Clinic",
-        "General Surgery Clinic",
-        "Dermatology Clinic",
-        "ENT Clinic",
-        "Ophthalmology Clinic",
-        "Dental Clinic"
-      ];
+        if (!doctor) return alert("Enter doctor name");
 
+        const now = new Date().toLocaleString();
+        set(ref(db, `clinic_statuses/${activeClinic.replace(/\s+/g, '_')}`), {
+          clinic: activeClinic,
+          doctor,
+          status,
+          duration,
+          updatedBy: currentUser.name,
+          updatedAt: now
+        });
 
-      const container =
-        document.getElementById(
-          "clinicStatusCards"
-        );
+        push(ref(db, 'tickets'), {
+          senderRole: 'clinic_status',
+          senderName: currentUser.name,
+          username: currentUser.username || currentUser.name,
+          clinic: activeClinic,
+          targetRole: 'all',
+          phone: `Duration: ${duration}`,
+          fileNo: `Dr. ${doctor}`,
+          message: `Operational Status Update: ${status}`,
+          status: "active",
+          createdAt: now,
+          timestamp: Date.now()
+        });
 
+        alert("Live status published successfully!");
+      };
 
-      if (!container)
-        return;
+      document.getElementById("btnStopClinicStatus").onclick = () => {
+        remove(ref(db, `clinic_statuses/${activeClinic.replace(/\s+/g, '_')}`));
+        alert("Status stopped.");
+      };
 
+      document.getElementById("btnSendClinicMsg").onclick = () => {
+        const target = document.getElementById("msgTargetSelect").value;
+        const phone = document.getElementById("clinicPhoneInput").value.trim();
+        const fileNo = document.getElementById("clinicFileNoInput").value.trim();
+        const msg = document.getElementById("clinicMsgInput").value.trim();
 
-      container.innerHTML =
-        clinicCards.map(
-          clinic => {
+        if (!msg) return alert("Type note details");
 
-            const key =
-              clinic.replace(
-                /\s+/g,
-                "_"
-              );
+        const now = new Date().toLocaleString();
+        push(ref(db, 'tickets'), {
+          senderRole: 'clinic',
+          senderName: currentUser.name,
+          username: currentUser.username || currentUser.name,
+          clinic: activeClinic,
+          targetRole: target,
+          phone: phone || "N/A",
+          fileNo: fileNo || "N/A",
+          message: msg,
+          status: "active",
+          createdAt: now,
+          timestamp: Date.now()
+        });
+        document.getElementById("clinicMsgInput").value = "";
+        alert("Ticket sent successfully!");
+      };
 
-            const item =
-              data[key] || {};
+      document.getElementById("btnCcSendTicket").onclick = () => dispatchCallCenterTicket('ccTargetClinicSelect', 'ccFileNoInput', 'ccPhoneInput', 'ccMsgInput');
+      document.getElementById("btnSupSendTicket").onclick = () => dispatchCallCenterTicket('supTargetClinicSelect', 'supFileNoInput', 'supPhoneInput', 'supMsgInput');
 
+      function dispatchCallCenterTicket(targetId, fileId, phoneId, msgId) {
+        const targetClinic = document.getElementById(targetId).value;
+        const fileNo = document.getElementById(fileId).value.trim();
+        const phone = document.getElementById(phoneId).value.trim();
+        const msg = document.getElementById(msgId).value.trim();
 
-            return `
-              <div class="clinic-card">
+        if (!fileNo || !msg) return alert("Enter file ID and details");
 
-                <div class="clinic-card-title">
-                  ${escapeHtml(clinic)}
-                </div>
-
-                <div class="small">
-                  Doctor:
-                  ${escapeHtml(item.doctor || "-")}
-                </div>
-
-                <div style="margin-top:7px;">
-
-                  <span class="status status-info">
-                    ${escapeHtml(item.status || "Unknown")}
-                  </span>
-
-                </div>
-
-              </div>
-            `;
-
-          }
-        ).join("");
-
-    }
-
-
-    function renderCallCenterStatuses(
-      data
-    ) {
-
-      const container =
-        document.getElementById(
-          "callCenterClinicStatuses"
-        );
-
-
-      if (!container)
-        return;
-
-
-      const entries =
-        Object.values(data || {});
-
-
-      if (!entries.length) {
-
-        container.innerHTML =
-          `<div class="empty">
-            No clinic status data.
-          </div>`;
-
-        return;
-
+        const now = new Date().toLocaleString();
+        push(ref(db, 'tickets'), {
+          senderRole: 'callcenter',
+          senderName: currentUser.name,
+          username: currentUser.username || currentUser.name,
+          clinic: targetClinic,
+          targetRole: 'clinic',
+          phone: phone || "N/A",
+          fileNo,
+          message: msg,
+          status: "active",
+          createdAt: now,
+          timestamp: Date.now()
+        });
+        document.getElementById(fileId).value = "";
+        document.getElementById(phoneId).value = "";
+        document.getElementById(msgId).value = "";
+        alert("Ticket dispatched to clinic!");
       }
 
+      document.getElementById("btnSupExport").onclick = () => exportCSV("supervisorBoardList", "Supervisor_Report.csv");
+      document.getElementById("btnCrmExport").onclick = () => exportCSV("crmTicketsList", "CRM_Clinics_Report.csv");
+    });
 
-      container.innerHTML =
-        entries.map(item => {
+    function exportCSV(containerId, filename) {
+      let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
+      csvContent += "Clinic,Info,Message,Creator/Editor Log,Date\n";
+      document.querySelectorAll(`#${containerId} .ticket-card`).forEach(card => {
+        const clinic = card.querySelector(".clinic-badge")?.innerText || "";
+        const info = card.querySelector(".patient-box")?.innerText.replace(/\n/g, " | ") || "";
+        const msg = card.querySelector("[id^='msg-text']")?.innerText || "";
+        const sender = card.querySelector(".ticket-footer span")?.innerText || "";
+        const time = card.querySelector("span[style*='color:var(--text-muted)']")?.innerText || "";
+        csvContent += `"${clinic}","${info}","${msg}","${sender}","${time}"\n`;
+      });
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", filename);
+      document.body.appendChild(link);
+      link.click();
+    }
 
-          return `
-            <div class="clinic-card">
+    onValue(ref(db, 'clinic_statuses'), (snapshot) => {
+      const data = snapshot.val();
+      const ccBoard = document.getElementById("callCenterClinicsBoard");
+      const supBoard = document.getElementById("supClinicsBoard");
+      const crmGrid = document.getElementById("crmClinicsGrid");
+      if (!ccBoard) return;
+      ccBoard.innerHTML = "";
+      if (supBoard) supBoard.innerHTML = "";
+      if (crmGrid) crmGrid.innerHTML = "";
 
-              <div class="clinic-card-title">
-                ${escapeHtml(item.clinic || "")}
+      let activeCount = 0;
+      if (data) {
+        Object.keys(data).forEach((key) => {
+          const c = data[key];
+          activeCount++;
+          let sClass = "receiving";
+          if (c.status.includes("Step Out")) sClass = "paused";
+          if (c.status.includes("Stopped") || c.status.includes("Leave")) sClass = "stopped";
+
+          const userRoleUpper = currentUser.role ? currentUser.role.toUpperCase() : "";
+          // مشرف النظام أو مدير الـ CRM لديه صلاحية مطلقة، بينما موظف الكول سنتر العادي لا يمكنه التعديل إلا إذا كان هو صاحب الحالة
+          const isSupervisorOrManager = (userRoleUpper === 'SUPERVISOR' || userRoleUpper === 'CRM' || userRoleUpper === 'ADMIN');
+          const canManageStatus = isSupervisorOrManager || (currentUser.name === c.updatedBy);
+
+          const cardHTML = `
+            <div class="clinic-status-card ${sClass}">
+              <div style="font-weight:800;">${c.clinic}</div>
+              <div style="font-size:0.85rem; margin:4px 0;">👨‍‍⚕️ ${c.doctor}</div>
+              <div style="font-size:0.80rem; font-weight:700;">${c.status}</div>
+              <div style="font-size:0.7rem; color:var(--text-muted); margin-top:6px;">By: ${c.updatedBy} (${c.updatedAt})</div>
+              
+              <div style="margin-top: 10px; padding-top: 8px; border-top: 1px dashed var(--border); display: flex; gap: 6px; align-items: center;">
+                ${canManageStatus ? `
+                  <button class="btn btn-warning" style="padding:4px 8px; font-size:0.75rem; width:auto; flex:1;" onclick="window.editClinicStatus('${key}', '${c.doctor}', '${c.status}')">Edit</button>
+                  <button class="btn btn-danger" style="padding:4px 8px; font-size:0.75rem; width:auto; flex:1;" onclick="window.stopClinicStatusCard('${key}', '${c.updatedBy}')">Cancel</button>
+                ` : `<span style="font-size:0.75rem; color:var(--text-muted);">🔒 Read Only</span>`}
               </div>
+            </div>
+          `;
+          ccBoard.innerHTML += cardHTML;
+          if (supBoard) supBoard.innerHTML += cardHTML;
+          if (crmGrid) crmGrid.innerHTML += cardHTML;
+        });
+      }
+      if(document.getElementById("crmActiveClinicsCount")) document.getElementById("crmActiveClinicsCount").innerText = activeCount;
+    });
 
-              <div class="small">
-                Doctor:
-                ${escapeHtml(item.doctor || "-")}
+    window.editClinicStatus = (key, currentDoc, currentStatus) => {
+      const newDoc = prompt("Edit Doctor Name:", currentDoc);
+      if (newDoc !== null) {
+        const now = new Date().toLocaleString();
+        update(ref(db, `clinic_statuses/${key}`), {
+          doctor: newDoc,
+          updatedBy: currentUser.name,
+          updatedAt: now
+        });
+        alert("Clinic status updated successfully!");
+      }
+    };
+
+    window.stopClinicStatusCard = (key, originalAuthor) => {
+      const reason = confirm(`Are you sure you want to cancel this clinic status created by [${originalAuthor}]?`);
+      if (reason) {
+        remove(ref(db, `clinic_statuses/${key}`));
+        const now = new Date().toLocaleString();
+        push(ref(db, 'tickets'), {
+          senderRole: 'system_notification',
+          senderName: currentUser.name,
+          username: currentUser.username || currentUser.name,
+          clinic: "System Notification",
+          targetRole: 'all',
+          phone: "Status Cancelled",
+          fileNo: "Alert",
+          message: `Notice: Clinic status by [${originalAuthor}] was cancelled by ${currentUser.name} at ${now}.`,
+          status: "active",
+          createdAt: now,
+          timestamp: Date.now()
+        });
+      }
+    };
+
+    onValue(ref(db, 'tickets'), (snapshot) => {
+      const data = snapshot.val();
+      const clinicPrivateList = document.getElementById("clinicPrivateTicketsList");
+      const ccAllList = document.getElementById("callCenterAllMsgsList");
+      const supervisorList = document.getElementById("supervisorBoardList");
+      const supDispatchedList = document.getElementById("supDispatchedTicketsList");
+      const crmList = document.getElementById("crmTicketsList");
+
+      if (!clinicPrivateList) return;
+      clinicPrivateList.innerHTML = "";
+      ccAllList.innerHTML = "";
+      supervisorList.innerHTML = "";
+      if(supDispatchedList) supDispatchedList.innerHTML = "";
+      crmList.innerHTML = "";
+
+      let totalTickets = 0;
+      let supPrivateCount = 0;
+      const twentyFourHoursAgo = Date.now() - (24 * 60 * 60 * 1000);
+
+      if (data) {
+        Object.keys(data).reverse().forEach((key) => {
+          const t = data[key];
+          totalTickets++;
+
+          if (t.timestamp && t.timestamp < twentyFourHoursAgo && t.status === 'cancelled') {
+            return;
+          }
+
+          if (t.targetRole === 'supervisor') supPrivateCount++;
+
+          const userRoleUpper = currentUser.role ? currentUser.role.toUpperCase() : "";
+          // المشرف أو مدير الـ CRM لديه صلاحية مطلقة، بينما موظف الكول سنتر العادي يمكنه التعديل والإلغاء فقط على ما كتبه هو
+          const isSupervisorOrManager = (userRoleUpper === 'SUPERVISOR' || userRoleUpper === 'CRM' || userRoleUpper === 'ADMIN');
+          const canModify = isSupervisorOrManager || (currentUser.name === t.senderName);
+
+          let auditLogTxt = `Created by: ${t.senderName} at ${t.createdAt}`;
+          if (t.editedBy) {
+            auditLogTxt += ` | Modified by: ${t.editedBy} at ${t.editedAt}`;
+          }
+
+          const cardHTML = `
+            <div class="ticket-card" id="ticket-${key}">
+              <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                <span class="clinic-badge" style="background:var(--primary-light); color:var(--primary-dark); padding:3px 8px; border-radius:4px; font-size:0.8rem; font-weight:700;">🏥 ${t.clinic}</span>
+                <span style="font-size:0.75rem; color:var(--text-muted);">⏰ ${t.createdAt}</span>
               </div>
-
-              <div class="small">
-                Updated by:
-                ${escapeHtml(item.updatedBy || "-")}
+              <div class="patient-box">
+                <div>Info: <strong>${t.fileNo}</strong></div>
+                <div>Extra: <strong>${t.phone}</strong></div>
               </div>
-
-              <div style="margin-top:7px;">
-
-                <span class="status status-info">
-                  ${escapeHtml(item.status || "-")}
-                </span>
-
+              <div style="font-size:0.9rem; margin-bottom:8px;" id="msg-text-${key}">💬 ${t.message}</div>
+              <div style="font-size:0.7rem; color:var(--accent); margin-bottom:6px;">📌 [Audit Log]: ${auditLogTxt}</div>
+              <div class="ticket-footer" style="display:flex; justify-content:space-between; align-items:center; font-size:0.75rem; color:var(--text-muted);">
+                <span>👤 ${t.senderName}</span>
+                ${canModify ? `
+                  <div style="display:flex; gap:5px;">
+                    <button class="btn btn-warning" style="padding:4px 10px; font-size:0.75rem; width:auto; color:#000;" onclick="window.editTicket('${key}', '${t.message}')">Edit</button>
+                    <button class="btn btn-danger" style="padding:4px 10px; font-size:0.75rem; width:auto;" onclick="window.deleteTicket('${key}', '${t.senderName}')">Cancel / Delete</button>
+                  </div>
+                ` : `<span style="font-size:0.7rem; color:var(--text-muted);">🔒 Read Only</span>`}
               </div>
-
             </div>
           `;
 
-        }).join("");
+          if (t.clinic === activeClinic && t.senderRole === 'callcenter' && t.status === 'active') {
+            showNotification(`New ticket for ${activeClinic}!`);
+          }
 
-    }
+          if (t.clinic === activeClinic) clinicPrivateList.innerHTML += cardHTML;
+          ccAllList.innerHTML += cardHTML;
 
+          if (userRoleUpper === 'SUPERVISOR' || isSupervisorOrManager) {
+            supervisorList.innerHTML += cardHTML;
+          } else if (t.targetRole === 'supervisor' || t.senderRole === 'callcenter') {
+            supervisorList.innerHTML += cardHTML;
+          }
 
-    function renderCRM(
-      tickets
-    ) {
+          if (t.senderRole === 'callcenter' && supDispatchedList) {
+            supDispatchedList.innerHTML += cardHTML;
+          }
 
-      const container =
-        document.getElementById(
-          "crmContent"
-        );
-
-
-      if (!container)
-        return;
-
-
-      const clinicFilter =
-        document.getElementById(
-          "crmClinicFilter"
-        )?.value || "all";
-
-
-      const search =
-        (
-          document.getElementById(
-            "crmSearch"
-          )?.value || ""
-        )
-          .toLowerCase();
-
-
-      const filtered =
-        tickets.filter(t => {
-
-          const clinicOk =
-            clinicFilter === "all" ||
-            t.clinic === clinicFilter;
-
-          const text =
-            `${t.phone || ""} ${t.fileNo || ""} ${t.details || ""} ${t.senderName || ""}`
-              .toLowerCase();
-
-          return (
-            clinicOk &&
-            text.includes(search)
-          );
-
+          crmList.innerHTML += cardHTML;
         });
-
-
-      if (!filtered.length) {
-
-        container.innerHTML =
-          `<div class="empty">
-            No information available.
-          </div>`;
-
-        return;
-
       }
 
+      if(document.getElementById("supTotalTickets")) document.getElementById("supTotalTickets").innerText = totalTickets;
+      if(document.getElementById("supPrivateNotes")) document.getElementById("supPrivateNotes").innerText = supPrivateCount;
+      if(document.getElementById("crmTotalTicketsCount")) document.getElementById("crmTotalTicketsCount").innerText = totalTickets;
+    });
 
-      container.innerHTML =
-        filtered.map(t =>
-          ticketHTML(t)
-        ).join("");
+    window.editTicket = (id, oldMsg) => {
+      const newMsg = prompt("Edit note details:", oldMsg);
+      if (newMsg !== null && newMsg.trim() !== "") {
+        const now = new Date().toLocaleString();
+        update(ref(db, `tickets/${id}`), { 
+          message: newMsg,
+          editedBy: currentUser.name,
+          editedAt: now
+        });
+      }
+    };
 
-    }
-
-
-    function updateStats() {
-
-      const tickets =
-        allTickets || [];
-
-
-      const ticketCount =
-        tickets.filter(
-          t => t.type === "ticket"
-        ).length;
-
-
-      const messageCount =
-        tickets.filter(
-          t => t.type === "message"
-        ).length;
-
-
-      const ids = [
-        "supTicketsCount",
-        "crmTicketsCount"
-      ];
-
-
-      ids.forEach(id => {
-
-        const el =
-          document.getElementById(id);
-
-        if (el)
-          el.innerText =
-            ticketCount;
-
-      });
-
-
-      [
-        "supMessagesCount",
-        "crmMessagesCount"
-      ].forEach(id => {
-
-        const el =
-          document.getElementById(id);
-
-        if (el)
-          el.innerText =
-            messageCount;
-
-      });
-
-
-      const sent =
-        tickets.filter(
-          t =>
-            t.username ===
-            currentUser.username
-        ).length;
-
-
-      const sentEl =
-        document.getElementById(
-          "ccSentCount"
-        );
-
-
-      if (sentEl)
-        sentEl.innerText =
-          sent;
-
-
-      const receivedEl =
-        document.getElementById(
-          "ccReceivedCount"
-        );
-
-
-      if (receivedEl)
-        receivedEl.innerText =
-          tickets.length;
-
-    }
-
-
-    setInterval(
-      updateStats,
-      1000
-    );
-
+    window.deleteTicket = (id, author) => {
+      const reason = confirm(`Are you sure you want to cancel/delete this note created by [${author}]?`);
+      if (reason) {
+        const now = new Date().toLocaleString();
+        update(ref(db, `tickets/${id}`), { status: "cancelled", timestamp: Date.now() });
+        push(ref(db, 'tickets'), {
+          senderRole: 'system_notification',
+          senderName: currentUser.name,
+          username: currentUser.username || currentUser.name,
+          clinic: "System Notification",
+          targetRole: 'all',
+          phone: "Cancelled Ticket",
+          fileNo: "Alert",
+          message: `Notice: Note by [${author}] was cancelled/deleted by ${currentUser.name} at ${now}.`,
+          status: "active",
+          createdAt: now,
+          timestamp: Date.now()
+        });
+      }
+    };
   </script>
-
 </body>
 </html>

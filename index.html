@@ -3,163 +3,577 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>نظام إدارة العيادات والتذاكر</title>
+  <title>نظام التواصل التشغيلي والتذاكر اللحظي | المركز الطبي</title>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
-    * {
-      box-sizing: border-box;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      margin: 0;
-      padding: 0;
+    :root {
+      --primary: #0284c7;
+      --primary-dark: #0369a1;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #0f172a;
+      --text-light: #64748b;
+      --border: #e2e8f0;
     }
-    body {
-      background-color: #f4f6f9;
-      color: #333;
-      padding: 20px;
+
+    * { box-sizing: border-box; font-family: 'Tajawal', sans-serif; margin: 0; padding: 0; }
+    body { background-color: var(--bg); color: var(--text); padding: 15px; }
+
+    /* Login Screen Overlay */
+    #loginOverlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(15, 23, 42, 0.9);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
     }
-    .container {
-      max-width: 1000px;
-      margin: 0 auto;
-      background: #fff;
-      padding: 25px;
+    .login-card {
+      background: white;
+      padding: 35px;
+      border-radius: 16px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.3);
+      text-align: center;
+    }
+    .login-card h2 { color: var(--primary-dark); margin-bottom: 20px; font-size: 1.4rem; }
+
+    /* Header */
+    header {
+      background: var(--card-bg);
+      padding: 15px 20px;
       border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-    }
-    h1 {
-      text-align: center;
-      color: #2c3e50;
+      border: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       margin-bottom: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
     }
-    .status-banner {
-      background-color: #e8f5e9;
-      color: #2e7d32;
+    .logo-title { font-size: 1.2rem; font-weight: bold; color: var(--primary-dark); display: flex; align-items: center; gap: 8px; }
+    .user-info { font-size: 0.85rem; background: #f1f5f9; padding: 6px 12px; border-radius: 20px; font-weight: bold; }
+
+    /* Role Selector Tabs */
+    .role-tabs { display: flex; gap: 10px; margin-bottom: 20px; }
+    .tab-btn {
+      flex: 1;
       padding: 12px;
+      border: 1px solid var(--border);
+      background: var(--card-bg);
       border-radius: 8px;
-      text-align: center;
+      cursor: pointer;
       font-weight: bold;
+      color: var(--text-light);
+      transition: all 0.2s;
+    }
+    .tab-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+    /* Layout Grids */
+    .view-panel { display: none; }
+    .view-panel.active { display: grid; grid-template-columns: 1fr 2fr; gap: 20px; }
+
+    @media (max-width: 900px) {
+      .view-panel.active { grid-template-columns: 1fr; }
+    }
+
+    /* Cards & Containers */
+    .card {
+      background: var(--card-bg);
+      padding: 20px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 6px rgba(0,0,0,0.03);
       margin-bottom: 20px;
-      border: 1px solid #a5d6a7;
     }
-    .form-group {
-      margin-bottom: 15px;
-    }
-    label {
-      display: block;
-      margin-bottom: 5px;
-      font-weight: bold;
-      color: #555;
-    }
+    .card-header { font-weight: bold; font-size: 1.1rem; color: var(--primary-dark); margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
+
+    /* Form Controls */
+    .form-group { margin-bottom: 12px; text-align: right; }
+    label { font-size: 0.85rem; font-weight: bold; color: var(--text-light); display: block; margin-bottom: 5px; }
     input, select, textarea {
       width: 100%;
       padding: 10px;
-      border: 1px solid #ccc;
+      border: 1px solid var(--border);
       border-radius: 6px;
-      font-size: 14px;
+      font-size: 0.95rem;
+      outline: none;
     }
-    button {
-      background-color: #007bff;
+    input:focus, select:focus, textarea:focus { border-color: var(--primary); }
+    textarea { height: 80px; resize: vertical; }
+
+    /* Buttons */
+    .btn {
+      background: var(--primary);
       color: white;
       border: none;
-      padding: 12px 20px;
-      font-size: 16px;
+      padding: 10px 18px;
       border-radius: 6px;
       cursor: pointer;
+      font-weight: bold;
       width: 100%;
-      transition: background 0.3s;
+      transition: background 0.2s;
     }
-    button:hover {
-      background-color: #0056b3;
+    .btn:hover { background: var(--primary-dark); }
+    .btn-danger { background: var(--danger); }
+    .btn-danger:hover { background: #dc2626; }
+    .btn-success { background: var(--success); }
+    .btn-success:hover { background: #059669; }
+
+    /* Clinic Status Selector Grid */
+    .status-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 15px; }
+    .status-opt {
+      padding: 10px;
+      text-align: center;
+      border-radius: 6px;
+      border: 2px solid var(--border);
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: bold;
     }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 25px;
+    .status-opt.active-receiving { border-color: var(--success); background: #f0fdf4; color: #166534; }
+    .status-opt.active-paused { border-color: var(--warning); background: #fffbeb; color: #92400e; }
+    .status-opt.active-stopped { border-color: var(--danger); background: #fef2f2; color: #991b1b; }
+
+    /* Tickets List & Cards */
+    .tickets-container { display: flex; flex-direction: column; gap: 12px; max-height: 600px; overflow-y: auto; padding-left: 5px; }
+    .ticket-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-right: 5px solid var(--primary);
+      padding: 15px;
+      border-radius: 8px;
+      position: relative;
     }
-    th, td {
-      border: 1px solid #ddd;
+    .ticket-card.urgent { border-right-color: var(--danger); background: #fff5f5; }
+    .ticket-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .clinic-badge { background: #e0f2fe; color: #0369a1; padding: 3px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; }
+    .priority-tag { font-size: 0.75rem; font-weight: bold; padding: 2px 6px; border-radius: 4px; }
+    .priority-tag.high { background: #fee2e2; color: #991b1b; }
+    .priority-tag.normal { background: #f1f5f9; color: #475569; }
+
+    .patient-box { background: #f8fafc; border: 1px solid #f1f5f9; padding: 8px; border-radius: 6px; margin: 8px 0; font-size: 0.85rem; display: flex; gap: 15px; }
+    .ticket-msg { font-size: 0.95rem; margin-bottom: 10px; color: var(--text); }
+    .ticket-footer { display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; color: var(--text-light); }
+    
+    .btn-action-sm { padding: 6px 12px; border-radius: 4px; border: none; font-size: 0.8rem; font-weight: bold; cursor: pointer; color: white; }
+
+    /* Live Clinic Board */
+    .clinic-board-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; }
+    .clinic-status-card { padding: 12px; border-radius: 8px; border: 1px solid var(--border); background: white; text-align: center; }
+    .clinic-status-card.receiving { border-top: 4px solid var(--success); }
+    .clinic-status-card.paused { border-top: 4px solid var(--warning); }
+    .clinic-status-card.stopped { border-top: 4px solid var(--danger); }
+
+    /* History & Log Items */
+    .history-item { padding: 10px; border-bottom: 1px solid var(--border); font-size: 0.85rem; display: flex; justify-content: space-between; }
+    .history-item:last-child { border-bottom: none; }
+    
+    #broadcastBanner {
+      display: none;
+      background: #fef2f2;
+      border: 1px solid #fca5a5;
+      color: #991b1b;
       padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      font-weight: bold;
       text-align: center;
     }
-    th {
-      background-color: #f8f9fa;
-      color: #333;
-    }
-    .badge {
-      padding: 5px 10px;
-      border-radius: 4px;
-      color: #fff;
-      font-size: 12px;
-    }
-    .badge-waiting { background-color: #ffc107; color: #000; }
-    .badge-done { background-color: #28a745; }
   </style>
 </head>
 <body>
 
-  <div class="container">
-    <h1>🏥 نظام طلبات واستدعاء العيادات المباشر</h1>
-    <div class="status-banner">🟢 النظام متصل وجاهز للاستخدام من جميع الموظفين</div>
-
-    <div class="form-group">
-      <label for="patientName">اسم المريض:</label>
-      <input type="text" id="patientName" placeholder="أدخل اسم المريض">
+  <!-- 🔒 1. بوابة تسجيل الدخول -->
+  <div id="loginOverlay">
+    <div class="login-card">
+      <h2>🔐 تسجيل الدخول للنظام</h2>
+      <div class="form-group">
+        <label>اختر الدور / القسم:</label>
+        <select id="loginRole">
+          <option value="clinic">استقبال العيادات</option>
+          <option value="callcenter">موظف الكول سنتر</option>
+          <option value="supervisor">المشرف / علاقات العملاء</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>اسم الموظف / العيادة:</label>
+        <input type="text" id="loginName" placeholder="مثال: ولاء / طارق / أحمد">
+      </div>
+      <div class="form-group">
+        <label>كلمة المرور:</label>
+        <input type="password" id="loginPassword" placeholder="••••••••">
+      </div>
+      <button class="btn" onclick="handleLogin()">دخول للنظام 🚀</button>
+      <p id="loginError" style="color:var(--danger); font-size:0.8rem; margin-top:10px; display:none;">بيانات الدخول غير صحيحة</p>
     </div>
-
-    <div class="form-group">
-      <label for="clinicType">اختر العيادة:</label>
-      <select id="clinicType">
-        <option value="عيادة النساء والأطفال">عيادة النساء والأطفال</option>
-        <option value="عيادة الجراحة والجهاز الهضمي">عيادة الجراحة والجهاز الهضمي</option>
-        <option value="العيادات الخارجية (OPD)">العيادات الخارجية (OPD)</option>
-      </select>
-    </div>
-
-    <button onclick="addTicket()">إضافة تذكرة جديدة</button>
-
-    <table>
-      <thead>
-        <tr>
-          <th>رقم التذكرة</th>
-          <th>اسم المريض</th>
-          <th>العيادة</th>
-          <th>الحالة</th>
-        </tr>
-      </thead>
-      <tbody id="ticketsList">
-        <tr>
-          <td>101</td>
-          <td>مريض تجريبي</td>
-          <td>عيادة النساء والأطفال</td>
-          <td><span class="badge badge-waiting">في الانتظار</span></td>
-        </tr>
-      </tbody>
-    </table>
   </div>
 
-  <script>
-    let ticketCounter = 102;
+  <!-- Header -->
+  <header>
+    <div class="logo-title">🏥 نظام إدارة العيادات والكول سنتر المباشر</div>
+    <div class="user-info" id="userInfoDisplay">👤 غير مسجل</div>
+  </header>
 
-    function addTicket() {
-      const nameInput = document.getElementById('patientName');
-      const clinicInput = document.getElementById('clinicType');
+  <!-- Broadcast Notification Banner -->
+  <div id="broadcastBanner">📢 تعميم عاجل: <span id="broadcastText"></span></div>
 
-      if (!nameInput.value.trim()) {
-        alert('يرجى إدخال اسم المريض');
+  <!-- Role Tabs -->
+  <div class="role-tabs">
+    <button id="tabClinic" class="tab-btn active" onclick="switchRole('clinicView', this)">🏥 شاشة العيادات</button>
+    <button id="tabCallCenter" class="tab-btn" onclick="switchRole('callCenterView', this)">🎧 الكول سنتر</button>
+    <button id="tabSupervisor" class="tab-btn" onclick="switchRole('supervisorView', this)">👨‍💼 المشرف والخدمات</button>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 1️⃣ Clinic View (شاشة العيادات) -->
+  <!-- ========================================== -->
+  <div id="clinicView" class="view-panel active">
+    
+    <div>
+      <div class="card">
+        <div class="card-header">🔴 حالة العيادة اللحظية</div>
+        <div class="form-group">
+          <label>اختر العيادة النشطة:</label>
+          <select id="clinicSelect" onchange="loadClinicStatus()">
+            <option value="عيادة النساء والأطفال (ولاء)">عيادة النساء والأطفال (ولاء)</option>
+            <option value="عيادة الجراحة والجهاز الهضمي (طارق)">عيادة الجراحة والجهاز الهضمي (طارق)</option>
+            <option value="عيادة العظام">عيادة العظام</option>
+            <option value="عيادة الأسنان">عيادة الأسنان</option>
+            <option value="العيادات الخارجية (OPD)">العيادات الخارجية (OPD)</option>
+          </select>
+        </div>
+
+        <label>تحديث الحالة المباشرة للعيادة:</label>
+        <div class="status-grid">
+          <div id="st-receiving" class="status-opt active-receiving" onclick="updateClinicStatus('متاحة واستقبال')">🟢 يستقبل حالات</div>
+          <div id="st-paused" class="status-opt" onclick="updateClinicStatus('إيقاف مؤقت للانتظار')">🟡 إيقاف الانتظار</div>
+          <div id="st-stopped" class="status-opt" onclick="updateClinicStatus('مغلقة / استأذن')">🔴 استأذن - غير متاح</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">➕ إنشاء تيكت جديد للكول سنتر</div>
+        <div class="form-group">
+          <label>رقم الملف الطبي:</label>
+          <input type="text" id="fileNoInput" placeholder="مثال: 10452">
+        </div>
+        <div class="form-group">
+          <label>رقم هاتف المريض:</label>
+          <input type="text" id="phoneInput" placeholder="مثال: 0501234567">
+        </div>
+        <div class="form-group">
+          <label>تفاصيل الملاحظة / الطلب:</label>
+          <textarea id="msgInput" placeholder="اكتب الاستفسار أو التعديل المطلوب..."></textarea>
+        </div>
+        <div class="form-group">
+          <label><input type="checkbox" id="urgentCheck"> 🚨 حالة عاجلة جداً</label>
+        </div>
+        <button class="btn" onclick="submitTicket()">إرسال التيكت فوراً 🚀</button>
+      </div>
+    </div>
+
+    <div>
+      <div class="card">
+        <div class="card-header">📋 التذاكر المرسلة الحالية</div>
+        <div id="clinicTicketsList" class="tickets-container">
+          <p style="color: var(--text-light);">جاري تحميل التذاكر...</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 2️⃣ Call Center View (شاشة الكول سنتر) -->
+  <!-- ========================================== -->
+  <div id="callCenterView" class="view-panel">
+    
+    <div>
+      <div class="card">
+        <div class="card-header">🟢 متابعة حالة العيادات الحالية</div>
+        <div id="liveClinicsBoard" class="clinic-board-grid">
+          <!-- Live clinic cards rendered here -->
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card">
+        <div class="card-header">📥 التذاكر والطلبات القادمة من العيادات</div>
+        <div id="generalTicketsList" class="tickets-container">
+          <p style="color: var(--text-light);">جاري التوصيل والمتابعة المباشرة...</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 3️⃣ Supervisor & Archive View (المشرف والأرشيف) -->
+  <!-- ========================================== -->
+  <div id="supervisorView" class="view-panel">
+    
+    <div>
+      <div class="card">
+        <div class="card-header">📢 إرسال تعميم عاجل لجميع الشاشات</div>
+        <div class="form-group">
+          <textarea id="broadcastInput" placeholder="اكتب التوجيه أو التعميم ليظهر أعلى أجهزة الموظفين..."></textarea>
+        </div>
+        <button class="btn btn-danger" onclick="sendBroadcast()">نشر التعميم فوراً 📣</button>
+      </div>
+
+      <div class="card">
+        <div class="card-header">📜 سجل أحداث الـ 24 ساعة (24h History)</div>
+        <div id="historyLog" style="max-height: 350px; overflow-y: auto;">
+          <!-- 24h history items -->
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card">
+        <div class="card-header">📂 الأرشيف والتذاكر المنجزة</div>
+        <div id="archivedTicketsList" class="tickets-container">
+          <!-- Archived completed tickets -->
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 🔗 FIREBASE ENGINE & APPLICATION LOGIC -->
+  <!-- ========================================== -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { 
+      getDatabase, ref, push, onValue, update, set 
+    } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+    // Firebase Configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyDu_6tZHhiE9Rt5AwvkiEggAtcLtqHhe7A",
+      authDomain: "clinic-callcenter-system.firebaseapp.com",
+      databaseURL: "https://clinic-callcenter-system-default-rtdb.firebaseio.com",
+      projectId: "clinic-callcenter-system",
+      storageBucket: "clinic-callcenter-system.firebasestorage.app",
+      messagingSenderId: "933268960406",
+      appId: "1:933268960406:web:fc1463aa52a2d4b84cbeb7",
+      measurementId: "G-ZXTXWCGS0T"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    let currentUser = { name: "", role: "" };
+
+    // 1. Handle Login
+    window.handleLogin = function() {
+      const role = document.getElementById("loginRole").value;
+      const name = document.getElementById("loginName").value.trim();
+      const pass = document.getElementById("loginPassword").value;
+
+      if (!name) {
+        alert("يرجى كتابة اسم الموظف");
         return;
       }
 
-      const tbody = document.getElementById('ticketsList');
-      const newRow = document.createElement('tr');
+      currentUser = { name: name, role: role };
+      document.getElementById("userInfoDisplay").innerText = `👤 ${name} (${getRoleTitle(role)})`;
+      document.getElementById("loginOverlay").style.display = "none";
 
-      newRow.innerHTML = `
-        <td>${ticketCounter++}</td>
-        <td>${nameInput.value}</td>
-        <td>${clinicInput.value}</td>
-        <td><span class="badge badge-waiting">في الانتظار</span></td>
-      `;
+      // Configure Tab permissions
+      if (role === "clinic") switchRole('clinicView', document.getElementById('tabClinic'));
+      else if (role === "callcenter") switchRole('callCenterView', document.getElementById('tabCallCenter'));
+      else if (role === "supervisor") switchRole('supervisorView', document.getElementById('tabSupervisor'));
+    };
 
-      tbody.appendChild(newRow);
-      nameInput.value = '';
+    function getRoleTitle(role) {
+      if (role === "clinic") return "استقبال عيادة";
+      if (role === "callcenter") return "كول سنتر";
+      return "مشرف / علاقات عملاء";
     }
+
+    // 2. Tab Switcher
+    window.switchRole = function(roleId, btnElement) {
+      document.querySelectorAll('.view-panel').forEach(panel => panel.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      
+      document.getElementById(roleId).classList.add('active');
+      if (btnElement) btnElement.classList.add('active');
+    };
+
+    // 3. Submit Ticket
+    window.submitTicket = function() {
+      const clinic = document.getElementById("clinicSelect").value;
+      const fileNo = document.getElementById("fileNoInput").value.trim();
+      const phone = document.getElementById("phoneInput").value.trim();
+      const msg = document.getElementById("msgInput").value.trim();
+      const isUrgent = document.getElementById("urgentCheck").checked;
+
+      if (!fileNo || !msg) {
+        alert("يرجى إدخال رقم الملف ونص الملاحظة.");
+        return;
+      }
+
+      push(ref(db, 'tickets'), {
+        clinicName: clinic,
+        fileNo: fileNo,
+        phone: phone || "غير محدد",
+        message: msg,
+        isUrgent: isUrgent,
+        sender: currentUser.name || "استقبال العيادة",
+        status: "active",
+        createdAt: new Date().toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' })
+      });
+
+      document.getElementById("fileNoInput").value = "";
+      document.getElementById("phoneInput").value = "";
+      document.getElementById("msgInput").value = "";
+      document.getElementById("urgentCheck").checked = false;
+    };
+
+    // 4. Update Clinic Status
+    window.updateClinicStatus = function(statusText) {
+      const clinic = document.getElementById("clinicSelect").value;
+      
+      document.getElementById("st-receiving").className = "status-opt " + (statusText.includes("متاحة") ? "active-receiving" : "");
+      document.getElementById("st-paused").className = "status-opt " + (statusText.includes("إيقاف") ? "active-paused" : "");
+      document.getElementById("st-stopped").className = "status-opt " + (statusText.includes("مغلقة") ? "active-stopped" : "");
+
+      set(ref(db, `clinics/${clinic}`), {
+        name: clinic,
+        status: statusText,
+        updatedBy: currentUser.name || "العيادة",
+        updatedAt: new Date().toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' })
+      });
+    };
+
+    // 5. Complete Ticket Action
+    window.completeTicket = function(ticketId) {
+      update(ref(db, `tickets/${ticketId}`), {
+        status: "completed",
+        completedBy: currentUser.name || "الكول سنتر",
+        completedAt: new Date().toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' })
+      });
+    };
+
+    // 6. Real-time Listening for Tickets
+    onValue(ref(db, 'tickets'), (snapshot) => {
+      const data = snapshot.val();
+      const generalContainer = document.getElementById("generalTicketsList");
+      const clinicContainer = document.getElementById("clinicTicketsList");
+      const archivedContainer = document.getElementById("archivedTicketsList");
+      const historyLog = document.getElementById("historyLog");
+
+      if (!generalContainer) return;
+
+      generalContainer.innerHTML = "";
+      clinicContainer.innerHTML = "";
+      archivedContainer.innerHTML = "";
+      historyLog.innerHTML = "";
+
+      if (data) {
+        Object.keys(data).reverse().forEach((key) => {
+          const ticket = data[key];
+
+          const cardHTML = `
+            <div class="ticket-card ${ticket.isUrgent ? 'urgent' : ''}">
+              <div class="ticket-meta">
+                <span class="clinic-badge">🏥 ${ticket.clinicName}</span>
+                <span class="priority-tag ${ticket.isUrgent ? 'high' : 'normal'}">
+                  ${ticket.isUrgent ? '🔴 عاجل' : '⚪ عادي'}
+                </span>
+              </div>
+              <div class="patient-box">
+                <div>📁 الملف: <strong>${ticket.fileNo}</strong></div>
+                <div>📞 الهاتف: <strong>${ticket.phone}</strong></div>
+              </div>
+              <div class="ticket-msg">💬 ${ticket.message}</div>
+              <div class="ticket-footer">
+                <span>👤 المرسل: ${ticket.sender || 'العيادة'} (${ticket.createdAt})</span>
+                ${ticket.status === 'active' 
+                  ? `<button class="btn-action-sm btn-success" onclick="completeTicket('${key}')">✅ تم الإنجاز</button>`
+                  : `<span style="color:var(--success); font-weight:bold;">مكتمل بواسطة ${ticket.completedBy \vert{}\vert{} ''} (${ticket.completedAt})</span>`
+                }
+              </div>
+            </div>
+          `;
+
+          if (ticket.status === "active") {
+            generalContainer.innerHTML += cardHTML;
+            clinicContainer.innerHTML += cardHTML;
+          } else {
+            archivedContainer.innerHTML += cardHTML;
+          }
+
+          historyLog.innerHTML += `
+            <div class="history-item">
+              <span>تيكت ملف <strong>#${ticket.fileNo}</strong> (${ticket.clinicName})</span>
+              <span style="color:var(--text-light);">${ticket.status === 'completed' ? '✅ مكتمل' : '🟢 نشط'} - ${ticket.createdAt}</span>
+            </div>
+          `;
+        });
+      } else {
+        generalContainer.innerHTML = '<p style="color: var(--text-light);">لا توجد تذاكر نشطة حالياً.</p>';
+        clinicContainer.innerHTML = '<p style="color: var(--text-light);">لا توجد تذاكر نشطة حالياً.</p>';
+      }
+    });
+
+    // 7. Real-time Listening for Clinics Board
+    onValue(ref(db, 'clinics'), (snapshot) => {
+      const data = snapshot.val();
+      const board = document.getElementById("liveClinicsBoard");
+      if (!board) return;
+
+      board.innerHTML = "";
+
+      if (data) {
+        Object.keys(data).forEach((key) => {
+          const c = data[key];
+          let statusClass = "receiving";
+          if (c.status.includes("إيقاف")) statusClass = "paused";
+          if (c.status.includes("مغلقة")) statusClass = "stopped";
+
+          board.innerHTML += `
+            <div class="clinic-status-card ${statusClass}">
+              <div style="font-weight:bold; font-size:0.9rem; margin-bottom:5px;">${c.name}</div>
+              <div style="font-size:0.8rem; font-weight:bold;">${c.status}</div>
+              <div style="font-size:0.7rem; color:var(--text-light); margin-top:5px;">تحديث: ${c.updatedAt || ''}</div>
+            </div>
+          `;
+        });
+      }
+    });
+
+    // 8. Broadcast System
+    window.sendBroadcast = function() {
+      const txt = document.getElementById("broadcastInput").value.trim();
+      if (!txt) return alert("ادخل نص التعميم أولاً.");
+      
+      set(ref(db, 'broadcast'), {
+        message: txt,
+        sender: currentUser.name || "المشرف",
+        time: new Date().toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' })
+      });
+
+      document.getElementById("broadcastInput").value = "";
+    };
+
+    onValue(ref(db, 'broadcast'), (snapshot) => {
+      const b = snapshot.val();
+      const banner = document.getElementById("broadcastBanner");
+      const text = document.getElementById("broadcastText");
+      if (b && b.message) {
+        text.innerText = `${b.message} (من ${b.sender} - ${b.time})`;
+        banner.style.display = "block";
+      }
+    });
   </script>
 </body>
 </html>
